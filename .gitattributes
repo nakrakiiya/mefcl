@@ -1,16 +1,26 @@
 # see https://help.github.com/articles/dealing-with-line-endings
-* text eol=lf
+# default
+* binary
+
+# Declare files that will always have LF line endings on checkout.
+*.el text eol=lf
+.gitattributes text eol=lf
+.gitignore text eol=lf
 
 # Declare files that will always have CRLF line endings on checkout.
 *.bat text eol=crlf
 
-# Custom for Visual Studio
-*.cs     diff=csharp
-*.sln    merge=union
-*.csproj merge=union
-*.vbproj merge=union
-*.fsproj merge=union
-*.dbproj merge=union
+# binaries
+*.png binary
+*.jpg binary
+*.exe binary
+*.dll binary
+
+
+
+
+
+
 
 # Standard to msysgit
 *.doc	 diff=astextplain
