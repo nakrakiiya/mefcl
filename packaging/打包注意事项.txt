@@ -1,0 +1,8 @@
+MinGW:
+1. remove /etc/fstab
+2. remove /home/*
+3. remove /var/cache/mingw-get/packages/* (files)
+
+ECL:
+替换掉ecl-config
+TODO 可能要设置一下源代码的路径

@@ -1,0 +1,42 @@
+#!/bin/sh
+# bin/ecl-config.pre.  Generated from ecl-config by configure.
+
+scriptBaseDir=$(cd "$(dirname "$0")"; pwd)
+
+usage()
+{
+  cat <<EOF
+Usage: $0 [OPTIONS] [LIBS]
+Options: 
+	[--cflags]
+	[--libs|--ldflags]
+Libs:
+	cmp
+EOF
+}
+
+LDFLAGS="-lecl"
+for i in $*; do
+  case $i in
+    --cflags|-c)
+      echo_cflags=yes
+      ;;
+    --libs|--ldflags|-l)
+      echo_ldflags=yes
+      ;;
+    cmp)
+      LDFLAGS="$LDFLAGS -lcmp"
+      ;;
+    *)
+      usage 1 >&2
+      ;;
+    esac;
+done
+
+if test "$echo_cflags" = "yes"; then
+  echo "-Dmingw32   -I${scriptBaseDir}/include/"
+fi
+
+if test "$echo_ldflags" = "yes"; then
+  echo " -L${scriptBaseDir}/lib/ $LDFLAGS      -lm -lws2_32"
+fi
