@@ -1,23 +1,16 @@
-# see https://help.github.com/articles/dealing-with-line-endings
+# see http://www.kernel.org/pub/software/scm/git/docs/gitattributes.html
 # default
-* binary
-
-# Declare files that will always have LF line endings on checkout.
-*.el text eol=lf
-.gitattributes text eol=lf
-.gitignore text eol=lf
-
-# Declare files that will always have CRLF line endings on checkout.
-*.bat text eol=crlf
+* -text
 
 # binaries
 *.png binary
 *.jpg binary
 *.exe binary
 *.dll binary
-
-
-
+*.exe binary
+*.7z  binary
+*.gz  binary
+*.zip binary
 
 
 
