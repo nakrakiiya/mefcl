@@ -272,17 +272,17 @@ SectionGroup /e Implementations SECGRP0000
 
     SectionEnd
 
-    Section /o "SBCL 1.0.55.1" SEC_SBCL
+    Section /o "SBCL 1.1.4" SEC_SBCL
         SetOutPath $INSTDIR\sbcl
         SetOverwrite on
-        # File packages\sbcl-1.0.55.1.7z
-        # File 7za.exe
-        File /r /x .svn ..\body\sbcl\*
+        File packages\sbcl-1.1.4.0-source.7z
+        File 7za.exe
+        File /r ..\body\sbcl\*
         
         # Example: ..\7za.exe x -oclisp clisp-2.49.7z
-        # !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x "-o$OUTDIR" "$OUTDIR\sbcl-1.0.55.1.7z"' "" ${SW_HIDE} ""
-        # Delete "$OUTDIR\7za.exe" 
-        # Delete "$OUTDIR\sbcl-1.0.55.1.7z"
+        !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x "-o$OUTDIR\source" "$OUTDIR\sbcl-1.1.4.0-source.7z"' "" ${SW_HIDE} ""
+        Delete "$OUTDIR\7za.exe" 
+        Delete "$OUTDIR\sbcl-1.1.4.0-source.7z"
         
         # Write starter tag
         SetOutPath $INSTDIR
@@ -290,13 +290,13 @@ SectionGroup /e Implementations SECGRP0000
         File ..\body\SBCL32.starter-mark
         File ..\body\SBCL64.starter-mark
         
-        WriteRegStr HKLM "${REGKEY}\Components" "SBCL 1.0.55.1" 1
+        WriteRegStr HKLM "${REGKEY}\Components" "SBCL 1.1.4" 1
         
         # Create Start Menu Items
         !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
         SetOutPath $SMPROGRAMS\$StartMenuGroup
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with SBCL 1.0.55.1 (x86).lnk" "$INSTDIR\emacs\start-sbcl32.bat" "" $INSTDIR\emacs\bin\runemacs.exe 0
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with SBCL 1.0.55.1 (x86_64).lnk" "$INSTDIR\emacs\start-sbcl64.bat" "" $INSTDIR\emacs\bin\runemacs.exe 0
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with SBCL 1.1.4 (x86).lnk" "$INSTDIR\emacs\start-sbcl32.bat" "" $INSTDIR\emacs\bin\runemacs.exe 0
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with SBCL 1.1.4 (x86_64).lnk" "$INSTDIR\emacs\start-sbcl64.bat" "" $INSTDIR\emacs\bin\runemacs.exe 0
         !insertmacro MUI_STARTMENU_WRITE_END
         
     SectionEnd
@@ -467,12 +467,12 @@ Section /o "-un.Clozure CL 1.8" UNSEC_CCL
     DeleteRegValue HKLM "${REGKEY}\Components" "Clozure CL 1.8"
 SectionEnd
 
-Section /o "-un.SBCL 1.0.55.1" UNSEC_SBCL
+Section /o "-un.SBCL 1.1.4" UNSEC_SBCL
     SetShellVarContext all 
     Delete /REBOOTOK $INSTDIR\SBCL32.starter-mark
     Delete /REBOOTOK $INSTDIR\SBCL64.starter-mark
     RmDir /r /REBOOTOK $INSTDIR\sbcl
-    DeleteRegValue HKLM "${REGKEY}\Components" "SBCL 1.0.55.1"
+    DeleteRegValue HKLM "${REGKEY}\Components" "SBCL 1.1.4"
 SectionEnd
 
 Section /o -un.Emacs UNSEC_EMACS
@@ -636,7 +636,7 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION "CLISP 2.49" ${UNSEC_CLISP}
     !insertmacro SELECT_UNSECTION "ABCL 1.1.1" ${UNSEC_ABCL}
     !insertmacro SELECT_UNSECTION "Clozure CL 1.8" ${UNSEC_CCL}
-    !insertmacro SELECT_UNSECTION "SBCL 1.0.55.1" ${UNSEC_SBCL}
+    !insertmacro SELECT_UNSECTION "SBCL 1.1.4" ${UNSEC_SBCL}
     !insertmacro SELECT_UNSECTION MinGW ${UNSEC_MINGW}
     !insertmacro SELECT_UNSECTION "JDK 7.0" ${UNSEC_JAVA}
     !insertmacro SELECT_UNSECTION "Extra libraries" ${UNSEC_EXTRA_LIBS}    
@@ -664,7 +664,7 @@ LangString SEC_ECL_DESC ${LANG_ENGLISH} "Embeddable Common Lisp 12.12.1 compiled
 LangString SEC_CLISP_DESC ${LANG_ENGLISH} "CLISP 2.49 (MinGW)"
 LangString SEC_ABCL_DESC ${LANG_ENGLISH} "Armed Bear Common Lisp 1.1.1 with full source, requires JRE 7"
 LangString SEC_CCL_DESC ${LANG_ENGLISH} "Clozure CL 1.8 (both x86, x86_64 are included)"
-LangString SEC_SBCL_DESC ${LANG_ENGLISH} "Steel Bank Common Lisp 1.0.55.1 with threads support (full source, and both x86, x86_64 are included)"
+LangString SEC_SBCL_DESC ${LANG_ENGLISH} "Steel Bank Common Lisp 1.1.4 with threads support (full source, and both x86, x86_64 are included)"
 LangString SEC_MINGW_DESC ${LANG_ENGLISH} "MinGW with MSYS 1.0 included"
 LangString SEC_JAVA_DESC ${LANG_ENGLISH} "Java Development Kit 7.0"
 LangString SEC_EXTRA_LIBS_DESC ${LANG_ENGLISH} "Useful DLLs required by some Common Lisp libraries (optional)"

@@ -8,3 +8,9 @@ ECL:
 
 ABCL:
 不要将abcl.bat放在压缩包。
+
+SBCL:
+Rename the standalone binaries to 'sbcl.exe', 'sbcl-x64.exe'.
+
+EMACS:
+Remove the cedet shipped with EMACS 24.2.
