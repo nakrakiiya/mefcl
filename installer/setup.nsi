@@ -147,30 +147,30 @@ SectionEnd
 ;SectionEnd
 
 SectionGroup /e Implementations SECGRP0000
-    Section /o "ECL 11.1.1" SEC_ECL
+    Section /o "ECL 12.12.1" SEC_ECL
         SetOutPath $INSTDIR\ecl-mingw
         SetOverwrite on
-        File packages\ecl-11.1.1-mingw.7z
+        File packages\ecl-12.12.1-mingw.7z
         File ..\body\ecl-mingw\run-ecl32-mingw.bat
         File 7za.exe
         
         # Example: ..\7za.exe x -oclisp clisp-2.49.7z
-        # ExecWait '"$OUTDIR\7za.exe" x "-o$OUTDIR" "$OUTDIR\ecl-11.1.1-mingw.7z"'
-        !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR" "$OUTDIR\ecl-11.1.1-mingw.7z"' "" ${SW_HIDE} ""
+        # ExecWait '"$OUTDIR\7za.exe" x "-o$OUTDIR" "$OUTDIR\ecl-12.12.1-mingw.7z"'
+        !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR" "$OUTDIR\ecl-12.12.1-mingw.7z"' "" ${SW_HIDE} ""
         Delete "$OUTDIR\7za.exe" 
-        Delete "$OUTDIR\ecl-11.1.1-mingw.7z"
+        Delete "$OUTDIR\ecl-12.12.1-mingw.7z"
         
         # Write starter tag
         SetOutPath $INSTDIR
         SetOverwrite on
         File ..\body\ECL.starter-mark
         
-        WriteRegStr HKLM "${REGKEY}\Components" "ECL 11.1.1" 1
+        WriteRegStr HKLM "${REGKEY}\Components" "ECL 12.12.1" 1
         
         # Create Start Menu Items
         !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
         SetOutPath $SMPROGRAMS\$StartMenuGroup
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with ECL 11.1.1.lnk" "$INSTDIR\emacs\start-ecl32-mingw.bat" "" $INSTDIR\ecl-mingw\ecl.exe 0
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with ECL 12.12.1.lnk" "$INSTDIR\emacs\start-ecl32-mingw.bat" "" $INSTDIR\ecl-mingw\ecl.exe 0
         !insertmacro MUI_STARTMENU_WRITE_END
     SectionEnd
     
@@ -435,11 +435,11 @@ Section /o "-un.Extra libraries" UNSEC_EXTRA_LIBS
     DeleteRegValue HKLM "${REGKEY}\Components" "Extra libraries"
 SectionEnd
 
-Section /o "-un.ECL 11.1.1" UNSEC_ECL
+Section /o "-un.ECL 12.12.1" UNSEC_ECL
     SetShellVarContext all 
     Delete /REBOOTOK $INSTDIR\ECL.starter-mark
     RmDir /r /REBOOTOK $INSTDIR\ecl-mingw
-    DeleteRegValue HKLM "${REGKEY}\Components" "ECL 11.1.1"
+    DeleteRegValue HKLM "${REGKEY}\Components" "ECL 12.12.1"
 SectionEnd
 
 Section /o "-un.CLISP 2.49" UNSEC_CLISP
@@ -632,7 +632,7 @@ Function un.onInit
     !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuGroup
     !insertmacro MUI_UNGETLANGUAGE
     !insertmacro SELECT_UNSECTION Emacs ${UNSEC_EMACS}
-    !insertmacro SELECT_UNSECTION "ECL 11.1.1" ${UNSEC_ECL}
+    !insertmacro SELECT_UNSECTION "ECL 12.12.1" ${UNSEC_ECL}
     !insertmacro SELECT_UNSECTION "CLISP 2.49" ${UNSEC_CLISP}
     !insertmacro SELECT_UNSECTION "ABCL 1.0.1" ${UNSEC_ABCL}
     !insertmacro SELECT_UNSECTION "Clozure CL 1.8" ${UNSEC_CCL}
@@ -660,7 +660,7 @@ FunctionEnd
 
 LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
 LangString SEC_EMACS_DESC ${LANG_ENGLISH} "Emacs 23.1"
-LangString SEC_ECL_DESC ${LANG_ENGLISH} "Embeddable Common Lisp 11.1.1 compiled with gcc 4.5.0, requires MinGW"
+LangString SEC_ECL_DESC ${LANG_ENGLISH} "Embeddable Common Lisp 12.12.1 compiled with gcc 4.7.2, requires MinGW"
 LangString SEC_CLISP_DESC ${LANG_ENGLISH} "CLISP 2.49 (MinGW)"
 LangString SEC_ABCL_DESC ${LANG_ENGLISH} "Armed Bear Common Lisp 1.0.1 with full source, requires JRE 7"
 LangString SEC_CCL_DESC ${LANG_ENGLISH} "Clozure CL 1.8 (both x86, x86_64 are included)"
