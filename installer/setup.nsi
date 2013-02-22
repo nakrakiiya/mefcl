@@ -203,29 +203,29 @@ SectionGroup /e Implementations SECGRP0000
     SectionEnd
 
 
-    Section /o "ABCL 1.0.1" SEC_ABCL
+    Section /o "ABCL 1.1.1" SEC_ABCL
         SetOutPath $INSTDIR\abcl
         SetOverwrite on
-        File packages\abcl-1.0.1.7z
-        File ..\body\abcl\abcl.bat
+        File packages\abcl-1.1.1.7z
+        File /r ..\body\abcl\*
         File 7za.exe
         
         # Example: ..\7za.exe x -oclisp clisp-2.49.7z
-        !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR" "$OUTDIR\abcl-1.0.1.7z"' "" ${SW_HIDE} ""
+        !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR" "$OUTDIR\abcl-1.1.1.7z"' "" ${SW_HIDE} ""
         Delete "$OUTDIR\7za.exe" 
-        Delete "$OUTDIR\abcl-1.0.1.7z"
+        Delete "$OUTDIR\abcl-1.1.1.7z"
         
         # Write starter tag
         SetOutPath $INSTDIR
         SetOverwrite on
         File ..\body\ABCL.starter-mark
         
-        WriteRegStr HKLM "${REGKEY}\Components" "ABCL 1.0.1" 1
+        WriteRegStr HKLM "${REGKEY}\Components" "ABCL 1.1.1" 1
 
         # Create Start Menu Items
         !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
         SetOutPath $SMPROGRAMS\$StartMenuGroup
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with ABCL 1.0.1.lnk" "$INSTDIR\emacs\start-abcl.bat" "" $INSTDIR\emacs\bin\runemacs.exe 0
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with ABCL 1.1.1.lnk" "$INSTDIR\emacs\start-abcl.bat" "" $INSTDIR\emacs\bin\runemacs.exe 0
         !insertmacro MUI_STARTMENU_WRITE_END
 
     SectionEnd
@@ -449,11 +449,11 @@ Section /o "-un.CLISP 2.49" UNSEC_CLISP
     DeleteRegValue HKLM "${REGKEY}\Components" "CLISP 2.49"
 SectionEnd
 
-Section /o "-un.ABCL 1.0.1" UNSEC_ABCL
+Section /o "-un.ABCL 1.1.1" UNSEC_ABCL
     SetShellVarContext all 
     Delete /REBOOTOK $INSTDIR\ABCL.starter-mark
     RmDir /r /REBOOTOK $INSTDIR\abcl
-    DeleteRegValue HKLM "${REGKEY}\Components" "ABCL 1.0.1"
+    DeleteRegValue HKLM "${REGKEY}\Components" "ABCL 1.1.1"
 SectionEnd
 
 Section /o "-un.Clozure CL 1.8" UNSEC_CCL
@@ -634,7 +634,7 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION Emacs ${UNSEC_EMACS}
     !insertmacro SELECT_UNSECTION "ECL 12.12.1" ${UNSEC_ECL}
     !insertmacro SELECT_UNSECTION "CLISP 2.49" ${UNSEC_CLISP}
-    !insertmacro SELECT_UNSECTION "ABCL 1.0.1" ${UNSEC_ABCL}
+    !insertmacro SELECT_UNSECTION "ABCL 1.1.1" ${UNSEC_ABCL}
     !insertmacro SELECT_UNSECTION "Clozure CL 1.8" ${UNSEC_CCL}
     !insertmacro SELECT_UNSECTION "SBCL 1.0.55.1" ${UNSEC_SBCL}
     !insertmacro SELECT_UNSECTION MinGW ${UNSEC_MINGW}
@@ -662,7 +662,7 @@ LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
 LangString SEC_EMACS_DESC ${LANG_ENGLISH} "Emacs 23.1"
 LangString SEC_ECL_DESC ${LANG_ENGLISH} "Embeddable Common Lisp 12.12.1 compiled with gcc 4.7.2, requires MinGW"
 LangString SEC_CLISP_DESC ${LANG_ENGLISH} "CLISP 2.49 (MinGW)"
-LangString SEC_ABCL_DESC ${LANG_ENGLISH} "Armed Bear Common Lisp 1.0.1 with full source, requires JRE 7"
+LangString SEC_ABCL_DESC ${LANG_ENGLISH} "Armed Bear Common Lisp 1.1.1 with full source, requires JRE 7"
 LangString SEC_CCL_DESC ${LANG_ENGLISH} "Clozure CL 1.8 (both x86, x86_64 are included)"
 LangString SEC_SBCL_DESC ${LANG_ENGLISH} "Steel Bank Common Lisp 1.0.55.1 with threads support (full source, and both x86, x86_64 are included)"
 LangString SEC_MINGW_DESC ${LANG_ENGLISH} "MinGW with MSYS 1.0 included"

@@ -5,4 +5,6 @@ MinGW:
 
 ECL:
 替换掉ecl-config
-TODO 可能要设置一下源代码的路径
+
+ABCL:
+不要将abcl.bat放在压缩包。
