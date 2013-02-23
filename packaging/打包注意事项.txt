@@ -8,6 +8,8 @@ ECL:
 
 ABCL:
 不要将abcl.bat放在压缩包。
+abcl 1.1.1 => 编译时会将源代码绝对路径写入。在启动的时候要专门写代码来修改源代码路径。目前只能解压到L:\abcl-src-1.1.1这个目录里面编译。
+记得带上disassembler。
 
 SBCL:
 Rename the standalone binaries to 'sbcl.exe', 'sbcl-x64.exe'.
