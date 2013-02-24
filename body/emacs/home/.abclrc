@@ -23,11 +23,17 @@
 
 (in-package "INIT-TEMP")
 
-(defparameter *cannot-resolve* '("CLASS-DIRECT-SLOTS" "COMPUTE-CLASS-DIRECT-SLOTS" "MAKE-FORWARD-REFERENCED-CLASS" "%SET-STREAM-EXTERNAL-FORMAT" "%IMPORT" "%DELETE-PACKAGE"))
+(defparameter *cannot-resolve* '(SYSTEM::CLASS-DIRECT-SLOTS
+                                 SYSTEM:COMPUTE-CLASS-DIRECT-SLOTS
+                                 SYSTEM:MAKE-FORWARD-REFERENCED-CLASS
+                                 COMMON-LISP::%SET-STREAM-EXTERNAL-FORMAT
+                                 COMMON-LISP::%IMPORT
+                                 COMMON-LISP::%DELETE-PACKAGE
+                                 ))
 
 (defun change-path (symbol abcl-base)
   ;; skip the symbols that cannot be resolved
-  (when (find (symbol-name symbol) *cannot-resolve* :test 'string=)
+  (when (find symbol *cannot-resolve* :test 'eq)
     (return-from change-path))
 
   ;; ensure the symbol is loaded
