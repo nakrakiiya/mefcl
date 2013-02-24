@@ -23,12 +23,11 @@
 
 (in-package "INIT-TEMP")
 
-(defparameter *cannot-load* '("COMPUTE-CLASS-DIRECT-SLOTS" "CLASS-DIRECT-SLOTS" "MAKE-FORWARD-REFERENCED-CLASS" "%SET-STREAM-EXTERNAL-FORMAT" "%IMPORT"
-                              "%DELETE-PACKAGE"))
+(defparameter *cannot-resolve* '("CLASS-DIRECT-SLOTS" "COMPUTE-CLASS-DIRECT-SLOTS" "MAKE-FORWARD-REFERENCED-CLASS" "%SET-STREAM-EXTERNAL-FORMAT" "%IMPORT" "%DELETE-PACKAGE"))
 
 (defun change-path (symbol abcl-base)
   ;; skip the symbols that cannot be resolved
-  (when (find (symbol-name symbol) *cannot-load* :test 'string=)
+  (when (find (symbol-name symbol) *cannot-resolve* :test 'string=)
     (return-from change-path))
 
   ;; ensure the symbol is loaded
@@ -54,9 +53,12 @@
                            :type (pathname-type orig-source-path))))))
 
 ;; change the source localtions of all the symbols
-(let ((abcl-base (make-pathname :name nil :type nil :defaults (merge-pathnames "../" (first (pathname-device extensions:*lisp-home*))))))
-  (do-all-symbols (sym)
-    (change-path sym abcl-base)))
+(defun fix-all-symbols ()
+  (let ((abcl-base (make-pathname :name nil :type nil :defaults (merge-pathnames "../" (first (pathname-device extensions:*lisp-home*))))))
+    (do-all-symbols (sym)
+      (change-path sym abcl-base))))
+
+(fix-all-symbols)
 
 (delete-package "INIT-TEMP")
 
