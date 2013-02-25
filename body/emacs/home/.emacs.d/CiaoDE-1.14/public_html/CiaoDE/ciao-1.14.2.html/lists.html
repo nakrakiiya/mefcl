@@ -1,0 +1,459 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>List processing &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="format.html">&#x25C4;</a><a class="navbutton" href="sort.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="ClassicProlog.html">PART IV - Classic Prolog library (classic)</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>List processing</h1><a class="idx_anchor" href="ciaoliindex.html#lists"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="The CLIP Group" href="ciaoauindex.html#The CLIP Group">The CLIP Group</a>.<p>
+This module provides a set of predicates for list processing.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(lists)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#nonsingle/1"><tt>nonsingle/1</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#append/3"><tt>append/3</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#reverse/2"><tt>reverse/2</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#reverse/3"><tt>reverse/3</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#delete/3"><tt>delete/3</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#delete_non_ground/3"><tt>delete_non_ground/3</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#select/3"><tt>select/3</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#length/2"><tt>length/2</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#nth/3"><tt>nth/3</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#add_after/4"><tt>add_after/4</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#add_before/4"><tt>add_before/4</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#dlist/3"><tt>dlist/3</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#list_concat/2"><tt>list_concat/2</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#list_insert/2"><tt>list_insert/2</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#insert_last/3"><tt>insert_last/3</tt></a>, <a class="idx_anchor" id="15" href="ciaoglindex.html#contains_ro/2"><tt>contains_ro/2</tt></a>, <a class="idx_anchor" id="16" href="ciaoglindex.html#contains1/2"><tt>contains1/2</tt></a>, <a class="idx_anchor" id="17" href="ciaoglindex.html#nocontainsx/2"><tt>nocontainsx/2</tt></a>, <a class="idx_anchor" id="18" href="ciaoglindex.html#last/2"><tt>last/2</tt></a>, <a class="idx_anchor" id="19" href="ciaoglindex.html#list_lookup/3"><tt>list_lookup/3</tt></a>, <a class="idx_anchor" id="20" href="ciaoglindex.html#list_lookup/4"><tt>list_lookup/4</tt></a>, <a class="idx_anchor" id="21" href="ciaoglindex.html#intset_insert/3"><tt>intset_insert/3</tt></a>, <a class="idx_anchor" id="22" href="ciaoglindex.html#intset_delete/3"><tt>intset_delete/3</tt></a>, <a class="idx_anchor" id="23" href="ciaoglindex.html#intset_in/2"><tt>intset_in/2</tt></a>, <a class="idx_anchor" id="24" href="ciaoglindex.html#intset_sequence/3"><tt>intset_sequence/3</tt></a>, <a class="idx_anchor" id="25" href="ciaoglindex.html#intersection/3"><tt>intersection/3</tt></a>, <a class="idx_anchor" id="26" href="ciaoglindex.html#union/3"><tt>union/3</tt></a>, <a class="idx_anchor" id="27" href="ciaoglindex.html#difference/3"><tt>difference/3</tt></a>, <a class="idx_anchor" id="28" href="ciaoglindex.html#equal_lists/2"><tt>equal_lists/2</tt></a>, <a class="idx_anchor" id="29" href="ciaoglindex.html#list_to_list_of_lists/2"><tt>list_to_list_of_lists/2</tt></a>, <a class="idx_anchor" id="30" href="ciaoglindex.html#powerset/2"><tt>powerset/2</tt></a>, <a class="idx_anchor" id="31" href="ciaoglindex.html#cross_product/2"><tt>cross_product/2</tt></a>, <a class="idx_anchor" id="32" href="ciaoglindex.html#sequence_to_list/2"><tt>sequence_to_list/2</tt></a>.
+<LI><em>Properties:</em><br/><a class="idx_anchor" id="33" href="ciaoglindex.html#list1/2"><tt>list1/2</tt></a>, <a class="idx_anchor" id="34" href="ciaoglindex.html#sublist/2"><tt>sublist/2</tt></a>, <a class="idx_anchor" id="35" href="ciaoglindex.html#subordlist/2"><tt>subordlist/2</tt></a>.
+<LI><em>Regular Types:</em><br/><a class="idx_anchor" id="36" href="ciaoglindex.html#list_of_lists/1"><tt>list_of_lists/1</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="37" href="ciaoglindex.html#assertions/native_props"><tt>assertions/native_props</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="nonsingle/1" href="ciaopdindex.html#nonsingle/1">nonsingle/1</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>nonsingle(A)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> nonsingle fails.<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[a]
+</span>
+
+
+<em>then the following properties should hold globally:</em>
+<br/><span class="on_right"> (native_props:fails/1)</span><span>Calls of the form <span class="var">nonsingle(A)</span> fail.
+</span>
+</ul><tt>nonsingle(A)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> nonsingle succeeds.<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[a,b]
+</span>
+</ul><p><strong>Usage:</strong> <tt>nonsingle(X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">X</span> is not a singleton.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="append/3" href="ciaopdindex.html#append/3">append/3</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>append(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Zs</span> is <span class="var">Ys</span> appended to <span class="var">Xs</span>.<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Xs</span> is a list.
+</span>
+</ul><tt>append(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Xs</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Ys</span> is a list.
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Zs</span> is a list.
+</span>
+</ul><tt>append(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Zs</span> is a list.
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Xs</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Ys</span> is a list.
+</span>
+</ul><tt>append(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (native_props:mshare/1)</span><span>The sharing pattern is <tt><span class="var">[[X,Y,Z],[X,Z],[Y,Z]]</span></tt>.
+</span>
+</ul><tt>append(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">Xs</span> is currently ground (it contains no variables).
+</span><br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">Ys</span> is currently ground (it contains no variables).
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">Zs</span> is currently ground (it contains no variables).
+</span>
+</ul><tt>append(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">Zs</span> is currently ground (it contains no variables).
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">Xs</span> is currently ground (it contains no variables).
+</span><br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">Ys</span> is currently ground (it contains no variables).
+</span>
+</ul><tt>append(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:sideff/2)</span><span><span class="var">append(Xs,Ys,Zs)</span> is side-effect <span class="var">free</span>.
+</span>
+</ul><tt>append(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Xs</span> is a list.
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">append(Xs,Ys,Zs)</span> is evaluable at compile-time.
+</span>
+</ul><tt>append(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Zs</span> is a list.
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">append(Xs,Ys,Zs)</span> is evaluable at compile-time.
+</span>
+</ul><tt>append(A,B,C)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Simple call to append<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[1,2,3]
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:B=[4,5]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:C=[1,2,3,4,5]
+</span>
+</ul><tt>append(A,B,X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Simple append test<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:L=[([1,2],[1,2,4,5,6]),([1,2,3],[1,2,3,4,5,6])]
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:B=[4,5,6]
+</span><br/><span class="on_right"> (basic_props:member/2)</span><span><span class="var">A,X2</span> is an element of <span class="var">L</span>.
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_compare:== /2)</span><span>The terms <span class="var">X</span> and <span class="var">X2</span> are strictly identical.
+</span>
+</ul><tt>append(A,B,X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Test of reverse call<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:X=[1,2,3]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (basic_props:member/2)</span><span><span class="var">A,B</span> is an element of <span class="var">[([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]</span>.
+</span>
+</ul><tt>append(A,B,X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Empty test.<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[]
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:B=[]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_compare:== /2)</span><span>The terms <span class="var">X</span> and <span class="var">[]</span> are strictly identical.
+</span>
+</ul><tt>append(_A,B,X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Test of a call that fails<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:B=[2]
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:X=[1,2,3]
+</span>
+
+
+<em>then the following properties should hold globally:</em>
+<br/><span class="on_right"> (native_props:fails/1)</span><span>Calls of the form <span class="var">append(_A,B,X)</span> fail.
+</span>
+</ul><tt>append(X,Y,Z)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Test of a reverse call.<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:Y=[2]
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:Z=[1,2]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_compare:== /2)</span><span>The terms <span class="var">X</span> and <span class="var">[1]</span> are strictly identical.
+</span>
+</ul><p><strong>Usage:</strong> <tt>append(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Xs</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Ys</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Zs</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="reverse/2" href="ciaopdindex.html#reverse/2">reverse/2</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>reverse(A,B)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Reverse a list<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[1,2,3]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:B=[3,2,1]
+</span>
+</ul><ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:sideff/2)</span><span><span class="var">reverse(Arg1,Arg2)</span> is side-effect <span class="var">free</span>.
+</span>
+</ul><tt>reverse(Xs,_Ys)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Xs</span> is a list.
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">reverse(Xs,_Ys)</span> is evaluable at compile-time.
+</span>
+</ul><p><strong>Usage:</strong> <tt>reverse(Xs,Ys)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Reverses the order of elements in <span class="var">Xs</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Xs</span> is a list.
+</span><br/><span class="on_right"> (basic_props:term/1)</span><span><span class="var">Ys</span> is any term.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Xs</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Ys</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="reverse/3" href="ciaopdindex.html#reverse/3">reverse/3</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>reverse(A,B,C)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> reverse/3 test<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">B</span> is a free variable.
+</span>
+<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[1,2,3]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:C=[3,2,1|B]
+</span>
+</ul><ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:sideff/2)</span><span><span class="var">reverse(Arg1,Arg2,Arg3)</span> is side-effect <span class="var">free</span>.
+</span>
+</ul><tt>reverse(Xs,Ys,Zs)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Xs</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Ys</span> is a list.
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">reverse(Xs,Ys,Zs)</span> is evaluable at compile-time.
+</span>
+</ul><p><strong>Usage:</strong> <tt>reverse(A,B,C)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Reverse the order of elements in <span class="var">A</span>, and append it with <span class="var">B</span>.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="delete/3" href="ciaopdindex.html#delete/3">delete/3</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:sideff/2)</span><span><span class="var">delete(Arg1,Arg2,Arg3)</span> is side-effect <span class="var">free</span>.
+</span>
+</ul><tt>delete(L1,E,L2)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">L1</span> is currently ground (it contains no variables).
+</span><br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">L2</span> is currently ground (it contains no variables).
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">delete(L1,E,L2)</span> is evaluable at compile-time.
+</span>
+</ul><p><strong>Usage:</strong> <tt>delete(L1,E,L2)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">L2</span> is <span class="var">L1</span> without the ocurrences of <span class="var">E</span>.<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L1</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L2</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="delete_non_ground/3" href="ciaopdindex.html#delete_non_ground/3">delete_non_ground/3</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:sideff/2)</span><span><span class="var">delete_non_ground(Arg1,Arg2,Arg3)</span> is side-effect <span class="var">true</span>.
+</span>
+</ul><tt>delete_non_ground(L1,E,L2)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">L1</span> is currently ground (it contains no variables).
+</span><br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">L2</span> is currently ground (it contains no variables).
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">delete_non_ground(L1,E,L2)</span> is evaluable at compile-time.
+</span>
+</ul><p><strong>Usage:</strong> <tt>delete_non_ground(L1,E,L2)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">L2</span> is <span class="var">L1</span> without the ocurrences of <span class="var">E</span>. <span class="var">E</span> can be a nonground term so that all the elements in <span class="var">L1</span> it unifies with will be deleted<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L1</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L2</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="select/3" href="ciaopdindex.html#select/3">select/3</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:sideff/2)</span><span><span class="var">select(Arg1,Arg2,Arg3)</span> is side-effect <span class="var">free</span>.
+</span>
+</ul><tt>select(X,Xs,Ys)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">X</span> is currently ground (it contains no variables).
+</span><br/><span class="on_right"> (term_typing:ground/1)</span><span><span class="var">Xs</span> is currently ground (it contains no variables).
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">select(X,Xs,Ys)</span> is evaluable at compile-time.
+</span>
+</ul><p><strong>Usage:</strong> <tt>select(X,Xs,Ys)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Xs</span> and <span class="var">Ys</span> have the same elements except for one occurrence of <span class="var">X</span>.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="length/2" href="ciaopdindex.html#length/2">length/2</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>length(A,B)</tt>
+<ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul><ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:sideff/2)</span><span><span class="var">length(Arg1,Arg2)</span> is side-effect <span class="var">free</span>.
+</span>
+</ul><tt>length(L,N)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">length(L,N)</span> is evaluable at compile-time.
+</span>
+</ul><tt>length(L,N)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (term_typing:integer/1)</span><span><span class="var">N</span> is currently instantiated to an integer.
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">length(L,N)</span> is evaluable at compile-time.
+</span>
+</ul><p><strong>Usage 1:</strong> <tt>length(L,N)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Computes the length of <span class="var">L</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">N</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">N</span> is an integer.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>length(L,N)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Outputs <span class="var">L</span> of length <span class="var">N</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">L</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">N</span> is an integer.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">N</span> is an integer.
+</span>
+</ul><p><strong>Usage 3:</strong> <tt>length(L,N)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Checks that <span class="var">L</span> is of length <span class="var">N</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">N</span> is an integer.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">N</span> is an integer.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="nth/3" href="ciaopdindex.html#nth/3">nth/3</a>:</div><div class="deftext"><tt>nth(N,List,Elem)</tt>
+<p><span class="var">N</span> is the position in <span class="var">List</span> of <span class="var">Elem</span>. <span class="var">N</span> counts from one.<br/>
+<strong>General properties:</strong> <ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:sideff/2)</span><span><span class="var">nth(N,List,Elem)</span> is side-effect <span class="var">free</span>.
+</span>
+</ul><tt>nth(N,L,E)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (term_typing:integer/1)</span><span><span class="var">N</span> is currently instantiated to an integer.
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">nth(N,L,E)</span> is evaluable at compile-time.
+</span>
+</ul><tt>nth(N,L,E)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">nth(N,L,E)</span> is evaluable at compile-time.
+</span>
+</ul><tt>nth(N,L,E)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">N</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (native_props:is_det/1)</span><span>All calls of the form <span class="var">nth(N,L,E)</span> are deterministic.
+</span>
+</ul><p><strong>Usage 1:</strong> <ul class="itemize_minus"><LI><em>Description:</em> Unifies <span class="var">Elem</span> and the <span class="var">N</span>th element of <span class="var">List</span>.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List</span> is a list.
+</span><br/><span class="on_right"> (basic_props:term/1)</span><span><span class="var">Elem</span> is any term.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">N</span> is an integer.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List</span> is a list.
+</span><br/><span class="on_right"> (basic_props:term/1)</span><span><span class="var">Elem</span> is any term.
+</span>
+</ul><p><strong>Usage 2:</strong> <ul class="itemize_minus"><LI><em>Description:</em> Finds the positions where <span class="var">Elem</span> is in <span class="var">List</span>. Positions are found in ascending order.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List</span> is a list.
+</span><br/><span class="on_right"> (basic_props:term/1)</span><span><span class="var">Elem</span> is any term.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">N</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">N</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List</span> is a list.
+</span><br/><span class="on_right"> (basic_props:term/1)</span><span><span class="var">Elem</span> is any term.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="add_after/4" href="ciaopdindex.html#add_after/4">add_after/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>add_after(L0,E0,E,L)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Adds element <span class="var">E</span> after element <span class="var">E0</span> (or at end) to list <span class="var">L0</span> returning in <span class="var">L</span> the new list (uses term comparison).<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">L0</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">E0</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">E</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">L</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="add_before/4" href="ciaopdindex.html#add_before/4">add_before/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>add_before(L0,E0,E,L)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Adds element E before element E0 (or at start) to list L0 returning in L the new list (uses term comparison).<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">L0</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">E0</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">E</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">L</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PROPERTY</span><div class="defname"><a class="idx_anchor" id="list1/2" href="ciaoprindex.html#list1/2">list1/2</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>list1(?,(pred 1))</tt>.<br/><p><strong>Usage:</strong> <tt>list1(X,Y)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">X</span> is a list of <span class="var">Y</span>s of at least one element.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dlist/3" href="ciaopdindex.html#dlist/3">dlist/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>dlist(List,DList,Tail)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List</span> is the result of removing <span class="var">Tail</span> from the end of <span class="var">DList</span> (makes a difference list from a list).</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="list_concat/2" href="ciaopdindex.html#list_concat/2">list_concat/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>list_concat(LL,L)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">L</span> is the concatenation of all the lists in <span class="var">LL</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">LL</span> is a list of <span class="var">list</span>s.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="list_insert/2" href="ciaopdindex.html#list_insert/2">list_insert/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>list_insert(List,Term)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Adds <span class="var">Term</span> to the end of <span class="var">List</span> if there is no element in <span class="var">List</span> identical to <span class="var">Term</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Term</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="insert_last/3" href="ciaopdindex.html#insert_last/3">insert_last/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>insert_last(L0,E,L)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Adds element <span class="var">E</span> at end of list <span class="var">L0</span> returning <span class="var">L</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">L0</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">E</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="contains_ro/2" href="ciaopdindex.html#contains_ro/2">contains_ro/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Description:</em> Impure membership (does not instantiate a variable in its first argument.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="contains1/2" href="ciaopdindex.html#contains1/2">contains1/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Description:</em> First membership.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="nocontainsx/2" href="ciaopdindex.html#nocontainsx/2">nocontainsx/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>nocontainsx(L,X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">X</span> is not identical to any element of <span class="var">L</span>.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="last/2" href="ciaopdindex.html#last/2">last/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>last(L,X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">X</span> is the last element of list <span class="var">L</span>.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="list_lookup/3" href="ciaopdindex.html#list_lookup/3">list_lookup/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>list_lookup(List,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <a class="idx_anchor" id="38" href="ciaoglindex.html#list_lookup/4"><tt>list_lookup/4</tt></a>, but use <a class="idx_anchor" id="39" href="ciaoglindex.html#-/2"><tt>-/2</tt></a> as functor.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="list_lookup/4" href="ciaopdindex.html#list_lookup/4">list_lookup/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>list_lookup(List,Functor,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Look up <span class="var">Functor</span>(<span class="var">Key</span>,<span class="var">Value</span>) pair in variable ended key-value pair list <span class="var">L</span> or else add it at the end.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="intset_insert/3" href="ciaopdindex.html#intset_insert/3">intset_insert/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>intset_insert(A,B,Set)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Insert the element <span class="var">B</span> in the ordered set of numbers <span class="var">A</span>.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="intset_delete/3" href="ciaopdindex.html#intset_delete/3">intset_delete/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>intset_delete(A,B,Set)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Delete from the ordered set <span class="var">A</span> the element <span class="var">B</span>.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="intset_in/2" href="ciaopdindex.html#intset_in/2">intset_in/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>intset_in(E,Set)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Succeds iff <span class="var">E</span> is element of <span class="var">Set</span></ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="intset_sequence/3" href="ciaopdindex.html#intset_sequence/3">intset_sequence/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>intset_sequence(N,L1,L2)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Generates an ordered set of numbers from 0 to <span class="var">N</span>-1, and append it to <span class="var">L1</span>.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="intersection/3" href="ciaopdindex.html#intersection/3">intersection/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>intersection(List1,List2,List)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List</span> has the elements which are both in <span class="var">List1</span> and <span class="var">List2</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">List1</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">List2</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List1</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List2</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="union/3" href="ciaopdindex.html#union/3">union/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>union(List1,List2,List)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List</span> has the elements which are in <span class="var">List1</span> followed by the elements which are in <span class="var">List2</span> but not in <span class="var">List1</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">List1</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">List2</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">List</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List1</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List2</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="difference/3" href="ciaopdindex.html#difference/3">difference/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>difference(List1,List2,List)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List</span> has the elements which are in <span class="var">List1</span> but not in <span class="var">List2</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">List1</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">List2</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">List</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List1</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List2</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PROPERTY</span><div class="defname"><a class="idx_anchor" id="sublist/2" href="ciaoprindex.html#sublist/2">sublist/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>sublist(List1,List2)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List2</span> contains all the elements of <span class="var">List1</span>.<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">List2</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PROPERTY</span><div class="defname"><a class="idx_anchor" id="subordlist/2" href="ciaoprindex.html#subordlist/2">subordlist/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>subordlist(List1,List2)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List2</span> contains all the elements of <span class="var">List1</span> in the same order.<LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">List2</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="equal_lists/2" href="ciaopdindex.html#equal_lists/2">equal_lists/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>equal_lists(List1,List2)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List1</span> has all the elements of <span class="var">List2</span>, and vice versa.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List1</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List2</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="list_to_list_of_lists/2" href="ciaopdindex.html#list_to_list_of_lists/2">list_to_list_of_lists/2</a>:</div><div class="deftext"><p><strong>Usage 1:</strong> <tt>list_to_list_of_lists(List,LList)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (lists:list_of_lists/1)</span><span>lists:list_of_lists(LList)
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>list_to_list_of_lists(List,LList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">LList</span> is the list of one element lists with elements of <span class="var">List</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (lists:list_of_lists/1)</span><span>lists:list_of_lists(LList)
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="powerset/2" href="ciaopdindex.html#powerset/2">powerset/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>powerset(List,LList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">LList</span> is the powerset of <span class="var">List</span>, i.e., the list of all lists which have elements of <span class="var">List</span>. If <span class="var">List</span> is ordered, <span class="var">LList</span> and all its elements are ordered.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">List</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (lists:list_of_lists/1)</span><span>lists:list_of_lists(LList)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="cross_product/2" href="ciaopdindex.html#cross_product/2">cross_product/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>cross_product(LList,List)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List</span> is the cartesian product of the lists in <span class="var">LList</span>, that is, the list of lists formed with one element of each list in <span class="var">LList</span>, in the same order.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">LList</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (lists:list_of_lists/1)</span><span>lists:list_of_lists(LList)
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (lists:list_of_lists/1)</span><span>lists:list_of_lists(List)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="sequence_to_list/2" href="ciaopdindex.html#sequence_to_list/2">sequence_to_list/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>sequence_to_list(Sequence,List)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List</span> is the list of all elements in the (comma-separated) sequence <span class="var">Sequence</span>. The use of this predicate is reversible.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="list_of_lists/1" href="ciaoteindex.html#list_of_lists/1">list_of_lists/1</a>:</div><div class="deftext">A regular type, defined as follows:<pre>list_of_lists([]).
+list_of_lists([L|Xs]) :-
+        list(L),
+        list_of_lists(Xs).
+</pre> </div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="format.html">&#x25C4;</a><a class="navbutton" href="sort.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

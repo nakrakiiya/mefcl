@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Atom to term conversion &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="io_alias_redirection.html">&#x25C4;</a><a class="navbutton" href="ctrlcclean.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="MiscProlog.html">PART VI - Ciao library miscellanea</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Atom to term conversion</h1><a class="idx_anchor" href="ciaoliindex.html#atom2term"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Francisco Bueno" href="ciaoauindex.html#Francisco Bueno">Francisco Bueno</a>, <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza</a>, <a class="idx_anchor" id="Manuel Hermenegildo" href="ciaoauindex.html#Manuel Hermenegildo">Manuel Hermenegildo</a>.<p>
+This module implements predicates for atom or string to term conversion.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(atom2term)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#atom2term/2"><tt>atom2term/2</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#string2term/2"><tt>string2term/2</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#parse_term/3"><tt>parse_term/3</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#parse_term/4"><tt>parse_term/4</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="atom2term/2" href="ciaopdindex.html#atom2term/2">atom2term/2</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>atom2term(A,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=a
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=a
+</span>
+</ul><tt>atom2term(A,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=1
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=1
+</span>
+</ul><tt>atom2term(A,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=A
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=A
+</span>
+</ul><tt>atom2term(A,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=f(a)
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=f(a)
+</span>
+</ul><tt>atom2term(A,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=f/2
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=f/2
+</span>
+</ul><p><strong>Usage:</strong> <tt>atom2term(Atom,Term)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Convert an atom into a term. <span class="var">Atom</span> is an atom, but must have term syntax. <span class="var">Term</span> is a term resulting from parsing <span class="var">Atom</span> char by char. The term is assumed to be ground.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Atom</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Term</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="string2term/2" href="ciaopdindex.html#string2term/2">string2term/2</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>string2term(A,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[97]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=a
+</span>
+</ul><tt>string2term(A,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[49]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=1
+</span>
+</ul><tt>string2term(A,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[65]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=A
+</span>
+</ul><tt>string2term(A,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[102,40,97,41]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=f(a)
+</span>
+</ul><tt>string2term(A,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[102,47,50]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=f/2
+</span>
+</ul><p><strong>Usage:</strong> <tt>string2term(String,Term)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <a class="idx_anchor" id="4" href="ciaoglindex.html#atom2term/2"><tt>atom2term/2</tt></a> but first argument is a string (containing a term).<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">String</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Term</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="parse_term/3" href="ciaopdindex.html#parse_term/3">parse_term/3</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>parse_term(A,T,R)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[102,40,97,41]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=f(a)
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:R=[]
+</span>
+</ul><tt>parse_term(A,T,R)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[102,40,97,41,32,102,111,111,32]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=f(a)
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:R=[32,102,111,111,32]
+</span>
+</ul><p><strong>Usage:</strong> <tt>parse_term(String,Term,Rest)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">String</span> is parsed into <span class="var">Term</span> up to <span class="var">Rest</span> (which is the non-parsed rest of the list). The term is assumed to be ground.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">String</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Term</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="parse_term/4" href="ciaopdindex.html#parse_term/4">parse_term/4</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>parse_term(A,T,R,V)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[102,40,88,41]
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:V=nonvars
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=f(X)
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:R=[]
+</span>
+</ul><tt>parse_term(A,T,R,V)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[102,40,88,41]
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:V=vars
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=f([88])
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:R=[]
+</span>
+</ul><tt>parse_term(A,T,R,V)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[102,40,88,41,32,102,111,111,32]
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:V=vars
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:T=f([88])
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:R=[32,102,111,111,32]
+</span>
+</ul><p><strong>Usage:</strong> <tt>parse_term(String,Term,Rest,Vars)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">String</span> is parsed into <span class="var">Term</span> up to <span class="var">Rest</span> (which is the non-parsed rest of the list). The term is assumed to be ground. If <span class="var">Vars</span> is <tt>vars</tt> then upper case identifiers in the term are turned into variables.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">String</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Term</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Vars</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+</div><div id="Known bugs and planned improvements"><h2>Known bugs and planned improvements</h2><ul><LI>This is just a quick hack written mainly for parsing daVinci&apos;s messages. There should be a call to the standard reader to do this!</ul></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a><LI><a href="#Known bugs and planned improvements">Known bugs and planned improvements</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="io_alias_redirection.html">&#x25C4;</a><a class="navbutton" href="ctrlcclean.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

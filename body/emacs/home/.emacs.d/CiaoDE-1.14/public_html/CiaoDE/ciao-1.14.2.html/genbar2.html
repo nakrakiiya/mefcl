@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Barchart widgets - 2 &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="genbar1.html">&#x25C4;</a><a class="navbutton" href="genbar3.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="Contrib.html">PART XI - Contributed libraries</a> &raquo; <a href="chartlib.html">A Chart Library</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Barchart widgets - 2</h1><a class="idx_anchor" href="ciaoliindex.html#genbar2"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Isabel Martin Garcia" href="ciaoauindex.html#Isabel Martin Garcia">Isabel Mart&iacute;n Garc&iacute;a</a>.<p>
+This module defines predicates which show barchart widgets. The three predicates exported by this module plot two-variable data as regular bars in a window. They all share the following features:<p><ul> <p><LI>Numeric values for the x axis are needed, otherwise it does not work properly. See <a class="idx_anchor" id="0" href="ciaoglindex.html#xbarelement2/1"><tt>xbarelement2/1</tt></a> definition type.<p><LI>The bar position is proportional to the x-coordinate value.<p><LI>The user can either select the appearance of the bars (background color, foreground color and stipple style) or not. See the <a class="idx_anchor" id="1" href="ciaoglindex.html#xbarelement2/1"><tt>xbarelement2/1</tt></a> type definition. Thus, the user can call each predicate in two ways.<p><LI>The bar chart has a legend and one entry (symbol and label) per bar.<p><LI>If you do not want to display text in the elements header, barchart title, x axis title, y axis title or footer, simply type <tt>&rdquo;</tt> as the value of the argument.<p><LI>The predicates test whether the format of the arguments is correct. If one or both vectors are empty, the exception <tt>error2</tt> will be thrown. If the vectors contain elements but are not correct, the exception <tt>error1</tt> or <tt>error3</tt> will be thrown, depending on the error type. <tt>error1</tt> means that <span class="var">XVector</span> and <span class="var">YVector</span> does not contain the same number of elements and <tt>error3</tt> indicates that not all the <span class="var">XVector</span> elements contain a correct number of attributes .<p></ul> <p>Particular features will be pointed out in the corresponding predicate.<p><br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(genbar2)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="2" href="ciaoglindex.html#barchart2/7"><tt>barchart2/7</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#barchart2/11"><tt>barchart2/11</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#percentbarchart2/7"><tt>percentbarchart2/7</tt></a>.
+<LI><em>Regular Types:</em><br/><a class="idx_anchor" id="5" href="ciaoglindex.html#xbarelement2/1"><tt>xbarelement2/1</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="6" href="ciaoglindex.html#chartlib/genbar1"><tt>chartlib/genbar1</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#chartlib/bltclass"><tt>chartlib/bltclass</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#chartlib/color_pattern"><tt>chartlib/color_pattern</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#chartlib/test_format"><tt>chartlib/test_format</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#chartlib/install_utils"><tt>chartlib/install_utils</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#lists"><tt>lists</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#random/random"><tt>random/random</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="barchart2/7" href="ciaopdindex.html#barchart2/7">barchart2/7</a>:</div><div class="deftext"><tt>barchart2(Header,BarchartTitle,XTitle,XVector,YTitle,YVector,Footer)</tt>
+<p>The maximum and minimum limits for axes are determined from the data.<p>Example:<p><pre>barchart2(&apos;This is the header text&apos;,
+  &apos;Barchart with legend&apos;,
+  &apos;My xaxistitle&apos;,
+  [ [1,&apos;bar1&apos;,&apos;Blue&apos;,&apos;Yellow&apos;,&apos;pattern1&apos;],
+       [2,&apos;bar2&apos;,&apos;MediumTurquoise&apos;,&apos;Plum&apos;,&apos;pattern5&apos;] ],
+  &apos;My yaxixtitle&apos;,
+  [20,10],
+  &apos;This is the footer text&apos;).
+</pre> <p><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">BarchartTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">XVector</span> is a list of <span class="var">xbarelement2</span>s.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVector</span> is a list of <span class="var">yelement</span>s.
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="barchart2/11" href="ciaopdindex.html#barchart2/11">barchart2/11</a>:</div><div class="deftext"><tt>barchart2(Header,BT,XT,XVector,XMax,XMin,YT,YVector,YMax,YMin,Footer)</tt>
+<p>You can set the minimum and maximum limits of the axes. Data outside the limits will not be plotted. Each limit, as you can check looking at the <a class="idx_anchor" id="13" href="ciaoglindex.html#axis_limit/1"><tt>axis_limit/1</tt></a> definition, is a number. If the argument is a variable the limit will be calculated from the data (i.e., if <span class="var">YMax</span> value is YValueMax the maximum y axis limit will calculated using the largest data value).<p> Example:<p><pre>barchart2(&apos;This is the header text&apos;,
+  &apos;Barchart with legend&apos;,
+  &apos;My xaxistitle&apos;,
+  [ [1,&apos;bar1&apos;,Color1,Color2,Pattern1],
+         [2,&apos;bar2&apos;,Color3,Color4,Pattern2] ],
+  10,
+  -10,
+  &apos;My yaxixtitle&apos;,
+  [20,10],
+  100,
+  -10,
+  &apos;The limits for the axes are set by the user&apos;).
+</pre> <p><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">BT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">XVector</span> is a list of <span class="var">xbarelement2</span>s.
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(XMax)
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(XMin)
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVector</span> is a list of <span class="var">yelement</span>s.
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(YMax)
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(YMin)
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="percentbarchart2/7" href="ciaopdindex.html#percentbarchart2/7">percentbarchart2/7</a>:</div><div class="deftext"><tt>percentbarchart2(Header,BTitle,XTitle,XVector,YTitle,YVector,Footer)</tt>
+<p>The y axis maximum coordinate value is 100. The x axis limits are autoarrange.<p>Example:<p><pre>percentbarchart2(&apos;This is a special barchart to represent percentages&apos;,
+  &apos;Barchart with legend&apos;,
+  &apos;My xaxistitle&apos;,
+  [ [1,&apos;bar1&apos;,&apos;Blue&apos;,&apos;Yellow&apos;,&apos;pattern1&apos;],
+          [2,&apos;bar2&apos;,&apos;MediumTurquoise&apos;,&apos;Plum&apos;,&apos;pattern5&apos;] ],
+  &apos;My yaxixtitle&apos;,
+  [80,10],
+  &apos;This is the footer text&apos;).
+</pre> <p><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">BTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">XVector</span> is a list of <span class="var">xbarelement2</span>s.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVector</span> is a list of <span class="var">yelement</span>s.
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="xbarelement2/1" href="ciaoteindex.html#xbarelement2/1">xbarelement2/1</a>:</div><div class="deftext"><pre>xbarelement2([XValue,LegendElement]) :-
+        number(XValue),
+        atomic(LegendElement).
+xbarelement2([XValue,LegendElement,ForegColor,BackgColor,SPattern]) :-
+        number(XValue),
+        atomic(LegendElement),
+        color(ForegColor),
+        color(BackgColor),
+        pattern(SPattern).
+</pre> Defines the attributes of the bar.<p><dl> <p><DT><span class="var">XValue</span><dd> x-coordinate position of the bar. Different elements with the same abscissas will produce overlapped bars.<p><DT><span class="var">LegendElement</span><dd> Element legend name. It may be a number or an atom and equal or different to the XValue. Every <span class="var">LegendElement</span> value of the list must be unique.<p><DT><span class="var">ForegColor</span><dd> Is the Foreground color of the bar. Its value must be a valid color, otherwise the system will throw an exception. If the argument value is a variable, it gets instantiated to a color chosen by the library.<p><DT><span class="var">BackgColor</span><dd> Is the Background color of the bar. Its value must be a valid color, otherwise the system will throw an exception. If the argument value is a variable, it gets instantiated to a color chosen by the library.<p><DT><span class="var">SPattern</span><dd> Is the stipple of the bar. Its value must be a valid pattern, otherwise the system will throw an exception. If the argument value is a variable, it gets instantiated to a pattern chosen by the library.<p></dl> <p></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="genbar1.html">&#x25C4;</a><a class="navbutton" href="genbar3.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

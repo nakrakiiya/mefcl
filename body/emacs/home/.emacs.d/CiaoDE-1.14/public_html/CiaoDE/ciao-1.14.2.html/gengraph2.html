@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Line graph widgets &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="gengraph1.html">&#x25C4;</a><a class="navbutton" href="genmultibar.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="Contrib.html">PART XI - Contributed libraries</a> &raquo; <a href="chartlib.html">A Chart Library</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Line graph widgets</h1><a class="idx_anchor" href="ciaoliindex.html#gengraph2"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Isabel Martin Garcia" href="ciaoauindex.html#Isabel Martin Garcia">Isabel Mart&iacute;n Garc&iacute;a</a>.<p>
+This module defines predicates which show line graph widgets. All eight predicates exported by this module plot two-variable data. Each point is defined by its X-Y coordinate values. Every predicate share the following features:<p><ul> <p><LI>A dataset is defined by three lists xvector, yvector and attributes. The arguments named <span class="var">XVectors</span> (or <span class="var">XVs</span>), <span class="var">YVectors</span> (or <span class="var">YVs</span>) and <span class="var">LAtts</span><P><b>Note:</b> In scatter graphs the attibute that contains the features of a point dataset is <span class="var">PAtts</span>.<P> contain this information. Those arguments must be lists whose elements are also lists. The first dataset is defined by the firts element of the three lists, the second dataset is defined by the second element of the three lists and so on.<p><LI>Numeric values for the vector elements are needed. We will use two vectors to represent the X-Y coordinates of each set of data plotted. In these predicates the vectors can have different number of points. However, the number of elements in xvector and yvector that pertain to a certain dataset must be, obviously, equal.<p><LI>The active line color is blue, which means that when you select a legend element, the corresponding line turns into navyblue.<p><LI>The user can either select the appearance for the lines and the points or not. See the <a class="idx_anchor" id="0" href="ciaoglindex.html#attributes/1"><tt>attributes/1</tt></a> type definition. Thus, the user can call each predicate in different ways ways.<p><LI>The graph has a legend and one entry (symbol and label) per dataset.<p><LI>If you do not want to display text in the elements header, barchart title, xaxis title, yaxis title or footer, simply give <tt>&rdquo;</tt> as the value of the argument.<p><LI>The predicates check whether the format of the arguments is correct as well. The testing process involves some verifications. If one or both vectors are empty, the exception <tt>error2</tt> will be thrown. If the vectors contains elements but are not correct, the exception <tt>error4</tt> will be thrown.<p></ul> <p><br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(gengraph2)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="1" href="ciaoglindex.html#graph_b2/9"><tt>graph_b2/9</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#graph_b2/13"><tt>graph_b2/13</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#graph_w2/9"><tt>graph_w2/9</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#graph_w2/13"><tt>graph_w2/13</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#scattergraph_b2/8"><tt>scattergraph_b2/8</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#scattergraph_b2/12"><tt>scattergraph_b2/12</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#scattergraph_w2/8"><tt>scattergraph_w2/8</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#scattergraph_w2/12"><tt>scattergraph_w2/12</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="9" href="ciaoglindex.html#chartlib/gengraph1"><tt>chartlib/gengraph1</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#chartlib/genbar1"><tt>chartlib/genbar1</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#chartlib/bltclass"><tt>chartlib/bltclass</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#chartlib/color_pattern"><tt>chartlib/color_pattern</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#chartlib/test_format"><tt>chartlib/test_format</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#chartlib/install_utils"><tt>chartlib/install_utils</tt></a>, <a class="idx_anchor" id="15" href="ciaoglindex.html#lists"><tt>lists</tt></a>, <a class="idx_anchor" id="16" href="ciaoglindex.html#random/random"><tt>random/random</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="graph_b2/9" href="ciaopdindex.html#graph_b2/9">graph_b2/9</a>:</div><div class="deftext"><tt>graph_b2(Header,GTitle,XTitle,XVectors,YTitle,YVectors,LAtts,Footer,Sm)</tt>
+<p>Besides the features mentioned at the begining of the module chapter, the displayed graph generated calling this predicate has the following distinguish characteristics:<p><ul> <p><LI>The plotting area background color is black.<p><LI>The cross hairs color is white.<p><LI>The axis limits are determined from the data.<p></ul> <p>Example:<p><pre>graph_b2(&apos;This is the header text&apos;,
+  &apos;Graph_title&apos;,
+  &apos;xaxistitle&apos;,
+  [[20,30,59],[25,50]],
+  &apos;yaxixtitle&apos;,
+  [[10,35,40],[25,50]],
+  [[&apos;line1&apos;,&apos;Blue&apos;,&apos;Yellow&apos;],[&apos;line2&apos;]],
+  &apos;footer&apos;,
+  &apos;natural&apos;).
+</pre> <p><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">GTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">XVectors</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVectors</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">LAtts</span> is a list of <span class="var">attributes</span>s.
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span><br/><span class="on_right"> (gengraph1:smooth/1)</span><span>gengraph1:smooth(Sm)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="graph_b2/13" href="ciaopdindex.html#graph_b2/13">graph_b2/13</a>:</div><div class="deftext"><tt>graph_b2(Header,GT,XT,XVs,XMax,XMin,YT,YVs,YMax,YMin,LAtts,Footer,Smooth)</tt>
+<p>In addition to the features brought up at the begining of the module chapter, this graph has the following:<p><ul> <p><LI>The plotting area background color is black.<p><LI>The cross hairs color is white.<p><LI>You can set the maximum and minimum values for the graph axes.<p></ul> <p>Example:<p><pre>graph_b2(&apos;This is the header text&apos;,
+  &apos;Graph_title&apos;,
+  &apos;xaxistitle&apos;,
+  [[20,10,59],[15,30,35]],
+  50,
+  _,
+  &apos;yaxixtitle&apos;,
+  [[10,35,40],[25,50,60]],
+  50.5,
+  _,
+  [[&apos;line1&apos;,&apos;Blue&apos;,&apos;Yellow&apos;],[&apos;line&apos;,&apos;MediumTurquoise&apos;,&apos;Plum&apos;]],
+  &apos;footer&apos;,
+  &apos;step&apos;).
+</pre> <p><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">GT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">XVs</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(XMax)
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(XMin)
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVs</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(YMax)
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(YMin)
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">LAtts</span> is a list of <span class="var">attributes</span>s.
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span><br/><span class="on_right"> (gengraph1:smooth/1)</span><span>gengraph1:smooth(Smooth)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="graph_w2/9" href="ciaopdindex.html#graph_w2/9">graph_w2/9</a>:</div><div class="deftext"><tt>graph_w2(Header,GT,XT,XVectors,YTitle,YVectors,LAtts,Footer,Smooth)</tt>
+<p>This predicate is quite similar to <a class="idx_anchor" id="17" href="ciaoglindex.html#graph_b2/9"><tt>graph_b2/9</tt></a>. The difference lies in the graph appearance, as you can see below.<p><ul> <p><LI>The plotting area background color is white.<p><LI>The cross hairs color is black.<p></ul> <p>Example:<p><pre>graph_w2(&apos;This is the header text&apos;,
+  &apos;Graph_title&apos;,
+  &apos;xaxistitle&apos;,
+  [[10,30,59],[25,50]],
+  &apos;yaxixtitle&apos;,
+  [[10,35,40],[25,40]],
+  [[&apos;element1&apos;,&apos;Blue&apos;,&apos;DarkOrchid&apos;],[&apos;element2&apos;,&apos;DarkOliveGreen&apos;,
+    &apos;Firebrick&apos;]],
+  &apos;footer&apos;,
+  &apos;natural&apos;).
+</pre> <p><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">GT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">XVectors</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVectors</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">LAtts</span> is a list of <span class="var">attributes</span>s.
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span><br/><span class="on_right"> (gengraph1:smooth/1)</span><span>gengraph1:smooth(Smooth)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="graph_w2/13" href="ciaopdindex.html#graph_w2/13">graph_w2/13</a>:</div><div class="deftext"><tt>graph_w2(Header,GT,XT,XV,XMax,XMin,YT,YVs,YMax,YMin,LAtts,Footer,Smooth)</tt>
+<p>This predicate is comparable to <a class="idx_anchor" id="18" href="ciaoglindex.html#graph_b2/13"><tt>graph_b2/13</tt></a>. The differences lie in the plot background color and in the cross hairs color, wich are white and black respectively.<p>Example: <pre>graph_w2(&apos;This is the header text&apos;,
+  &apos;Graph_title&apos;,
+  &apos;xaxistitle&apos;,
+  [[10,30,59],[10,35,40]],
+  80,
+  _,
+  &apos;yaxixtitle&apos;,
+  [[10,35,40],[25,50,60]],
+  50,
+  _,
+  [[&apos;element1&apos;,&apos;Blue&apos;,&apos;Green&apos;],[&apos;element2&apos;,&apos;Turquoise&apos;,&apos;Black&apos;]],
+  &apos;footer&apos;,
+  &apos;linear&apos;).
+</pre> <p><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">GT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">XV</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(XMax)
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(XMin)
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVs</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(YMax)
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(YMin)
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">LAtts</span> is a list of <span class="var">attributes</span>s.
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span><br/><span class="on_right"> (gengraph1:smooth/1)</span><span>gengraph1:smooth(Smooth)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="scattergraph_b2/8" href="ciaopdindex.html#scattergraph_b2/8">scattergraph_b2/8</a>:</div><div class="deftext"><tt>scattergraph_b2(Header,GT,XT,XVectors,YT,YVectors,PAtts,Footer)</tt>
+<p>Apart from the features brought up at the beginning of the chapter, the scatter graph displayed when invoking this predicate has the following features:<p><ul> <p><LI>The plotting area background color is black.<p><LI>The cross hairs color is white.<p><LI>The axis limits are determined from the data.<p></ul> <p>Example: <pre>scattergraph_b2(&apos;This is the header text&apos;,
+  &apos;Graph_title&apos;,
+  &apos;xaxistitle&apos;,
+  [[10,15,20],[8,30,40]],
+  &apos;yaxixtitle&apos;,
+  [[10,35,20],[15,11,21]],
+  [[&apos;element1&apos;,&apos;Blue&apos;,&apos;Yellow&apos;],[&apos;element2&apos;,&apos;MediumTurquoise&apos;,&apos;Plum&apos;]],
+  &apos;footer&apos;).
+</pre> <p><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">GT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">XVectors</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVectors</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">PAtts</span> is a list of <span class="var">attributes</span>s.
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="scattergraph_b2/12" href="ciaopdindex.html#scattergraph_b2/12">scattergraph_b2/12</a>:</div><div class="deftext"><tt>scattergraph_b2(Header,GT,XT,XVs,XMax,XMin,YT,YVs,YMax,YMin,PAtts,Footer)</tt>
+<p>The particular features related to this predicate are described below:<p><ul> <p><LI>The plotting area background color is black.<p><LI>The cross hairs color is white.<p><LI>You can set the minimum and maximum limits of the axes. Data outside the limits will not be plotted.<p></ul> <p>Example: <pre>scattergraph_b2(&apos;This is the header text&apos;,
+  &apos;Graph_title&apos;,
+  &apos;xaxistitle&apos;,
+  [[20,30,50],[18,40,59]],
+  50,
+  _,
+  &apos;yaxixtitle&apos;,
+  [[10,35,40],[25,50,60]],
+  50,
+  _,
+  [[&apos;point dataset1&apos;],[&apos;point dataset2&apos;]],
+  &apos;footer&apos;).
+</pre> <p><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">GT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">XVs</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(XMax)
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(XMin)
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVs</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(YMax)
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(YMin)
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">PAtts</span> is a list of <span class="var">attributes</span>s.
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="scattergraph_w2/8" href="ciaopdindex.html#scattergraph_w2/8">scattergraph_w2/8</a>:</div><div class="deftext"><tt>scattergraph_w2(Header,GTitle,XTitle,XVs,YTitle,YVs,PAtts,Footer)</tt>
+<p>This predicate is quite similar to <a class="idx_anchor" id="19" href="ciaoglindex.html#scattergraph_w1/8"><tt>scattergraph_w1/8</tt></a> except in the following:<p><ul> <p><LI>The plotting area background color is black.<p><LI>The cross hairs color is white.<p><LI>If the user do not provide the colors of the points, they will be chosen among the lighter ones.<p></ul> <p>Example: <pre>scattergraph_w2(&apos;This is the header text&apos;,
+  &apos;Graph_title&apos;,
+  &apos;xaxistitle&apos;,
+  [[20,30,40,15,30,35,20,30]],
+  &apos;yaxixtitle&apos;,
+  [[10,30,40,25,20,25,20,25]],
+  [[&apos;set1&apos;,&apos;cross&apos;,4]],
+  &apos;footer&apos;).
+</pre> <p> <p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">GTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (gengraph1:vector/1)</span><span>gengraph1:vector(XVs)
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YTitle</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVs</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">PAtts</span> is a list of <span class="var">attributes</span>s.
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="scattergraph_w2/12" href="ciaopdindex.html#scattergraph_w2/12">scattergraph_w2/12</a>:</div><div class="deftext"><tt>scattergraph_w2(Header,GT,XT,XVs,XMax,XMin,YT,YVs,YMax,YMin,PAtts,Footer)</tt>
+<p>This predicate is comparable to <a class="idx_anchor" id="20" href="ciaoglindex.html#scattergraph_w2/13"><tt>scattergraph_w2/13</tt></a>, the differences between them are listed below:<p><ul> <p><LI>The plotting area background color is white.<p><LI>The cross hairs color is black.<p></ul> <p>Example: <pre>scattergraph_w2(&apos;This is the header text&apos;,
+  &apos;Graph_title&apos;,
+  &apos;xaxistitle&apos;,
+  [[20,10,59],[15,30,50]],
+  150,
+  5,
+  &apos;yaxixtitle&apos;,
+  [[10,35,40],[25,20,60]],
+  _,
+  -10,
+  [[&apos;e1&apos;,&apos;Blue&apos;,&apos;Yellow&apos;],[&apos;e2&apos;,&apos;MediumTurquoise&apos;,&apos;Plum&apos;]],
+  &apos;footer&apos;).
+</pre> <p><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (genbar1:header/1)</span><span><span class="var">Header</span> is a text (an atom) describing the header of the graph.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">GT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">XT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">XVs</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(XMax)
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(XMin)
+</span><br/><span class="on_right"> (genbar1:title/1)</span><span><span class="var">YT</span> is a text (an atom) to be used as label, usually not very long.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">YVs</span> is a list of <span class="var">vector</span>s.
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(YMax)
+</span><br/><span class="on_right"> (genbar1:axis_limit/1)</span><span>genbar1:axis_limit(YMin)
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">PAtts</span> is a list of <span class="var">attributes</span>s.
+</span><br/><span class="on_right"> (genbar1:footer/1)</span><span><span class="var">Footer</span> is a text (an atom) describing the footer of the graph.
+</span>
+</ul></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="gengraph1.html">&#x25C4;</a><a class="navbutton" href="genmultibar.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

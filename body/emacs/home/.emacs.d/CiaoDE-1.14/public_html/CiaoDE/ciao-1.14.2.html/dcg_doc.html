@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Definite clause grammars &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="ClassicProlog.html">&#x25C4;</a><a class="navbutton" href="dcg_tr.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="ClassicProlog.html">PART IV - Classic Prolog library (classic)</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Definite clause grammars</h1><a class="idx_anchor" href="ciaoliindex.html#dcg"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="The CLIP Group" href="ciaoauindex.html#The CLIP Group">The CLIP Group</a>.<p>
+This library package allows the use of DCGs (Definite Clause Grammars) [<a href="ciaorefs.html#Colmerauer78">Col78</a>,<a href="ciaorefs.html#PereiraWarren80">PW80</a>] in a Ciao module/program.<p>Definite clause grammars are an extension of the well-known context-free grammars. Prolog&apos;s grammar rules provide a convenient notation for expressing definite clause grammars. A DCG rule in Prolog takes the general form<p><pre><span class="var">head</span> --&gt; <span class="var">body</span>.
+</pre> <p>meaning &ldquo;a possible form for <span class="var">head</span> is <span class="var">body</span>&rdquo;. Both <span class="var">body</span> and <span class="var">head</span> are sequences of one or more items linked by the standard Prolog conjunction operator &quot;<tt>,</tt>&quot;.<p>Definite clause grammars extend context-free grammars in the following ways:<p><ol> <p><LI>A non-terminal symbol may be any Prolog term (other than a variable or number).<p><LI>A terminal symbol may be any Prolog term. To distinguish terminals from non-terminals, a sequence of one or more terminal symbols is written within a grammar rule as a Prolog list. An empty sequence is written as the empty list <tt>[]</tt>. If the terminal symbols are ASCII character codes, such lists can be written (as elsewhere) as strings. An empty sequence is written as the empty list, <tt>[]</tt> or <tt>&quot;&quot;</tt>.<p><LI>Extra conditions, in the form of Prolog procedure calls, may be included in the right-hand side of a grammar rule. Such procedure calls are written enclosed in <tt>{}</tt> brackets.<p><LI>The left-hand side of a grammar rule consists of a non-terminal, optionally followed by a sequence of terminals (again written as a Prolog list).<p><LI>Alternatives may be stated explicitly in the right-hand side of a grammar rule, using the disjunction operator <tt>;</tt>, or, also, as traditionally in Prolog, using <tt>|</tt> (which is treated specially when this package is loaded).<p><LI>The cut symbol may be included in the right-hand side of a grammar rule, as in a Prolog clause. The cut symbol does not need to be enclosed in <tt>{}</tt> brackets. </ol> <p>As an example, here is a simple grammar which parses an arithmetic expression (made up of digits and operators) and computes its value.<p><pre>expr(Z) --&gt; term(X), &quot;+&quot;, expr(Y), {Z is X + Y}.
+expr(Z) --&gt; term(X), &quot;-&quot;, expr(Y), {Z is X - Y}.
+expr(X) --&gt; term(X).
+
+term(Z) --&gt; number(X), &quot;*&quot;, term(Y), {Z is X * Y}.
+term(Z) --&gt; number(X), &quot;/&quot;, term(Y), {Z is X / Y}.
+term(Z) --&gt; number(Z).
+
+number(C) --&gt; &quot;+&quot;, number(C).
+number(C) --&gt; &quot;-&quot;, number(X), {C is -X}.
+number(X) --&gt; [C], {0&apos;0=&lt;C, C=&lt;0&apos;9, X is C - 0&apos;0}.
+</pre> <p>In the last rule, <span class="var">C</span> is the ASCII code of some digit.<p>The query<p><pre>?- expr(Z, &quot;-2+3*5+1&quot;, []).
+</pre> <p>will compute <span class="var">Z</span>=14. The two extra arguments are explained below.<p>Now, in fact, grammar rules are merely a convenient &ldquo;syntactic sugar&rdquo; for ordinary Prolog clauses. Each grammar rule takes an input string, analyses some initial portion, and produces the remaining portion (possibly enlarged) as output for further analysis. The arguments required for the input and output strings are not written explicitly in a grammar rule, but the syntax implicitly defines them. We now show how to translate grammar rules into ordinary clauses by making explicit the extra arguments.<p>A rule such as<p><pre>p(X) --&gt; q(X).
+</pre> <p>translates into<p><pre>p(X, S0, S) :- q(X, S0, S).
+</pre> <p>If there is more than one non-terminal on the right-hand side, as in<p><pre>p(X, Y) --&gt; 
+        q(X), 
+        r(X, Y),
+        s(Y).
+</pre> <p>then corresponding input and output arguments are identified, as in<p><pre>p(X, Y, S0, S) :- 
+        q(X, S0, S1), 
+        r(X, Y, S1, S2), 
+        r(Y, S2, S).
+</pre> <p>Terminals are translated using the built-in predicate <tt>&apos;C&apos;/3</tt> (this predicate is not normally useful in itself; it has been given the name <tt>&apos;C&apos;</tt> simply to avoid using up a more useful name). Then, for instance<p><pre>p(X) --&gt; [go,to], q(X), [stop].
+</pre> <p>is translated by<p><pre>p(X, S0, S) :-
+        &apos;C&apos;(S0, go, S1), 
+        &apos;C&apos;(S1, to, S2), 
+        q(X, S2, S3), 
+        &apos;C&apos;(S3, stop, S).
+</pre> <p>Extra conditions expressed as explicit procedure calls naturally translate as themselves, e.g.<p><pre>p(X) --&gt; [X], {integer(X), X&gt;0}, q(X).
+</pre> <p>translates to<p><pre>p(X, S0, S) :- 
+        &apos;C&apos;(S0, X, S1), 
+        integer(X), 
+        X&gt;0, 
+        q(X, S1, S).
+</pre> <p>Similarly, a cut is translated literally.<p>Terminals on the left-hand side of a rule translate into an explicit list in the output argument of the main non-terminal, e.g.<p><pre>is(N), [not] --&gt; [aint].
+</pre> <p>becomes<p><pre>is(N, S0, [not|S]) :- &apos;C&apos;(S0, aint, S).
+</pre> <p>Disjunction has a fairly obvious translation, e.g.<p><pre>args(X, Y) --&gt; 
+        (   dir(X), [to], indir(Y)
+        ;   indir(Y), dir(X)
+        ).
+</pre> <p>translates to<p><pre>args(X, Y, S0, S) :-
+        (   dir(X, S0, S1), 
+            &apos;C&apos;(S1, to, S2), 
+            indir(Y, S2, S)
+        ;   indir(Y, S0, S1), 
+            dir(X, S1, S)
+        ).
+</pre> <p><br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_package(dcg).</tt>
+
+or
+
+<tt>:- module(...,...,[dcg]).</tt></ul></div></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Package Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="ClassicProlog.html">&#x25C4;</a><a class="navbutton" href="dcg_tr.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

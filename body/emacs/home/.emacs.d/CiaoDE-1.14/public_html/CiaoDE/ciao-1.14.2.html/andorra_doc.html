@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Andorra execution &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="global.html">&#x25C4;</a><a class="navbutton" href="andprolog_doc.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="ExtendProlog.html">PART VII - Ciao extensions</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Andorra execution</h1><a class="idx_anchor" href="ciaoliindex.html#andorra"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Claudio Vaucheret" href="ciaoauindex.html#Claudio Vaucheret">Claudio Vaucheret</a>, <a class="idx_anchor" id="Francisco Bueno" href="ciaoauindex.html#Francisco Bueno">Francisco Bueno</a>.<p>
+This package allows the execution under the Basic Andorra Model [<a href="ciaorefs.html#andorra-principle">War88</a>]. The model classifies goals as a <a class="idx_anchor" id="0" href="ciaocoindex.html#determinate goal"><em>determinate goal</em></a>, if at most one clause matches the goal, or nondeterminate goal, otherwise. In this model a goal is delayed until either it becomes determinate or it becomes the leftmost goal and no determinate goal is available. The implementation of this selection rule is based on the use of attributed variables [<a href="ciaorefs.html#holzbaur-plilp92">Hol92</a>,<a href="ciaorefs.html#holzbaur-phd">Hol90</a>].<p>In order to test determinacy we verify only the heads of clauses and builtins in the bodies of clauses before the first cut, if any. By default, determinacy of a goal is detected dynamically: when called, if at most one clause matches, it is executed; otherwise, it is delayed. For goals delayed the test is repeated each time a variable appearing in the goal is instantiated. In addition, efficiency can be improved by using declarations that specify the determinacy conditions. These will be considered for testing instead of the generic test on all clauses that can match.<p>As with any other Ciao package, the andorra computation rule affects only the module that uses the package. If execution passes across two modules that use the computation rule, determinate goals are run in advance <em>within</em> one module and also within the other module. But determinate goals of one module do not run ahead of goals of the other module.<p>It is however possible to preserve the computation rule for calls to predicates defined in other modules. These modules should obviously also use this package. In addition <em>all</em> predicates from such modules should imported, i.e., the directive <tt>:- use_module(module)</tt>, should be used in this case instead of <tt>:- use_module(module,[...])</tt>. Otherwise calls to predicates outside the module will only be called when they became the leftmost goal. <br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_package(andorra).</tt>
+
+or
+
+<tt>:- module(...,...,[andorra]).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Regular Types:</em><br/><a class="idx_anchor" id="1" href="ciaoglindex.html#detcond/1"><tt>detcond/1</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#path/1"><tt>path/1</tt></a>.
+</ul><LI><strong>New operators defined:</strong><br/><a class="idx_anchor" id="3" href="ciaoglindex.html#?\=/2"><tt>?\=/2</tt></a> [700,xfx], <a class="idx_anchor" id="4" href="ciaoglindex.html#?=/2"><tt>?=/2</tt></a> [700,xfx].
+<LI><strong>New declarations defined:</strong><br/><a class="idx_anchor" id="5" href="ciaoglindex.html#determinate/2"><tt>determinate/2</tt></a>.
+</ul></div></div><div id="Documentation on new declarations"><h2>Documentation on new declarations</h2><div><span class="on_right">DECLARATION</span><div class="defname"><a class="idx_anchor" id="determinate/2" href="ciaodeindex.html#determinate/2">determinate/2</a>:</div><div class="deftext">:- <tt>determinate(Pred,Cond)</tt>.
+<p>Declares determinacy conditions for a predicate. Conditions <span class="var">Cond</span> are on variables of arguments of <span class="var">Pred</span>. For example, in: <pre>:- determinate(member(A,B,C), ( A ?= term(B,[1])  ; C?=[_|_]) ).
+
+member(A,[A|B],B).
+member(A,[B|C],[B|D]) :-
+        A==B,
+        member(A,C,D).
+</pre> the declaration states that a call <tt>member(A,B,C)</tt> is determinate when either <tt>A</tt> doesn&apos;t unify with the first argument of <tt>B</tt> or <tt>C</tt> doesn&apos;t unify with <tt>[_|_]</tt>.<p><strong>Usage:</strong> :- <tt>determinate(Pred,Cond)</tt>.
+<ul class="itemize_minus"><LI><em>Description:</em> States that the predicate <span class="var">Pred</span> is determinate when <span class="var">Cond</span> holds.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:predname/1)</span><span><span class="var">Pred</span> is a Name/Arity structure denoting a predicate name: <pre>predname(P/A) :-
+        atm(P),
+        nnegint(A).
+</pre>
+</span><br/><span class="on_right"> (user(~/source/CiaoDE-1.14.2-13646/ciao/library/andorra/andorra_doc):detcond/1)</span><span><span class="var">Cond</span> is a determinacy condition.
+</span>
+</ul></div></div><p>
+</div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="detcond/1" href="ciaoteindex.html#detcond/1">detcond/1</a>:</div><div class="deftext">Defined by: <pre>detcond(ground(X)) :-
+        var(X).
+detcond(nonvar(X)) :-
+        var(X).
+detcond(instatiated(A,Path)) :-
+        var(A),
+        list(Path,int).
+detcond(?\=(Term1,Term2)) :-
+        path(Term1),
+        path(Term2).
+detcond(?=(Term1,Term2)) :-
+        path(Term1),
+        path(Term2).
+detcond(Test) :-
+        ( test Test ).
+</pre> <ul> <LI><tt>ground/1</tt> and <tt>nonvar/1</tt> have the usual meaning. <LI><tt>instatiated(A,Path)</tt> means that the subterm of <tt>A</tt> addressed by <tt>Path</tt> is not a variable. <tt>Path</tt> is a list of integer numbers describing a path to the subterm regarding the whole term A as a tree. For example, <tt>instantiated(f(g(X),h(i(Z),Y)),[2,1])</tt> tests whether <tt>i(Z)</tt> is not a variable. <LI><tt>Term1 ?\= Term2</tt> means &ldquo;terms <tt>Term1</tt> and <tt>Term2</tt> do not unify (when instantiated)&rdquo;. <tt>Term1</tt> and <tt>Term2</tt> can be either an argument of the predicate or a term <tt>term(V,Path)</tt>, which refers to the subterm of <tt>V</tt> addressed by <tt>Path</tt>. <LI><tt>Term1 ?= Term2</tt> means &ldquo;terms <tt>Term1</tt> and <tt>Term2</tt> unify (when instantiated)&rdquo;. The same considerations above apply to <tt>Term1</tt> and <tt>Term2</tt>. <LI>any other test that does not unify variables can also be used ( <tt>==/2</tt>, <tt>\==/2</tt>, <tt>atomic/1</tt>). </ul><p><strong>Usage:</strong> <tt>detcond(X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">X</span> is a determinacy condition.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="path/1" href="ciaoteindex.html#path/1">path/1</a>:</div><div class="deftext">Defined by: <pre>path(X) :-
+        var(X).
+path(X) :-
+        list(X,int).
+</pre></div></div><p>
+</div><div id="Other information"><h2>Other information</h2>
+The andorra transformation will include the following predicates into the code of the module that uses the package. Be careful not to define predicates by these names: <ul> <LI><tt>detcond_andorra/4</tt> <LI><tt>path_andorra/4</tt> <LI><tt>detcond_susp/4</tt> <LI><tt>path_susp/4</tt> <LI><tt>list_andorra2/5</tt> <LI><tt>test_andorra2/4</tt> </ul><br/></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Package Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on new declarations">Documentation on new declarations</a><LI><a href="#Documentation on exports">Documentation on exports</a><LI><a href="#Other information">Other information</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="global.html">&#x25C4;</a><a class="navbutton" href="andprolog_doc.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

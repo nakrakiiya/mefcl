@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Formatted output &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="dcg_tr.html">&#x25C4;</a><a class="navbutton" href="lists.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="ClassicProlog.html">PART IV - Classic Prolog library (classic)</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Formatted output</h1><a class="idx_anchor" href="ciaoliindex.html#format"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="The CLIP Group" href="ciaoauindex.html#The CLIP Group">The CLIP Group</a>.<p>
+The <tt>format</tt> family of predicates is due to Quintus Prolog. They act as a Prolog interface to the C <tt>stdio</tt> function <tt>printf()</tt>, allowing formatted output.<p>Output is formatted according to an output pattern which can have either a format control sequence or any other character, which will appear verbatim in the output. Control sequences act as place-holders for the actual terms that will be output. Thus <pre>        ?- format(&quot;Hello ~q!&quot;,world).
+        </pre>  will print <tt>Hello world!</tt>.<p>If there is only one item to print it may be supplied alone. If there are more they have to be given as a list. If there are none then an empty list should be supplied. There has to be as many items as control characters.<p>The character <tt>~</tt> introduces a control sequence. To print a <tt>~</tt> verbatim just repeat it: <pre>        ?- format(&quot;Hello ~~world!&quot;, []).
+        </pre>  will result in <tt>Hello ~world!</tt>.<p>A format may be spread over several lines. The control sequence <tt>\c</tt> followed by a <span class="emacskey">LFD</span> will translate to the empty string: <pre>        ?- format(&quot;Hello \c
+        world!&quot;, []).
+        </pre>  will result in <tt>Hello world!</tt>.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(format)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#format/2"><tt>format/2</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#format/3"><tt>format/3</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#sformat/3"><tt>sformat/3</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#format_to_string/3"><tt>format_to_string/3</tt></a>.
+<LI><em>Regular Types:</em><br/><a class="idx_anchor" id="4" href="ciaoglindex.html#format_control/1"><tt>format_control/1</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="5" href="ciaoglindex.html#write"><tt>write</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#system"><tt>system</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#assertions/doc_props"><tt>assertions/doc_props</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="format/2" href="ciaopdindex.html#format/2">format/2</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>format(C,A)</tt>
+<ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:native/2)</span><span>This predicate is understood natively by CiaoPP as <span class="var">format(C,A)</span>.
+</span>
+</ul><p><strong>Usage:</strong> <tt>format(Format,Arguments)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Print <span class="var">Arguments</span> onto current output stream according to format <span class="var">Format</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Format</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="format/3" href="ciaopdindex.html#format/3">format/3</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>format(S,C,A)</tt>
+<ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:native/2)</span><span>This predicate is understood natively by CiaoPP as <span class="var">format(S,C,A)</span>.
+</span>
+</ul><p><strong>Usage:</strong> <tt>format(Stream,Format,Arguments)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Print <span class="var">Arguments</span> onto <span class="var">Stream</span> according to format <span class="var">Format</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Stream</span> is an open stream.
+</span><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Format</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="sformat/3" href="ciaopdindex.html#sformat/3">sformat/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>sformat(String,Format,Arguments)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <a class="idx_anchor" id="8" href="ciaoglindex.html#format_to_string(<span class="var">Format</span>, <span class="var">Arguments</span>, <span class="var">String</span>)"><tt>format_to_string(<span class="var">Format</span>, <span class="var">Arguments</span>, <span class="var">String</span>)</tt></a> (note the different argument order).<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Format</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">String</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="format_to_string/3" href="ciaopdindex.html#format_to_string/3">format_to_string/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>format_to_string(Format,Arguments,String)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Print <span class="var">Arguments</span> onto current string <span class="var">String</span> according to format <span class="var">Format</span>. This predicate is similar to the format/2, but the result is stored in a string.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Format</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Arguments</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">String</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="format_control/1" href="ciaoteindex.html#format_control/1">format_control/1</a>:</div><div class="deftext"> The general format of a control sequence is <tt>~<span class="var">N</span><span class="var">C</span></tt>. The character <span class="var">C</span> determines the type of the control sequence. <span class="var">N</span> is an optional numeric argument. An alternative form of <span class="var">N</span> is <tt>*</tt>. <tt>*</tt> implies that the next argument in <span class="var">Arguments</span> should be used as a numeric argument in the control sequence. Example:<p><pre>?- format(&quot;Hello~4cworld!&quot;, [0&apos;x]).
+</pre> <p>and<p><pre>?- format(&quot;Hello~*cworld!&quot;, [4,0&apos;x]).
+</pre> <p>both produce<p><pre>Helloxxxxworld!
+</pre> <p>The following control sequences are available.<p><ul> <p><LI>~a The argument is an atom. The atom is printed without quoting.<p><LI>~<span class="var">N</span>c (Print character.) The argument is a number that will be interpreted as an ASCII code. <span class="var">N</span> defaults to one and is interpreted as the number of times to print the character.<p><LI>~<span class="var">N</span>e <LI>~<span class="var">N</span>E <LI>~<span class="var">N</span>f <LI>~<span class="var">N</span>g <LI>~<span class="var">N</span>G (Print float). The argument is a float. The float and <span class="var">N</span> will be passed to the C <tt>printf()</tt> function as<p><pre>printf(&quot;%.<span class="var">N</span>e&quot;, <span class="var">Arg</span>)
+printf(&quot;%.<span class="var">N</span>E&quot;, <span class="var">Arg</span>)
+printf(&quot;%.<span class="var">N</span>f&quot;, <span class="var">Arg</span>)
+printf(&quot;%.<span class="var">N</span>g&quot;, <span class="var">Arg</span>)
+printf(&quot;%.<span class="var">N</span>G&quot;, <span class="var">Arg</span>)
+</pre> <p>If <span class="var">N</span> is not supplied the action defaults to<p><pre>printf(&quot;%e&quot;, <span class="var">Arg</span>)
+printf(&quot;%E&quot;, <span class="var">Arg</span>)
+printf(&quot;%f&quot;, <span class="var">Arg</span>)
+printf(&quot;%g&quot;, <span class="var">Arg</span>)
+printf(&quot;%G&quot;, <span class="var">Arg</span>)
+</pre> <p><LI>~<span class="var">N</span>d (Print decimal.) The argument is an integer. <span class="var">N</span> is interpreted as the number of digits after the decimal point. If <span class="var">N</span> is 0 or missing, no decimal point will be printed. Example:<p><pre>?- format(&quot;Hello ~1d world!&quot;, [42]).
+?- format(&quot;Hello ~d world!&quot;, [42]).
+</pre> <p>will print as<p><pre>Hello 4.2 world!
+Hello 42 world!
+</pre> <p>respectively.<p><LI>~<span class="var">N</span>D (Print decimal.) The argument is an integer. Identical to <tt>~<span class="var">N</span>d</tt> except that <tt>,</tt> will separate groups of three digits to the left of the decimal point. Example:<p><pre>?- format(&quot;Hello ~1D world!&quot;, [12345]).
+</pre> <p>will print as<p><pre>Hello 1,234.5 world!
+</pre> <p><LI>~<span class="var">N</span>r (Print radix.) The argument is an integer. <span class="var">N</span> is interpreted as a radix. <span class="var">N</span> should be &gt;= 2 and &lt;= 36. If <span class="var">N</span> is missing the radix defaults to 8. The letters <tt>a-z</tt> will denote digits larger than 9. Example:<p><pre>?- format(&quot;Hello ~2r world!&quot;, [15]).
+?- format(&quot;Hello ~16r world!&quot;, [15]).
+</pre> <p>will print as<p><pre>Hello 1111 world!
+Hello f world!
+</pre> <p>respectively.<p><LI>~<span class="var">N</span>R (Print radix.) The argument is an integer. Identical to <tt>~<span class="var">N</span>r</tt> except that the letters <tt>A-Z</tt> will denote digits larger than 9. Example:<p><pre>?- format(&quot;Hello ~16R world!&quot;, [15]).
+</pre> <p>will print as<p><pre>Hello F world!
+</pre> <p><LI>~<span class="var">N</span>s (Print string.) The argument is a list of ASCII codes. Exactly <span class="var">N</span> characters will be printed. <span class="var">N</span> defaults to the length of the string. Example:<p><pre>?- format(&quot;Hello ~4s ~4s!&quot;, [&quot;new&quot;,&quot;world&quot;]).
+?- format(&quot;Hello ~s world!&quot;, [&quot;new&quot;]).
+</pre> <p>will print as<p><pre>Hello new  worl!
+Hello new world!
+</pre> <p>respectively.<p><LI>~i (Ignore argument.) The argument may be of any type. The argument will be ignored. Example:<p><pre>?- format(&quot;Hello ~i~s world!&quot;, [&quot;old&quot;,&quot;new&quot;]).
+</pre> <p>will print as<p><pre>Hello new world!
+</pre> <p><LI>~k (Print canonical.) The argument may be of any type. The argument will be passed to <tt>write_canonical/2</tt> (<a href="write.html">Term output</a>). Example:<p><pre>?- format(&quot;Hello ~k world!&quot;, [[a,b,c]]).
+</pre> <p>will print as<p><pre>Hello .(a,.(b,.(c,[]))) world!
+</pre> <p><LI>~p (print.) The argument may be of any type. The argument will be passed to <tt>print/2</tt> (<a href="write.html">Term output</a>). Example:<p>suposing the user has defined the predicate<p><pre>:- multifile portray/1.
+portray([X|Y]) :- print(cons(X,Y)).
+</pre> <p>then<p><pre>?- format(&quot;Hello ~p world!&quot;, [[a,b,c]]).
+</pre> <p>will print as<p><pre>Hello cons(a,cons(b,cons(c,[]))) world!
+</pre> <p><LI>~q (Print quoted.) The argument may be of any type. The argument will be passed to <tt>writeq/2</tt> (<a href="write.html">Term output</a>). Example:<p><pre>?- format(&quot;Hello ~q world!&quot;, [[&apos;A&apos;,&apos;B&apos;]]).
+</pre> <p>will print as<p><pre>Hello [&apos;A&apos;,&apos;B&apos;] world!
+</pre> <p><LI>~w (write.) The argument may be of any type. The argument will be passed to <tt>write/2</tt> (<a href="write.html">Term output</a>). Example:<p><pre>?- format(&quot;Hello ~w world!&quot;, [[&apos;A&apos;,&apos;B&apos;]]).
+</pre> <p>will print as<p><pre>Hello [A,B] world!
+</pre> <p><LI>~<span class="var">N</span>n (Print newline.) Print <span class="var">N</span> newlines. <span class="var">N</span> defaults to 1. Example:<p><pre>?- format(&quot;Hello ~n world!&quot;, []).
+</pre> <p>will print as<p><pre>Hello
+ world!
+</pre> <p><LI>~N (Fresh line.) Print a newline, if not already at the beginning of a line.<p><LI>~~ (Print tilde.) Prints <tt>~</tt> <p></ul> <p> The following control sequences are also available for compatibility, but do not perform any useful functions.<p><ul> <LI>~<span class="var">N</span>| (Set tab.) Set a tab stop at position <span class="var">N</span>, where <span class="var">N</span> defaults to the current position, and advance the current position there.<p><LI>~<span class="var">N</span>+ (Advance tab.) Set a tab stop at <span class="var">N</span> positions past the current position, where <span class="var">N</span> defaults to 8, and advance the current position there.<p><LI>~<span class="var">N</span>t (Set fill character.) Set the fill character to be used in the next position movement to <span class="var">N</span>, where <span class="var">N</span> defaults to <span class="emacskey">SPC</span>. </ul> <p><p><strong>Usage:</strong> <tt>format_control(C)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">C</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (doc_props:doc_incomplete/1)</span><span>Documentation is still incomplete: <span class="var">format_control(C)</span> may not conform the functionality documented.
+</span>
+</ul></div></div><p>
+</div><div id="Known bugs and planned improvements"><h2>Known bugs and planned improvements</h2><ul><LI><a class="idx_anchor" id="9" href="ciaoglindex.html#format_to_string/3"><tt>format_to_string/3</tt></a> is extremelly slow in its current implementation. It writes an intermediate file which is immediately removed, if possible. It is not very fast. In case there are no permissions, writing is attempted through an internal pipe, which may hang if the string is too long (this is O.S. dependant).</ul></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a><LI><a href="#Known bugs and planned improvements">Known bugs and planned improvements</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="dcg_tr.html">&#x25C4;</a><a class="navbutton" href="lists.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

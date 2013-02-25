@@ -1,0 +1,400 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Other predicates and features defined by default &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="condcomp_doc.html">&#x25C4;</a><a class="navbutton" href="IsoProlog.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="Builtins.html">PART II - The Ciao basic language (engine)</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Other predicates and features defined by default</h1><a class="idx_anchor" href="ciaoliindex.html#default_predicates"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza</a>.<p>
+To simplify the use of Ciao Prolog to the <a class="idx_anchor" id="0" href="ciaoglindex.html#first-timers">first-timers</a>, some other predicates and features are defined by default in normal cases, to provide more or less what other prologs define by default. Here are explicitly listed the predicates defined, coming from several libraries. Apart from those, the features defined in <a href="dcg_doc.html">Definite clause grammars</a> and <a href="runtime_ops_doc.html">Enabling operators at run-time</a> are also activated.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/>No need of explicit loading. It is included by default in modules starting with a <a class="idx_anchor" id="1" href="ciaoglindex.html#module/2"><tt>module/2</tt></a> declaration or user files without a starting <a class="idx_anchor" id="2" href="ciaoglindex.html#use_package/1"><tt>use_package/1</tt></a> declaration. In the Ciao shell, it is loaded by default when no <a class="idx_anchor" id="3" href="ciaoglindex.html#~/.ciaorc"><tt>~/.ciaorc</tt></a> exists. Note that <tt>:- module(<em>modulename</em>,<em>exports</em>)</tt> is equivalent to <tt>:- module(<em>modulename</em>,<em>exports</em>,[default])</tt> If you do not want these predicates/features loaded for a given file (in order to make the executable smaller) you can ask for this explicitly using <tt>:- module(<em>modulename</em>,<em>exports</em>,[])</tt> or in a user file <tt>:- use_package([])</tt>.<LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="4" href="ciaoglindex.html#aggregates"><tt>aggregates</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#read"><tt>read</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#write"><tt>write</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#operators"><tt>operators</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#iso_misc"><tt>iso_misc</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#format"><tt>format</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#lists"><tt>lists</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#sort"><tt>sort</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#between"><tt>between</tt></a>, <a class="idx_anchor" id="15" href="ciaoglindex.html#compiler/compiler"><tt>compiler/compiler</tt></a>, <a class="idx_anchor" id="16" href="ciaoglindex.html#system"><tt>system</tt></a>, <a class="idx_anchor" id="17" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a>, <a class="idx_anchor" id="18" href="ciaoglindex.html#dec10_io"><tt>dec10_io</tt></a>, <a class="idx_anchor" id="19" href="ciaoglindex.html#old_database"><tt>old_database</tt></a>, <a class="idx_anchor" id="20" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="op/3">op/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="21" href="ciaoglindex.html#operators"><tt>operators</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="current_op/3">current_op/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="22" href="ciaoglindex.html#operators"><tt>operators</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="append/3">append/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="23" href="ciaoglindex.html#lists"><tt>lists</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="delete/3">delete/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="24" href="ciaoglindex.html#lists"><tt>lists</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="select/3">select/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="25" href="ciaoglindex.html#lists"><tt>lists</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="nth/3">nth/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="26" href="ciaoglindex.html#lists"><tt>lists</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="last/2">last/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="27" href="ciaoglindex.html#lists"><tt>lists</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="reverse/2">reverse/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="28" href="ciaoglindex.html#lists"><tt>lists</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="length/2">length/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="29" href="ciaoglindex.html#lists"><tt>lists</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="use_module/1">use_module/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="30" href="ciaoglindex.html#compiler"><tt>compiler</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="use_module/2">use_module/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="31" href="ciaoglindex.html#compiler"><tt>compiler</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ensure_loaded/1">ensure_loaded/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="32" href="ciaoglindex.html#compiler"><tt>compiler</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="^/2">^/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="33" href="ciaoglindex.html#aggregates"><tt>aggregates</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="findnsols/5">findnsols/5</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="34" href="ciaoglindex.html#aggregates"><tt>aggregates</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="findnsols/4">findnsols/4</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="35" href="ciaoglindex.html#aggregates"><tt>aggregates</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="findall/4">findall/4</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="36" href="ciaoglindex.html#aggregates"><tt>aggregates</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="findall/3">findall/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="37" href="ciaoglindex.html#aggregates"><tt>aggregates</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="bagof/3">bagof/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="38" href="ciaoglindex.html#aggregates"><tt>aggregates</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="setof/3">setof/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="39" href="ciaoglindex.html#aggregates"><tt>aggregates</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="wellformed_body/3">wellformed_body/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="40" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="data/1">data/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="41" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="dynamic/1">dynamic/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="42" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="current_predicate/2">current_predicate/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="43" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="current_predicate/1">current_predicate/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="44" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="clause/3">clause/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="45" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="clause/2">clause/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="46" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="abolish/1">abolish/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="47" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="retractall/1">retractall/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="48" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="retract/1">retract/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="49" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="assert/2">assert/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="50" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="assert/1">assert/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="51" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="assertz/2">assertz/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="52" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="assertz/1">assertz/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="53" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="asserta/2">asserta/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="54" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="asserta/1">asserta/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="55" href="ciaoglindex.html#dynamic"><tt>dynamic</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="read_option/1">read_option/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="56" href="ciaoglindex.html#read"><tt>read</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="second_prompt/2">second_prompt/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="57" href="ciaoglindex.html#read"><tt>read</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="read_top_level/3">read_top_level/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="58" href="ciaoglindex.html#read"><tt>read</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="read_term/3">read_term/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="59" href="ciaoglindex.html#read"><tt>read</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="read_term/2">read_term/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="60" href="ciaoglindex.html#read"><tt>read</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="read/2">read/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="61" href="ciaoglindex.html#read"><tt>read</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="read/1">read/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="62" href="ciaoglindex.html#read"><tt>read</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="write_attribute/1">write_attribute/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="63" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="printable_char/1">printable_char/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="64" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="prettyvars/1">prettyvars/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="65" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="numbervars/3">numbervars/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="66" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="portray_clause/1">portray_clause/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="67" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="portray_clause/2">portray_clause/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="68" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="write_list1/1">write_list1/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="69" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="print/1">print/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="70" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="print/2">print/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="71" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="write_canonical/1">write_canonical/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="72" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="write_canonical/2">write_canonical/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="73" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="writeq/1">writeq/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="74" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="writeq/2">writeq/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="75" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="write/1">write/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="76" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="write/2">write/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="77" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="write_option/1">write_option/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="78" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="write_term/2">write_term/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="79" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="write_term/3">write_term/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="80" href="ciaoglindex.html#write"><tt>write</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="put_char/2">put_char/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="81" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="put_char/1">put_char/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="82" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="peek_char/2">peek_char/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="83" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="peek_char/1">peek_char/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="84" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_char/2">get_char/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="85" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_char/1">get_char/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="86" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="put_byte/2">put_byte/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="87" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="put_byte/1">put_byte/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="88" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="peek_byte/2">peek_byte/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="89" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="peek_byte/1">peek_byte/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="90" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_byte/2">get_byte/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="91" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_byte/1">get_byte/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="92" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="char_codes/2">char_codes/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="93" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="number_chars/2">number_chars/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="94" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="atom_chars/2">atom_chars/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="95" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="char_code/2">char_code/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="96" href="ciaoglindex.html#iso_byte_char"><tt>iso_byte_char</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="unify_with_occurs_check/2">unify_with_occurs_check/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="97" href="ciaoglindex.html#iso_misc"><tt>iso_misc</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="sub_atom/5">sub_atom/5</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="98" href="ciaoglindex.html#iso_misc"><tt>iso_misc</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="compound/1">compound/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="99" href="ciaoglindex.html#iso_misc"><tt>iso_misc</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="once/1">once/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="100" href="ciaoglindex.html#iso_misc"><tt>iso_misc</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="format_control/1">format_control/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="101" href="ciaoglindex.html#format"><tt>format</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="format_to_string/3">format_to_string/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="102" href="ciaoglindex.html#format"><tt>format</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="sformat/3">sformat/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="103" href="ciaoglindex.html#format"><tt>format</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="format/3">format/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="104" href="ciaoglindex.html#format"><tt>format</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="format/2">format/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="105" href="ciaoglindex.html#format"><tt>format</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="keypair/1">keypair/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="106" href="ciaoglindex.html#sort"><tt>sort</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="keylist/1">keylist/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="107" href="ciaoglindex.html#sort"><tt>sort</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="keysort/2">keysort/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="108" href="ciaoglindex.html#sort"><tt>sort</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="sort/2">sort/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="109" href="ciaoglindex.html#sort"><tt>sort</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="between/3">between/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="110" href="ciaoglindex.html#between"><tt>between</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="system_error_report/1">system_error_report/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="111" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="replace_characters/4">replace_characters/4</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="112" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="no_swapslash/3">no_swapslash/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="113" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="cyg2win/3">cyg2win/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="114" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="winpath_c/3">winpath_c/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="115" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="winpath/3">winpath/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="116" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="winpath/2">winpath/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="117" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="using_windows/0">using_windows/0</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="118" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="rename_file/2">rename_file/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="119" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="delete_directory/1">delete_directory/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="120" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="delete_file/1">delete_file/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="121" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="set_exec_mode/2">set_exec_mode/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="122" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="chmod/3">chmod/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="123" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="chmod/2">chmod/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="124" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="fmode/2">fmode/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="125" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="modif_time0/2">modif_time0/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="126" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="modif_time/2">modif_time/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="127" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="file_properties/6">file_properties/6</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="128" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="file_property/2">file_property/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="129" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="file_exists/2">file_exists/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="130" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="file_exists/1">file_exists/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="131" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="mktemp_in_tmp/2">mktemp_in_tmp/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="132" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="mktemp/2">mktemp/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="133" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="directory_files/2">directory_files/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="134" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="wait/3">wait/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="135" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="exec/8">exec/8</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="136" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="exec/3">exec/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="137" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="exec/4">exec/4</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="138" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="popen_mode/1">popen_mode/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="139" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="popen/3">popen/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="140" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="system/2">system/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="141" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="system/1">system/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="142" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="shell/2">shell/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="143" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="shell/1">shell/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="144" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="shell/0">shell/0</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="145" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="cd/1">cd/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="146" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="working_directory/2">working_directory/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="147" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="make_dirpath/1">make_dirpath/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="148" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="make_dirpath/2">make_dirpath/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="149" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="make_directory/1">make_directory/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="150" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="make_directory/2">make_directory/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="151" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="umask/2">umask/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="152" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="current_executable/1">current_executable/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="153" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="current_host/1">current_host/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="154" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_address/2">get_address/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="155" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_tmp_dir/1">get_tmp_dir/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="156" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_grnam/1">get_grnam/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="157" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_pwnam/1">get_pwnam/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="158" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_gid/1">get_gid/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="159" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_uid/1">get_uid/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="160" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="get_pid/1">get_pid/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="161" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="file_dir_name/3">file_dir_name/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="162" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="extract_paths/2">extract_paths/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="163" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="dir_path/2">dir_path/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="164" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="copy_file/3">copy_file/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="165" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="copy_file/2">copy_file/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="166" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="c_errno/1">c_errno/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="167" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="del_env/1">del_env/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="168" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="set_env/2">set_env/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="169" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="current_env/2">current_env/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="170" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="setenvstr/2">setenvstr/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="171" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="getenvstr/2">getenvstr/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="172" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="datime_struct/1">datime_struct/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="173" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="datime/9">datime/9</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="174" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="datime/1">datime/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="175" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="time/1">time/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="176" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="pause/1">pause/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="177" href="ciaoglindex.html#system"><tt>system</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="garbage_collect/0">garbage_collect/0</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="178" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="current_atom/1">current_atom/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="179" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="predicate_property/3">predicate_property/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="180" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="predicate_property/2">predicate_property/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="181" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="time_option/1">time_option/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="182" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="tick_option/1">tick_option/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="183" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="clockfreq_option/1">clockfreq_option/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="184" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="memory_option/1">memory_option/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="185" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="garbage_collection_option/1">garbage_collection_option/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="186" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="symbol_option/1">symbol_option/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="187" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="time_result/1">time_result/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="188" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="memory_result/1">memory_result/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="189" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="gc_result/1">gc_result/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="190" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="symbol_result/1">symbol_result/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="191" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="new_atom/1">new_atom/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="192" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="tick_result/1">tick_result/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="193" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="clockfreq_result/1">clockfreq_result/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="194" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="statistics/2">statistics/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="195" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="statistics/0">statistics/0</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="196" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="close_file/1">close_file/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="197" href="ciaoglindex.html#dec10_io"><tt>dec10_io</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="told/0">told/0</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="198" href="ciaoglindex.html#dec10_io"><tt>dec10_io</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="telling/1">telling/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="199" href="ciaoglindex.html#dec10_io"><tt>dec10_io</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="tell/1">tell/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="200" href="ciaoglindex.html#dec10_io"><tt>dec10_io</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="seen/0">seen/0</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="201" href="ciaoglindex.html#dec10_io"><tt>dec10_io</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="seeing/1">seeing/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="202" href="ciaoglindex.html#dec10_io"><tt>dec10_io</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="see/1">see/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="203" href="ciaoglindex.html#dec10_io"><tt>dec10_io</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="current_key/2">current_key/2</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="204" href="ciaoglindex.html#old_database"><tt>old_database</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="recorded/3">recorded/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="205" href="ciaoglindex.html#old_database"><tt>old_database</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="recordz/3">recordz/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="206" href="ciaoglindex.html#old_database"><tt>old_database</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="recorda/3">recorda/3</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="207" href="ciaoglindex.html#old_database"><tt>old_database</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttydisplay_string/1">ttydisplay_string/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="208" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttyskipeol/0">ttyskipeol/0</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="209" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttydisplayq/1">ttydisplayq/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="210" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttydisplay/1">ttydisplay/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="211" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttyflush/0">ttyflush/0</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="212" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttytab/1">ttytab/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="213" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttyskip/1">ttyskip/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="214" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttyput/1">ttyput/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="215" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttynl/0">ttynl/0</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="216" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttyget1/1">ttyget1/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="217" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="ttyget/1">ttyget/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="218" href="ciaoglindex.html#ttyout"><tt>ttyout</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="condcomp_doc.html">&#x25C4;</a><a class="navbutton" href="IsoProlog.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

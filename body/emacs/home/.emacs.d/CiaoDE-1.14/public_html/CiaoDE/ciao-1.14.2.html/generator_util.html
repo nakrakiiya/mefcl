@@ -1,0 +1,368 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>generator_util (library) &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="generator.html">&#x25C4;</a><a class="navbutton" href="internal_types.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="Contrib.html">PART XI - Contributed libraries</a> &raquo; <a href="provrml.html">ProVRML - a Prolog interface for VRML</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>generator_util (library)</h1><a class="idx_anchor" href="ciaoliindex.html#generator_util"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Goran Smedback" href="ciaoauindex.html#Goran Smedback">G&ouml;ran Smedb&auml;ck</a>.<p><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(generator_util)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#reading/4"><tt>reading/4</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#reading/5"><tt>reading/5</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#reading/6"><tt>reading/6</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#open_node/6"><tt>open_node/6</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#close_node/5"><tt>close_node/5</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#close_nodeGut/4"><tt>close_nodeGut/4</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#open_PROTO/4"><tt>open_PROTO/4</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#close_PROTO/6"><tt>close_PROTO/6</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#open_EXTERNPROTO/5"><tt>open_EXTERNPROTO/5</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#close_EXTERNPROTO/6"><tt>close_EXTERNPROTO/6</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#open_DEF/5"><tt>open_DEF/5</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#close_DEF/5"><tt>close_DEF/5</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#open_Script/5"><tt>open_Script/5</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#close_Script/5"><tt>close_Script/5</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#decompose_field/3"><tt>decompose_field/3</tt></a>, <a class="idx_anchor" id="15" href="ciaoglindex.html#indentation_list/2"><tt>indentation_list/2</tt></a>, <a class="idx_anchor" id="16" href="ciaoglindex.html#start_vrmlScene/4"><tt>start_vrmlScene/4</tt></a>, <a class="idx_anchor" id="17" href="ciaoglindex.html#remove_comments/4"><tt>remove_comments/4</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="18" href="ciaoglindex.html#provrml/provrmlerror"><tt>provrml/provrmlerror</tt></a>, <a class="idx_anchor" id="19" href="ciaoglindex.html#provrml/provrml_io"><tt>provrml/provrml_io</tt></a>, <a class="idx_anchor" id="20" href="ciaoglindex.html#provrml/field_value"><tt>provrml/field_value</tt></a>, <a class="idx_anchor" id="21" href="ciaoglindex.html#provrml/field_value_check"><tt>provrml/field_value_check</tt></a>, <a class="idx_anchor" id="22" href="ciaoglindex.html#provrml/lookup"><tt>provrml/lookup</tt></a>, <a class="idx_anchor" id="23" href="ciaoglindex.html#provrml/parser_util"><tt>provrml/parser_util</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="reading/4" href="ciaopdindex.html#reading/4">reading/4</a>:</div><div class="deftext"><p><strong>Usage 1:</strong> <tt>reading(DEF,Parse,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will check if we have the special key word.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">DEF</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">Parse</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">DEF</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Parse</span> is currently a term which is not a free variable.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>reading(IS,NodeTypeId,ParseIn,ParseOut)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will refer to a formerly introduced interface. We do a checkup of the access type and output the values.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">IS</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">NodeTypeId</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">IS</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">NodeTypeId</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 3:</strong> <tt>reading(Node,Parse,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will read a node so we will check the properties of that one and then continue the progress in the generation.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Node</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">Parse</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Node</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Parse</span> is currently a term which is not a free variable.
+</span>
+</ul><p><strong>Usage 4:</strong> <tt>reading(Script,Parse,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate read a script and will then continue the generation.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Script</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">Parse</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Script</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Parse</span> is currently a term which is not a free variable.
+</span>
+</ul><p><strong>Usage 5:</strong> <tt>reading(NodeGut,NodeName,ParseIn,ParseOut)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will read a node gut and will check the field according to the name.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">NodeGut</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">NodeName</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">NodeGut</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">NodeName</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 6:</strong> <tt>reading(PROTO,Parse,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will read a prototype, check that the term name is the one, &apos;PROTO&apos;.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">PROTO</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">Parse</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">PROTO</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Parse</span> is currently a term which is not a free variable.
+</span>
+</ul><p><strong>Usage 7:</strong> <tt>reading(EXTERNPROTO,Parse,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate read a term with the name given as the first argument.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">EXTERNPROTO</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">Parse</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">EXTERNPROTO</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Parse</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="reading/5" href="ciaopdindex.html#reading/5">reading/5</a>:</div><div class="deftext"><p><strong>Usage 1:</strong> <tt>reading(Entrance,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate is a general predicate in this help module. The first argument is a key word to direct the input to the right entrance. When I say output in the following predicates I am refering to the out predicate which actually will use the features of DCG and we will add the output terms in a list for later output. The list is hidden to the user but is in this case the fourth argument will be the list and the fifth will be the resulting list, hopefully empty after the generation. Then we should have read all the terms.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Entrance</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Entrance</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>reading(Empty,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate check if we have ran out of input and is ready to terminate the reading.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Empty</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Empty</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 3:</strong> <tt>reading(Header,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate read the header and after the header we can have more information, that is comments.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Header</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Header</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 4:</strong> <tt>reading(NULL,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate accepts the special key word &apos;NULL&apos; and will output that.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">NULL</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">NULL</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 5:</strong> <tt>reading(Comment,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will read a comment.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Comment</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Comment</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 6:</strong> <tt>reading(USE,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will read the &apos;USE&apos; key word. <LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">USE</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">USE</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 7:</strong> <tt>reading(MfstringValue,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will read the term multi field string value. Then it will continue the generation in the field_value_check module. There it will read the string values and generate the code.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">MfstringValue</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">MfstringValue</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 8:</strong> <tt>reading(ExposedField,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will read an exposedField and do the checkup for the interface with all its components.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">ExposedField</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ExposedField</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 9:</strong> <tt>reading(RestrictedInterfaceDeclaration,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will read the declaration for a restricted field and do the checkup accordingly if necessary.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">RestrictedInterfaceDeclaration</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">RestrictedInterfaceDeclaration</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 10:</strong> <tt>reading(ExternInterfaceDeclaration,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> For reading an external interface declaration we see that we have three arguments in the term and that we have special access key word. We then outputs the declaration.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">ExternInterfaceDeclaration</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ExternInterfaceDeclaration</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 11:</strong> <tt>reading(ROUTE,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Reading a ROUTE and we split the term into its parts. There might be comments in the different fields and therefore we have to strip_clean the fields to get them without a possible list containing comments, this for the checkup of the routing parameters. We then do an output of the values, then with the comments.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">ROUTE</span> is an atom.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ROUTE</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul><p><strong>Usage 12:</strong> <tt>reading(Error_X,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will call a proper error message after fetching some values like name.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:struct/1)</span><span><span class="var">Error_X</span> is a compound term.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Error_X</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="reading/6" href="ciaopdindex.html#reading/6">reading/6</a>:</div><div class="deftext">No further documentation available for this predicate.</div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="open_node/6" href="ciaopdindex.html#open_node/6">open_node/6</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>open_node(ParseIn,ParseOut,NodeGutsParseStruct,NodeNameId,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will open a node to extract its name and its guts. The guts will then be added to a new parse structure to be emptied in the above module, generator.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">NodeGutsParseStruct</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">NodeNameId</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NodeGutsParseStruct</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NodeNameId</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="close_node/5" href="ciaopdindex.html#close_node/5">close_node/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>close_node(ParseNodeStruct,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will end the generation from the node and will do that by adding all the new posts in the dictionary, like new declarations and nodes, to the already used dictionary.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseNodeStruct</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseNodeStruct</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="close_nodeGut/4" href="ciaopdindex.html#close_nodeGut/4">close_nodeGut/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>close_nodeGut(ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will perform all the actions needed terminate the reading of the node guts.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="open_PROTO/4" href="ciaopdindex.html#open_PROTO/4">open_PROTO/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>open_PROTO(Parse,ProtoParse,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will construct a parse structure with the prototype information, the interface only. It can thereafter be used in further code generation. The scene will be opened afterwards.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">Parse</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ProtoParse</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Parse</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ProtoParse</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="close_PROTO/6" href="ciaopdindex.html#close_PROTO/6">close_PROTO/6</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>close_PROTO(DeclParse,SceneParse,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will push the dictionaries with its new information when gone through the scenery. The output parse structure will contain all the new information.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">DeclParse</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">SceneParse</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">SceneParse</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="open_EXTERNPROTO/5" href="ciaopdindex.html#open_EXTERNPROTO/5">open_EXTERNPROTO/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>open_EXTERNPROTO(Parse,DeclParse,StringParse,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will construct parse structures with the prototype information, the interface and the strings. It can thereafter be used in further code generation.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">Parse</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">DeclParse</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">StringParse</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Parse</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">DeclParse</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">StringParse</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="close_EXTERNPROTO/6" href="ciaopdindex.html#close_EXTERNPROTO/6">close_EXTERNPROTO/6</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>close_EXTERNPROTO(ParseDeclIn,ParseStringIn,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will end the generating of the external prototype and do checkup if there was correct.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseDeclIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseStringIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="open_DEF/5" href="ciaopdindex.html#open_DEF/5">open_DEF/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>open_DEF(ParseIn,ParseOut,ParseNode,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will open and do the settings to generate the code for a definition of a node.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseNode</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseNode</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="close_DEF/5" href="ciaopdindex.html#close_DEF/5">close_DEF/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>close_DEF(ParseNode,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will push the new dictionary information from the node definition to the output parse structure combining the information in the old parse structure with the newly received.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseNode</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseNode</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="open_Script/5" href="ciaopdindex.html#open_Script/5">open_Script/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>open_Script(ParseIn,ParseOut,ScriptParse,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will create a parse structure with the script guts.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ScriptParse</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ScriptParse</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="close_Script/5" href="ciaopdindex.html#close_Script/5">close_Script/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>close_Script(ScriptParse,ParseIn,ParseOut,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate will update the dictionaries after generating code for the script.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ScriptParse</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseIn</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseOut</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ScriptParse</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">ParseIn</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseOut</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="decompose_field/3" href="ciaopdindex.html#decompose_field/3">decompose_field/3</a>:</div><div class="deftext">No further documentation available for this predicate.</div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="indentation_list/2" href="ciaopdindex.html#indentation_list/2">indentation_list/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>indentation_list(Parse,IndList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predcate will construct a list with indentations to be output before text. The information of the indentations is inside the parse structure.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">Parse</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">IndList</span> is a list of <span class="var">atm</span>s.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Parse</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">IndList</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="start_vrmlScene/4" href="ciaopdindex.html#start_vrmlScene/4">start_vrmlScene/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>start_vrmlScene(Parse,ParseScene,L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will construct a parse structure with the prototype scene and do the setups.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">Parse</span> is a parse structure.
+</span><br/><span class="on_right"> (internal_types:parse/1)</span><span><span class="var">ParseScene</span> is a parse structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">L</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">T</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Parse</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ParseScene</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="remove_comments/4" href="ciaopdindex.html#remove_comments/4">remove_comments/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>remove_comments(Value,CommentsBefore,ValueClean,CommentsAfter)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate will remove comments and return the comments before and after the pure value.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Value</span> is a list of <span class="var">atm</span>s.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">CommentsBefore</span> is a list of <span class="var">atm</span>s.
+</span><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">ValueClean</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">CommentsAfter</span> is a list of <span class="var">atm</span>s.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Value</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">CommentsBefore</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">ValueClean</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">CommentsAfter</span> is a free variable.
+</span>
+</ul></div></div><p>
+</div><div id="Known bugs and planned improvements"><h2>Known bugs and planned improvements</h2><ul><LI>Run-time checks have been reported not to work with this code. That means that either the assertions here, or the code that implements the run-time checks are erroneous.</ul></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a><LI><a href="#Known bugs and planned improvements">Known bugs and planned improvements</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="generator.html">&#x25C4;</a><a class="navbutton" href="internal_types.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

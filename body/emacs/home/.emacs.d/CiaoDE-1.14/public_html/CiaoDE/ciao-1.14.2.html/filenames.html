@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>File name manipulation &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="fastrw.html">&#x25C4;</a><a class="navbutton" href="symfnames.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="MiscProlog.html">PART VI - Ciao library miscellanea</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>File name manipulation</h1><a class="idx_anchor" href="ciaoliindex.html#filenames"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza</a>, <a class="idx_anchor" id="Angel Fernandez Pineda" href="ciaoauindex.html#Angel Fernandez Pineda">Angel Fernandez Pineda</a>.<p>
+This library provides some small utilities to handle file name syntax.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(filenames)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#no_path_file_name/2"><tt>no_path_file_name/2</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#file_directory_base_name/3"><tt>file_directory_base_name/3</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#file_name_extension/3"><tt>file_name_extension/3</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#basename/2"><tt>basename/2</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#extension/2"><tt>extension/2</tt></a>.
+<LI><em>Regular Types:</em><br/><a class="idx_anchor" id="5" href="ciaoglindex.html#atom_or_str/1"><tt>atom_or_str/1</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="6" href="ciaoglindex.html#assertions/native_props"><tt>assertions/native_props</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#lists"><tt>lists</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="no_path_file_name/2" href="ciaopdindex.html#no_path_file_name/2">no_path_file_name/2</a>:</div><div class="deftext">This predicate will extract the last item (usually the file name) from a given path.<p>The first argument must be instantiated to a string or atom. Whenever the first argument is an atom, the second argument will be an atom. Whenever the first argument is a string, the second argument will be a string.<p>This predicate will fail under any of the following conditions: <ul> <LI>First argument is not an atom, nor a string. <LI>Second argument is not the last given path item (given path is the first argument). </ul> <p>Those are the most usual usages of no_path_file_name/2: <pre>?- no_path_file_name(&quot;/home/nexusV/somefile.txt&quot;,K).
+
+K = &quot;somefile.txt&quot; ? 
+
+yes
+?- no_path_file_name(&apos;/home/nexusV/somefile.txt&apos;,K).
+
+K = &apos;somefile.txt&apos; ? 
+
+yes
+?- 
+</pre> <p><strong>Usage:</strong> <tt>no_path_file_name(Path,FileName)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">FileName</span> is the file corresponding to the given <span class="var">Path</span>.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">Path</span> is an atom or a string
+</span><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">FileName</span> is an atom or a string
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="file_directory_base_name/3" href="ciaopdindex.html#file_directory_base_name/3">file_directory_base_name/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>file_directory_base_name(Path,Directory,BaseName)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Given a file path <span class="var">Path</span>, <span class="var">Directory</span> is the directory part and <span class="var">BaseName</span> is the filename part. <span class="var">Directory</span> does not end in &apos;/&apos; unless it is just &apos;/&apos;. <span class="var">Directory</span> is &apos;.&apos; if <span class="var">Path</span> does not contain &apos;/&apos;.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">Path</span> is an atom or a string
+</span><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">Directory</span> is an atom or a string
+</span><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">BaseName</span> is an atom or a string
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="file_name_extension/3" href="ciaopdindex.html#file_name_extension/3">file_name_extension/3</a>:</div><div class="deftext">This predicate may be used in two ways: <ul> <p><LI>To create a file name from its components: name and extension. For instance:<p><pre>?- file_name_extension(File,mywork,&apos;.txt&apos;).
+
+File = &apos;mywork.txt&apos; ? 
+
+yes
+?- 
+</pre> <p><LI>To split a file name into its name and extension. For Instance: <pre>?- file_name_extension(&apos;mywork.txt&apos;,A,B).
+
+A = mywork,
+B = &apos;.txt&apos; ? 
+
+yes
+?- 
+</pre> </ul> <p>Any other usage of file_name_extension/3 will cause the predicate to fail. Notice that valid arguments are accepted both as atoms or strings. <br/>
+<strong>General properties:</strong> <tt>file_name_extension(File,Name,Ext)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This is a bug, this test must succeeds.<LI><em>If the following properties do not hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:File=/home/user/emacs.d/dummy
+</span>
+
+
+<em>then the following properties do not hold upon exit:</em>
+<br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:Name=/home/user/emacs.d/dummy
+</span><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:Ext=
+</span>
+
+
+<em>then the following properties do not hold globally:</em>
+<br/><span class="on_right"> (native_props:is_det/1)</span><span>All calls of the form <span class="var">file_name_extension(File,Name,Ext)</span> are deterministic.
+</span><br/><span class="on_right"> (native_props:not_fails/1)</span><span>All the calls of the form <span class="var">file_name_extension(File,Name,Ext)</span> do not fail.
+</span>
+</ul><p><strong>Usage:</strong> <tt>file_name_extension(FileName,BaseName,Extension)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Splits a <span class="var">FileName</span> into its <span class="var">BaseName</span> and <span class="var">Extension</span>.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">FileName</span> is an atom or a string
+</span><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">BaseName</span> is an atom or a string
+</span><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">Extension</span> is an atom or a string
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="basename/2" href="ciaopdindex.html#basename/2">basename/2</a>:</div><div class="deftext"><tt>basename(FileName,BaseName)</tt>
+<p><span class="var">BaseName</span> is <span class="var">FileName</span> without extension. Equivalent to <tt>file_name_extension(FileName,BaseName,_)</tt>. Useful to extract the base name of a file using functional syntax.<p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">FileName</span> is an atom or a string
+</span><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">BaseName</span> is an atom or a string
+</span>
+</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="atom_or_str/1" href="ciaoteindex.html#atom_or_str/1">atom_or_str/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>atom_or_str(X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">X</span> is an atom or a string</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="extension/2" href="ciaopdindex.html#extension/2">extension/2</a>:</div><div class="deftext"><tt>extension(FileName,Extension)</tt>
+<p><span class="var">Extension</span> is the extension (suffix) of <span class="var">FileName</span>. Equivalent to <tt>file_name_extension(FileName,_,Extension)</tt>. Useful to extract the extension of a file using functional syntax.<p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">FileName</span> is an atom or a string
+</span><br/><span class="on_right"> (filenames:atom_or_str/1)</span><span><span class="var">Extension</span> is an atom or a string
+</span>
+</ul></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="fastrw.html">&#x25C4;</a><a class="navbutton" href="symfnames.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

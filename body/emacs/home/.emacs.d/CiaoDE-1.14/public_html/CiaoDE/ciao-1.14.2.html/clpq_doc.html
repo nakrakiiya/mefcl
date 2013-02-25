@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Constraint programming over rationals &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="id_doc.html">&#x25C4;</a><a class="navbutton" href="clpr_doc.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="ExtendProlog.html">PART VII - Ciao extensions</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Constraint programming over rationals</h1><a class="idx_anchor" href="ciaoliindex.html#clpq"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Christian Holzbaur" href="ciaoauindex.html#Christian Holzbaur">Christian Holzbaur</a>, <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza</a>, <a class="idx_anchor" id="Samir Genaim" href="ciaoauindex.html#Samir Genaim">Samir Genaim (Meta-programming predicates)</a>.<p>
+<p><strong>Note</strong>: This package is currently being adapted to the new characteristics of the Ciao module system. This new version works right now with limitations, but it is under further development at the moment. Use with (lots of) caution.<p><br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_package(clpq).</tt>
+
+or
+
+<tt>:- module(...,...,[clpq]).</tt><LI><strong>New operators defined:</strong><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#.=./2"><tt>.=./2</tt></a> [700,xfx], <a class="idx_anchor" id="1" href="ciaoglindex.html#.&lt;&gt;./2"><tt>.&lt;&gt;./2</tt></a> [700,xfx], <a class="idx_anchor" id="2" href="ciaoglindex.html#.&lt;./2"><tt>.&lt;./2</tt></a> [700,xfx], <a class="idx_anchor" id="3" href="ciaoglindex.html#.=&lt;./2"><tt>.=&lt;./2</tt></a> [700,xfx], <a class="idx_anchor" id="4" href="ciaoglindex.html#.&gt;./2"><tt>.&gt;./2</tt></a> [700,xfx], <a class="idx_anchor" id="5" href="ciaoglindex.html#.&gt;=./2"><tt>.&gt;=./2</tt></a> [700,xfx].
+</ul></div></div><div id="Other information"><h2>Other information</h2>
+<p><div id="Some CLP(Q) examples"><h3>Some CLP(Q) examples</h3> <p>(Other examples can be found in the source and library directories.)<p><ul> <LI>&apos;Reversible&apos; Fibonacci (clpq): </ul> <p><pre>:- module(_, [fib/2], []).
+:- use_package(clpq).
+
+fib(X,Y):- X .=. 0, Y .=. 0.
+fib(X,Y):- X .=. 1, Y .=. 1.
+fib(N,F) :-
+        N .&gt;. 1,
+        N1 .=. N - 1,
+        N2 .=. N - 2,
+        fib(N1, F1),
+        fib(N2, F2),
+        F .=. F1+F2.
+
+</pre> <p> <ul> <LI>Matrix multiplication (clpq): </ul> <p><pre>:- use_package(clpq).
+:- use_module(library(write)).
+
+mmultiply([],_,[]).
+mmultiply([V0|Rest], V1, [Result|Others]):-  
+            mmultiply(Rest, V1, Others),
+    	    multiply(V1,V0,Result).
+
+multiply([],_,[]).
+multiply([V0|Rest], V1, [Result|Others]):-  
+            multiply(Rest, V1, Others),
+    	    vmul(V0,V1,Result).
+
+vmul([],[],0).
+vmul([H1|T1], [H2|T2], Result):- 
+	vmul(T1,T2, Newresult), 
+	Result .=. H1*H2+Newresult.
+
+matrix(1,[[1,2,3,4,5],[4,0,-1,5,6],[7,1,-2,8,9],[-1,0,1,3,2],[1,5,-3,2,4]]).
+matrix(2,[[3,2,1,0,-1],[-2,1,3,0,2],[1,2,0,-1,5],[1,3,2,4,5],[-5,1,4,2,2]]).
+
+%% Call with: ?- go(M).
+
+go(M):-
+        matrix(1,M1),
+        matrix(2,M2), 
+        mmultiply(M1, M, M2).
+
+</pre> <p> <ul> <LI>Queens (clpq): </ul> <p><pre>:- use_package(clpq).
+
+queens(N, Qs) :- constrain_values(N, N, Qs), place_queens(N, Qs).
+
+constrain_values(0, _N, []).
+constrain_values(N, Range, [X|Xs]) :-
+        N .&gt;. 0, X .&gt;. 0, X .=&lt;. Range, 
+        N1 .=. N - 1,
+        constrain_values(N1, Range, Xs), no_attack(Xs, X, 1).
+
+no_attack([], _Queen, _Nb).
+no_attack([Y|Ys], Queen, Nb) :-
+        Queen .&lt;&gt;. Y+Nb,
+        Queen .&lt;&gt;. Y-Nb,
+        Nb1 .=. Nb + 1,
+        no_attack(Ys, Queen, Nb1).
+
+place_queens(0, _).
+place_queens(N, Q) :- 
+	N &gt; 0, member(N, Q), N1 is N-1, place_queens(N1, Q).
+
+</pre> <p> </div><div id="Meta-programming with CLP(Q)"><h3>Meta-programming with CLP(Q)</h3> <p>The implementation of CLP(Q) in Ciao compiles the constraints in the program to a sequence of calls to the underlying constraints solver (at compile-time). This results in efficient implementation, since the structure of the constraints is processed only at compile-time, but requires the constraints to be known at static time which can be a limitation for metaprogramming-based applications such as static program analyzers. For example, the call:<p><pre>  ?- X=(A+B), Y=(C-D), X .&gt;. Y.
+
+  no
+</pre> <p>fails because <span class="var">X</span> <a class="idx_anchor" id="6" href="ciaoglindex.html#.&gt;."><tt>.&gt;.</tt></a> <span class="var">Y</span> is translated first to a sequence of calls that require (when they invoked) <span class="var">X</span> and <span class="var">Y</span> to be either numbers or free variables. To overcome this limitation, you can use <a class="idx_anchor" id="7" href="ciaoglindex.html#clp_meta/1"><tt>clp_meta/1</tt></a> which delays the translation of the constraints from compile-time to run-time (i.e., when <a class="idx_anchor" id="8" href="ciaoglindex.html#clp_meta/1"><tt>clp_meta/1</tt></a> is called), For example:<p><pre>?- X=(A+B),Y=(C-D), clp_meta([X .&gt;. Y]).
+
+X = A+B,
+Y = C-D,
+C.&lt;.D+A+B ?
+
+</pre> <p>The argument of <a class="idx_anchor" id="9" href="ciaoglindex.html#clp_meta/1"><tt>clp_meta/1</tt></a> accepts a goal or lists of goals, where each goal is limited to conjunctions, disjunctions, or CLP(Q) constraints. Other operations on constraints which are extensively used in meta-programming, in particular in static program analysis, are <em>projection</em> and <em>entailment check</em>. The projection operation restricts the constraints (that are available in the store) to a given set of variables and turns the answer into terms. You can use the multifile predicate <a class="idx_anchor" id="10" href="ciaoglindex.html#dump_constraints/3"><tt>dump_constraints/3</tt></a> for that purpose:<p><pre>?- A .&gt;. C, C .&gt;. B, dump_constraints([A,B],[X,Y],Cs).
+
+Cs = [X.&gt;.Y],
+C.&gt;.B,
+C.&lt;.A ?
+
+?- C=(B+D), clp_meta([A .&gt;. C, D .&gt;. 0]), dump_constraints([A,B],[X,Y],Cs).
+
+C = B+D,
+Cs = [Y.&lt;.X],
+D.&lt;. -B+A,
+D.&gt;.0 ?
+
+</pre> <p>The <em>entailment check</em> is used to check if a list of constrains is entailed by the store. You can use the predicate <a class="idx_anchor" id="11" href="ciaoglindex.html#clp_entailed/1"><tt>clp_entailed/1</tt></a> for that purpose:<p><pre>?- A .&gt;. C, C .&gt;. B, B .&gt;. D, clp_entailed([ A .&gt;. B, A .&gt;. D]).
+
+B.&gt;.D,
+C.&gt;.B,
+C.&lt;.A ?
+
+yes
+
+?- A .&gt;=. B, clp_entailed([ A .&gt;. B ]).
+
+no
+
+</pre> <p></div><br/></div><div id="Known bugs and planned improvements"><h2>Known bugs and planned improvements</h2><ul><LI>clp(Q) and clp(R) cannot be used simultaneously in the same program, or even within the same toplevel session.</ul></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Package Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Other information">Other information</a><ul><LI><a href="#Some CLP(Q) examples">Some CLP(Q) examples</a><LI><a href="#Meta-programming with CLP(Q)">Meta-programming with CLP(Q)</a></ul><LI><a href="#Known bugs and planned improvements">Known bugs and planned improvements</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="id_doc.html">&#x25C4;</a><a class="navbutton" href="clpr_doc.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>String processing &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="dict.html">&#x25C4;</a><a class="navbutton" href="messages.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="MiscProlog.html">PART VI - Ciao library miscellanea</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>String processing</h1><a class="idx_anchor" href="ciaoliindex.html#strings"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza</a>.<p>
+This module provides predicates for doing input/output with strings (character code lists) and for including in grammars defining strings.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(strings)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#get_line/2"><tt>get_line/2</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#get_line/1"><tt>get_line/1</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#write_string/2"><tt>write_string/2</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#write_string/1"><tt>write_string/1</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#whitespace/2"><tt>whitespace/2</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#whitespace0/2"><tt>whitespace0/2</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#string/3"><tt>string/3</tt></a>.
+<LI><em>Regular Types:</em><br/><a class="idx_anchor" id="7" href="ciaoglindex.html#line/1"><tt>line/1</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="get_line/2" href="ciaopdindex.html#get_line/2">get_line/2</a>:</div><div class="deftext"><tt>get_line(Stream,Line)</tt>
+<p>Reads from <span class="var">Stream</span> a line of text and unifies <span class="var">Line</span> with it. The end of the line can have UNIX [10] or MS-DOS [13 10] termination, which is not included in <span class="var">Line</span>. At EOF, the term end_of_file is returned.<p><strong>Usage:</strong> <tt>get_line(S,L)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">S</span> is an open stream.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (strings:line/1)</span><span>strings:line(L)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="get_line/1" href="ciaopdindex.html#get_line/1">get_line/1</a>:</div><div class="deftext"><tt>get_line(Line)</tt>
+<p>Behaves like <tt>current_input(S), get_line(S,Line)</tt>.<p><strong>Usage:</strong> <tt>get_line(L)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (strings:line/1)</span><span>strings:line(L)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="line/1" href="ciaoteindex.html#line/1">line/1</a>:</div><div class="deftext">A regular type, defined as follows:<pre>line(L) :-
+        string(L).
+line(end_of_file).
+</pre> </div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="write_string/2" href="ciaopdindex.html#write_string/2">write_string/2</a>:</div><div class="deftext"><tt>write_string(Stream,String)</tt>
+<p>Writes <span class="var">String</span> onto <span class="var">Stream</span>.<p><strong>Usage:</strong> <tt>write_string(Stream,String)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Stream</span> is an open stream.
+</span><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">String</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="write_string/1" href="ciaopdindex.html#write_string/1">write_string/1</a>:</div><div class="deftext"><tt>write_string(String)</tt>
+<p>Behaves like <tt>current_input(S), write_string(S, String)</tt>.<p><strong>Usage:</strong> <tt>write_string(String)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">String</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="whitespace/2" href="ciaopdindex.html#whitespace/2">whitespace/2</a>:</div><div class="deftext"><tt>whitespace(String,Rest)</tt>
+<p>In a grammar rule, as <tt>whitespace/0</tt>, represents whitespace (a positive number of space (32), tab (9), newline (10) or return (13) characters). Thus, <span class="var">Rest</span> is a proper suffix of <span class="var">String</span> with one or more whitespace characters removed. An example of use would be: <pre>   attrs([]) --&gt; &quot;&quot;
+   attrs([N|Ns]) --&gt;
+       whitespace,
+       attr(N),
+       attrs(Ns).
+</pre> <p><strong>Usage:</strong> <tt>whitespace(S1,S2)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">S1</span> is a string (a list of character codes).
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">S2</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="whitespace0/2" href="ciaopdindex.html#whitespace0/2">whitespace0/2</a>:</div><div class="deftext"><tt>whitespace0(String,Rest)</tt>
+<p>In a grammar rule, as <tt>whitespace0/0</tt>, represents possible whitespace (any number of space (32), tab (9), newline (10) or return (13) characters). Thus, <span class="var">Rest</span> is <span class="var">String</span> or a proper suffix of <span class="var">String</span> with one or more whitespace characters removed. An example of use would be:<p><pre>   assignment(N,V) --&gt;
+       variable_name(N), whitespace0, &quot;=&quot;, whitespace0, value(V).
+</pre> <p><strong>Usage:</strong> <tt>whitespace0(S1,S2)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">S1</span> is a string (a list of character codes).
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">S2</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="string/3" href="ciaopdindex.html#string/3">string/3</a>:</div><div class="deftext"><tt>string(String,Head,Tail)</tt>
+<p>In a <a class="idx_anchor" id="8" href="ciaoglindex.html#grammar rule">grammar rule</a>, as <tt>string/1</tt>, represents literally <span class="var">String</span>. An example of use would be:<p><pre>double(A) --&gt;
+        string(A),
+        string(A).
+</pre> <p><strong>Usage 1:</strong> <ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">String</span> is a string (a list of character codes).
+</span><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Head</span> is a string (a list of character codes).
+</span><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Tail</span> is a string (a list of character codes).
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">String</span> is a string (a list of character codes).
+</span><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Head</span> is a string (a list of character codes).
+</span><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Tail</span> is a string (a list of character codes).
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>string(A,B,C)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">C</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">A</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">B</span> is a list.
+</span>
+</ul></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="dict.html">&#x25C4;</a><a class="navbutton" href="messages.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

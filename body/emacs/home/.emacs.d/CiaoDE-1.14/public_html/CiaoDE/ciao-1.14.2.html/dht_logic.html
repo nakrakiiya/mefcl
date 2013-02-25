@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>DHT-related logics &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="dht_s2s.html">&#x25C4;</a><a class="navbutton" href="dht_routing.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="Contrib.html">PART XI - Contributed libraries</a> &raquo; <a href="dht_doc.html">Ciao DHT Implementation</a> &raquo; <a href="dht_server.html">Top-level interface to a DHT server</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>DHT-related logics</h1><a class="idx_anchor" href="ciaoliindex.html#dht_logic"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Arsen Kostenko" href="ciaoauindex.html#Arsen Kostenko">Arsen Kostenko</a>.<p>
+This module implements a core DHT functionality, like finger-table manipulation and lookup search. Keep in mind that remote calls (known as remote predicate calls in Prolog) are extracted to a separate module as well as low-lever database handling. In turn, the logic module is utilized by higher-lever modules, like the server-2-server and server-2-client communication modules.<p><span class="var">Id</span> is treated as the value of the hash function used all over the DHT.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(dht_logic)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#dht_init/1"><tt>dht_init/1</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#dht_finger/2"><tt>dht_finger/2</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#dht_successor/1"><tt>dht_successor/1</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#dht_check_predecessor/1"><tt>dht_check_predecessor/1</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#dht_closest_preceding_finger/2"><tt>dht_closest_preceding_finger/2</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#dht_find_predecessor/2"><tt>dht_find_predecessor/2</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#dht_find_successor/2"><tt>dht_find_successor/2</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#dht_join/1"><tt>dht_join/1</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#dht_notify/1"><tt>dht_notify/1</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#dht_stabilize/0"><tt>dht_stabilize/0</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#dht_fix_fingers/0"><tt>dht_fix_fingers/0</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#dht_id_by_node/2"><tt>dht_id_by_node/2</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#dht_find_and_consult_b/2"><tt>dht_find_and_consult_b/2</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#dht_consult_server_b/3"><tt>dht_consult_server_b/3</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#dht_find_and_consult_nb/2"><tt>dht_find_and_consult_nb/2</tt></a>, <a class="idx_anchor" id="15" href="ciaoglindex.html#dht_consult_server_nb/3"><tt>dht_consult_server_nb/3</tt></a>, <a class="idx_anchor" id="16" href="ciaoglindex.html#dht_find_and_extract_b/2"><tt>dht_find_and_extract_b/2</tt></a>, <a class="idx_anchor" id="17" href="ciaoglindex.html#dht_extract_from_server_b/3"><tt>dht_extract_from_server_b/3</tt></a>, <a class="idx_anchor" id="18" href="ciaoglindex.html#dht_find_and_extract_nb/2"><tt>dht_find_and_extract_nb/2</tt></a>, <a class="idx_anchor" id="19" href="ciaoglindex.html#dht_extract_from_server_nb/3"><tt>dht_extract_from_server_nb/3</tt></a>, <a class="idx_anchor" id="20" href="ciaoglindex.html#dht_find_and_store/2"><tt>dht_find_and_store/2</tt></a>, <a class="idx_anchor" id="21" href="ciaoglindex.html#dht_store_to_server/4"><tt>dht_store_to_server/4</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="22" href="ciaoglindex.html#dht/dht_rpr"><tt>dht/dht_rpr</tt></a>, <a class="idx_anchor" id="23" href="ciaoglindex.html#dht/dht_config"><tt>dht/dht_config</tt></a>, <a class="idx_anchor" id="24" href="ciaoglindex.html#dht/dht_logic_misc"><tt>dht/dht_logic_misc</tt></a>, <a class="idx_anchor" id="25" href="ciaoglindex.html#dht/dht_storage"><tt>dht/dht_storage</tt></a>, <a class="idx_anchor" id="26" href="ciaoglindex.html#dht/dht_routing"><tt>dht/dht_routing</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_init/1" href="ciaopdindex.html#dht_init/1">dht_init/1</a>:</div><div class="deftext">Predicated performs the initialization of a single-node DHT.<p><strong>Usage:</strong> <tt>dht_init(OwnId)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The predicate is intended to perform various initialization functions like finger_table creation, hostname and IP address retrieval. The value supplied in <span class="var">OwnId</span> is treated as value of the hash function used all over the DHT.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">OwnId</span> is an integer.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_finger/2" href="ciaopdindex.html#dht_finger/2">dht_finger/2</a>:</div><div class="deftext">Get the node identifier (composition of identifier and IP-address) by using index in the finger table. Prolog synonym for <tt>finger[k].node</tt>.<p><strong>Usage:</strong> <tt>dht_finger(Idx,Finger)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="27" href="ciaoglindex.html#dht_finger/2"><tt>dht_finger/2</tt></a> implements the array looking up necessary to retrive information from the finger table, where first argument <span class="var">Idx</span> if acting as array index and <span class="var">Finger</span> as corresponding array value.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Idx</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Finger</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Idx</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Finger</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_successor/1" href="ciaopdindex.html#dht_successor/1">dht_successor/1</a>:</div><div class="deftext">Wrapper around <a class="idx_anchor" id="28" href="ciaoglindex.html#dht_finger/1"><tt>dht_finger/1</tt></a>, where first argument is defaulted to &apos;1&apos;<p><strong>Usage:</strong> <tt>dht_successor(Successor)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="29" href="ciaoglindex.html#dht_successor/1"><tt>dht_successor/1</tt></a> a simple wrapper around <a class="idx_anchor" id="30" href="ciaoglindex.html#dht_finger/2"><tt>dht_finger/2</tt></a>, that looks up the first row of so-called finger-table<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Successor</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Successor</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_check_predecessor/1" href="ciaopdindex.html#dht_check_predecessor/1">dht_check_predecessor/1</a>:</div><div class="deftext"><a class="idx_anchor" id="31" href="ciaoglindex.html#dht_check_predecessor/1"><tt>dht_check_predecessor/1</tt></a> predicate is called by external nodes when they run <a class="idx_anchor" id="32" href="ciaoglindex.html#dht_stabilize/0"><tt>dht_stabilize/0</tt></a>. Since there is no other way to learn about a predecessor&apos;s failure, but checking explicitly once predecessor is required. that is why behavior of <a class="idx_anchor" id="33" href="ciaoglindex.html#dht_check_predecessor"><tt>dht_check_predecessor</tt></a> is following:<ol> <LI> give &apos;nil&apos; as predecessor if it is stored in database that way, which happens if node is unaware of any other nodes on the ring, <LI> otherwise, get current value of predecessor, <LI> try calling predecessor with any arbitrary predicate in our case <a class="idx_anchor" id="34" href="ciaoglindex.html#dht_successor/1"><tt>dht_successor/1</tt></a>, <LI> if an exception is issued by remote call - reset predecessor to &apos;nil&apos;, <LI> get value of predecessor once again and bind this value to the answer. We also check that in case of finger-nodes failure, but this would work out only in poorly populated Chord-ring </ol><p><strong>Usage 1:</strong> <tt>dht_check_predecessor(PredecessorId)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Get value of predecessor for current node.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">PredecessorId</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">PredecessorId</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_check_predecessor(PredecessorId)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Check whether value supplied is equal to id of predecessor.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">PredecessorId</span> is ground.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">PredecessorId</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_closest_preceding_finger/2" href="ciaopdindex.html#dht_closest_preceding_finger/2">dht_closest_preceding_finger/2</a>:</div><div class="deftext">Perform search over current finger table, in order to find entry pointing to node that is more closely located to value supplied via <span class="var">Id</span>. Here is original part of code from Chord paper. <pre>  n.closest_preceding_finger(id){
+      for i = m downto 1 {
+         if (finger[i].node in (n, id)){
+            return finger[i].node;
+         }
+      }
+      return n;
+  }
+            </pre>.<p><strong>Usage:</strong> <tt>dht_closest_preceding_finger(Id,Finger)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="35" href="ciaoglindex.html#dht_closest_preceding_finger/2"><tt>dht_closest_preceding_finger/2</tt></a> is searching local finger-table for the entry which points to a node, that is &apos;closer&apos; (in terms of DHT distance) to the identifier specified at <span class="var">Id</span>. It should hold that identifier of the node found is greater than identifier of current node and lesser than the identifier supplied in <span class="var">Id</span>. No estimations concerning other nodes in between them are made. Furthermore, a cyclic structure of identifiers is preserved: identifier &apos;0&apos; is lesser then identifier &apos;1&apos; but greater then the highest identifier in DHT.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Id</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Finger</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Id</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Finger</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_find_predecessor/2" href="ciaopdindex.html#dht_find_predecessor/2">dht_find_predecessor/2</a>:</div><div class="deftext">Perform search over existing DHT structure. The resulting node is expected to precede the one identified by <span class="var">Id</span>. Again, a small quote from Chord-paper source code. <pre>  n.find_predecessor(id){
+      n&apos; is n,
+      while(id not_in (n&apos;, n&apos;.successor] ){
+         n&apos; = n&apos;.closest_preceding_finger(id);
+      }
+      return n&apos;;
+  }
+            </pre><p><strong>Usage:</strong> <tt>dht_find_predecessor(Id,Predecessor)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="36" href="ciaoglindex.html#dht_find_predecessor/2"><tt>dht_find_predecessor/2</tt></a> searches all over DHT for a node, which is &apos;the closest&apos; (in terms of DHT distance) to the index specified as <span class="var">Id</span>. In other words, the searched node must have the index lesser than the identifier specified in <span class="var">Id</span> and there must not be any other nodes between identifier specified in <span class="var">Id</span> and the node found.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Id</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Predecessor</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Id</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Predecessor</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_find_successor/2" href="ciaopdindex.html#dht_find_successor/2">dht_find_successor/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>dht_find_successor(Id,Successor)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="37" href="ciaoglindex.html#dht_find_successor/2"><tt>dht_find_successor/2</tt></a> has behavior similar to <a class="idx_anchor" id="38" href="ciaoglindex.html#dht_find_predecessor/2"><tt>dht_find_predecessor/2</tt></a> except that it gives a node that directly succeeds the identifier specifies. In other words, the identifier of the node found is greater than the identifier specified in <span class="var">Id</span> and there are no other nodes between the node found and the node specified in <span class="var">Id</span><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Id</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Successor</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Id</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Successor</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_join/1" href="ciaopdindex.html#dht_join/1">dht_join/1</a>:</div><div class="deftext">It performs the join procedure on the node pointed by the argument. Here is the corresponding quote: <pre> n.join(Next){
+     predecessor = nil;
+     successor = Next.find_successor(n);
+ }
+            </pre> <p><strong>Usage:</strong> <tt>dht_join(NodeIP)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="39" href="ciaoglindex.html#dht_join/2"><tt>dht_join/2</tt></a> is executed every time some node decides to join some DHT. The only information needed for execution of join is a valid ID / IP combination of any existing node, which must be supplied with <span class="var">NodeId</span><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">NodeIP</span> is an atom.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_notify/1" href="ciaopdindex.html#dht_notify/1">dht_notify/1</a>:</div><div class="deftext">This predicate performs &apos;notification&apos;. Notification is part of adaptation process launched by <a class="idx_anchor" id="40" href="ciaoglindex.html#dht_stabilize/0"><tt>dht_stabilize/0</tt></a>. A quote from Chord paper that refers to this section is given below: <pre> n.notify(NewNodeId){
+     if (predecessor is nil ||
+           NewNodeId in (predecessor, n)){
+         predecessor = NewNodeId;
+     }
+ }
+            </pre><p><strong>Usage:</strong> <tt>dht_notify(NewNode)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="41" href="ciaoglindex.html#dht_notify/1"><tt>dht_notify/1</tt></a> is called on current node, once any other DHT node specified by <span class="var">NewNode</span> regards current node at it&apos;s successor. <LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NewNode</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_stabilize/0" href="ciaopdindex.html#dht_stabilize/0">dht_stabilize/0</a>:</div><div class="deftext"><tt>dht_stabilize</tt>
+<p>Perform stabilization on the successor node by asking successor&apos;s predecessor value. If the value returned is equal to current node, just stay calm, otherwise try to adopt the newly returned result as new successor. Most of the &apos;dirty&apos; work is performed by <a class="idx_anchor" id="42" href="ciaoglindex.html#stabilize_successor/2"><tt>stabilize_successor/2</tt></a> predicate. The corresponding Chord-paper quote is given below: <pre> n.stabilize(){
+     x = successor.predecessor;
+     if (x in (n, successor)){
+         successor = x;
+     }
+     successor.notify(n);
+ }
+            </pre> There is also a small simplification scheme, since before calling <a class="idx_anchor" id="43" href="ciaoglindex.html#dht_join/1"><tt>dht_join/1</tt></a> each node assumes itself as the only member of the circle, the very first case of <a class="idx_anchor" id="44" href="ciaoglindex.html#dht_stabilize/0"><tt>dht_stabilize/0</tt></a> does nothing if successor is actually equal to current node.<p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="45" href="ciaoglindex.html#dht_stabilize/0"><tt>dht_stabilize/0</tt></a> is a eternally repeated predicate, which aims at stabilizing first-level references of the finger-table, while multiple concurrent joins and failures can happen. Its main goal is to ask its own successor to report its predecessor. If the reported node is different from the one that is calling <a class="idx_anchor" id="46" href="ciaoglindex.html#dht_stabilize/0"><tt>dht_stabilize/0</tt></a>, there should be someone in between current node and its the successor. So a newly reported node should be registered as the successor instead of an old one. Technically, once an inconsistency between actual state of DHT and finger-table is found a newly found node is asked to perform <a class="idx_anchor" id="47" href="ciaoglindex.html#dht_notify/1"><tt>dht_notify/1</tt></a>, with current node as an argument.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_fix_fingers/0" href="ciaopdindex.html#dht_fix_fingers/0">dht_fix_fingers/0</a>:</div><div class="deftext"><tt>dht_fix_fingers</tt>
+<p>This predicate takes care of maintaining the finger table entries (except the first one) up to date. The first entry is taken care of by a specialized predicate <a class="idx_anchor" id="48" href="ciaoglindex.html#dht_stabilize/0"><tt>dht_stabilize/0</tt></a>, since there is much more responsibility on first entry (a direct successor). Rest of the same task is performed here, by <a class="idx_anchor" id="49" href="ciaoglindex.html#dht_fix_fingers/0"><tt>dht_fix_fingers/0</tt></a>. In the Chord paper notation this part look like: <pre> n.fix_fingers(){
+     i = random index &gt; 1 into finger[];
+     finger[i].node = find_successor(finger[i].start);
+ }  
+            </pre>. <p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="50" href="ciaoglindex.html#dht_fix_fingers/0"><tt>dht_fix_fingers/0</tt></a> is yet another randomly repeated predicate, which aims at stabilizing high-level references of finger-table, while multiple concurrent joins and failures happen. Once started, <a class="idx_anchor" id="51" href="ciaoglindex.html#dht_fix_fingers/0"><tt>dht_fix_fingers/0</tt></a> picks a random (but not first) entry of finger table, and searches for a node responsible for the identifiers specified in the entry. In case, node that was found is different from the one currently specified, current node is replaced by a new one.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_id_by_node/2" href="ciaopdindex.html#dht_id_by_node/2">dht_id_by_node/2</a>:</div><div class="deftext">This predicate is entirely used by remote calls. Since there is <a class="idx_anchor" id="52" href="ciaoglindex.html#dht_rpr_id_by_node/2"><tt>dht_rpr_id_by_node/2</tt></a> for current module. This is an effort to avoid module-re-exportation (<a class="idx_anchor" id="53" href="ciaoglindex.html#dht_routing.pl"><tt>dht_routing.pl</tt></a> and <a class="idx_anchor" id="54" href="ciaoglindex.html#dht_rpr.pl"><tt>dht_rpr.pl</tt></a>). <p><strong>Usage:</strong> <tt>dht_id_by_node(Node,NodeID)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Get node identity by node number.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NodeID</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeID</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_find_and_consult_b/2" href="ciaopdindex.html#dht_find_and_consult_b/2">dht_find_and_consult_b/2</a>:</div><div class="deftext"><a class="idx_anchor" id="55" href="ciaoglindex.html#dht_find_and_consult_b/2"><tt>dht_find_and_consult_b/2</tt></a> is meant to perform two actions: <ul> <LI>search for the node responsible for value supplied as a <span class="var">Key</span>; <LI>perform <a class="idx_anchor" id="56" href="ciaoglindex.html#dht_consult_server_b/3"><tt>dht_consult_server_b/3</tt></a> on a node found. </ul> This is the first predicate of the whole <a class="idx_anchor" id="57" href="ciaoglindex.html#dht_find_and_*/2"><tt>dht_find_and_*/2</tt></a> family of predicates. Name of each member of the family gives a hint on implementation. And as it is presented by the name of the family, they share some part of implementation - all the members of the family perform search for particular DHT-node, which is achieved by <a class="idx_anchor" id="58" href="ciaoglindex.html#find_server/3"><tt>find_server/3</tt></a> predicate. <p><strong>Usage 1:</strong> <tt>dht_find_and_consult_b(Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> An invocation of this type would bind all free variables in <span class="var">Value</span> to the values present in the local database of the node responsible for <span class="var">Key</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Value</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_find_and_consult_b(Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Invocation with two ground arguments is equal to checking the presence of the term specified by <span class="var">Value</span> inside the DHT. <LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_consult_server_b/3" href="ciaopdindex.html#dht_consult_server_b/3">dht_consult_server_b/3</a>:</div><div class="deftext">Basically forms the second half of <a class="idx_anchor" id="59" href="ciaoglindex.html#dht_find_and_consult/2"><tt>dht_find_and_consult/2</tt></a> predicate. This predicate takes no care about search of corresponding server. The only thing it does - given a server try to locate a predicate under given <span class="var">Key</span> there. Of course there two possible variants of application:<p><strong>Usage 1:</strong> <tt>dht_consult_server_b(NodeId,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> First variant deals with real consulting, when the value is unknown. Therefore, after predicate is successfully executed, a real value, that is stored under <span class="var">Key</span> is associated with third argument (<span class="var">Value</span>)<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Value</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_consult_server_b(NodeId,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Second variant is more similar to check for existence, All arguments are ground by the time predicate is called, so the only use is success/failure of predicate itself.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_find_and_consult_nb/2" href="ciaopdindex.html#dht_find_and_consult_nb/2">dht_find_and_consult_nb/2</a>:</div><div class="deftext"><a class="idx_anchor" id="60" href="ciaoglindex.html#dht_find_and_consult_nb/2"><tt>dht_find_and_consult_nb/2</tt></a> is meant to perform two actions: <ul> <LI>search for the node responsible for value supplied as a <span class="var">Key</span>; <LI>perform <a class="idx_anchor" id="61" href="ciaoglindex.html#dht_consult_server_nb/3"><tt>dht_consult_server_nb/3</tt></a> on a node found. </ul> This is the first predicate of the whole <a class="idx_anchor" id="62" href="ciaoglindex.html#dht_find_and_*/2"><tt>dht_find_and_*/2</tt></a> family of predicates. Name of each member of the family gives a hint on implementation. And as it is presented by the name of the family, they share some part of implementation - all the members of the family perform search for particular DHT-node, which is achieved by <a class="idx_anchor" id="63" href="ciaoglindex.html#find_server/3"><tt>find_server/3</tt></a> predicate. <p><strong>Usage 1:</strong> <tt>dht_find_and_consult_nb(Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> An invocation of this type would bind all free variables in <span class="var">Value</span> to the values present in the local database of the node responsible for <span class="var">Key</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Value</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_find_and_consult_nb(Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Invocation with two ground arguments is equal to checking the presence of the term specified by <span class="var">Value</span> inside the DHT. <LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_consult_server_nb/3" href="ciaopdindex.html#dht_consult_server_nb/3">dht_consult_server_nb/3</a>:</div><div class="deftext">Basically forms the second half of <a class="idx_anchor" id="64" href="ciaoglindex.html#dht_find_and_consult/2"><tt>dht_find_and_consult/2</tt></a> predicate. This predicate takes no care about search of corresponding server. The only thing it does - given a server try to locate a predicate under given <span class="var">Key</span> there. Of course there two possible variants of application:<p><strong>Usage 1:</strong> <tt>dht_consult_server_nb(NodeId,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> First variant deals with real consulting, when the value is unknown. Therefore, after predicate is successfully executed, a real value, that is stored under <span class="var">Key</span> is associated with third argument (<span class="var">Value</span>)<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Value</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_consult_server_nb(NodeId,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Second variant is more similar to check for existence, All arguments are ground by the time predicate is called, so the only use is success/failure of predicate itself.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_find_and_extract_b/2" href="ciaopdindex.html#dht_find_and_extract_b/2">dht_find_and_extract_b/2</a>:</div><div class="deftext"><a class="idx_anchor" id="65" href="ciaoglindex.html#dht_find_and_extract_b/2"><tt>dht_find_and_extract_b/2</tt></a> is meant to perform two actions: <ul> <LI>search for node responsible for value supplied as a <span class="var">Key</span>; <LI>perform <a class="idx_anchor" id="66" href="ciaoglindex.html#dht_extract_from_server_b/3"><tt>dht_extract_from_server_b/3</tt></a> on a node found. </ul> Unlike <a class="idx_anchor" id="67" href="ciaoglindex.html#dht_find_and_consult/2"><tt>dht_find_and_consult/2</tt></a>, this predicate removes matching records form the local databases of the corresponding nodes.<p><strong>Usage 1:</strong> <tt>dht_find_and_extract_b(Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> An invocation of this type would bind all free variables in <span class="var">Value</span> to values present in the local database of the corresponding node, and the values against which the matching was performed are erased.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Value</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_find_and_extract_b(Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Invocation with two ground arguments is equal to checking presence of term specified by <span class="var">Value</span> inside the DHT, and removing it in case of successful search.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_extract_from_server_b/3" href="ciaopdindex.html#dht_extract_from_server_b/3">dht_extract_from_server_b/3</a>:</div><div class="deftext">This predicate is also used entirely as a second part of <a class="idx_anchor" id="68" href="ciaoglindex.html#dht_find_and_extract/2"><tt>dht_find_and_extract/2</tt></a> predicate. It&apos;s behavior differs from similar <a class="idx_anchor" id="69" href="ciaoglindex.html#dht_consult_server_b/3"><tt>dht_consult_server_b/3</tt></a> predicate, only in action that is performed over DHT. In this case &apos;extraction&apos; of predicates, instead of simple &apos;consultation&apos;<p><strong>Usage 1:</strong> <tt>dht_extract_from_server_b(NodeId,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> First variant deals with blind &apos;extraction&apos;, when the value is unknown. Therefore, after predicate is successfully executed, a real value, that is stored under <span class="var">Key</span> is associated with third argument (<span class="var">Value</span>)<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Value</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_extract_from_server_b(NodeId,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Second variant is more similar to pointed elimination. All arguments are ground by the time predicate is called, so the only use is success and elimination of predicate itself or general failure on contrary.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_find_and_extract_nb/2" href="ciaopdindex.html#dht_find_and_extract_nb/2">dht_find_and_extract_nb/2</a>:</div><div class="deftext"><a class="idx_anchor" id="70" href="ciaoglindex.html#dht_find_and_extract_nb/2"><tt>dht_find_and_extract_nb/2</tt></a> is meant to perform two actions: <ul> <LI>search for node responsible for value supplied as a <span class="var">Key</span>; <LI>perform <a class="idx_anchor" id="71" href="ciaoglindex.html#dht_extract_from_server_nb/3"><tt>dht_extract_from_server_nb/3</tt></a> on a node found. </ul> Unlike <a class="idx_anchor" id="72" href="ciaoglindex.html#dht_find_and_consult/2"><tt>dht_find_and_consult/2</tt></a>, this predicate removes matching records form the local databases of the corresponding nodes.<p><strong>Usage 1:</strong> <tt>dht_find_and_extract_nb(Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> An invocation of this type would bind all free variables in <span class="var">Value</span> to values present in the local database of the corresponding node, and the values against which the matching was performed are erased.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Value</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_find_and_extract_nb(Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Invocation with two ground arguments is equal to checking presence of term specified by <span class="var">Value</span> inside the DHT, and removing it in case of successful search.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_extract_from_server_nb/3" href="ciaopdindex.html#dht_extract_from_server_nb/3">dht_extract_from_server_nb/3</a>:</div><div class="deftext">This predicate is also used entirely as a second part of <a class="idx_anchor" id="73" href="ciaoglindex.html#dht_find_and_extract/2"><tt>dht_find_and_extract/2</tt></a> predicate. It&apos;s behavior differs from similar <a class="idx_anchor" id="74" href="ciaoglindex.html#dht_consult_server_b/3"><tt>dht_consult_server_b/3</tt></a> predicate, only in action that is performed over DHT. In this case &apos;extraction&apos; of predicates, instead of simple &apos;consultation&apos;<p><strong>Usage 1:</strong> <tt>dht_extract_from_server_nb(NodeId,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> First variant deals with blind &apos;extraction&apos;, when the value is unknown. Therefore, after predicate is successfully executed, a real value, that is stored under <span class="var">Key</span> is associated with third argument (<span class="var">Value</span>)<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Value</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_extract_from_server_nb(NodeId,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Second variant is more similar to pointed elimination. All arguments are ground by the time predicate is called, so the only use is success and elimination of predicate itself or general failure on contrary.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_find_and_store/2" href="ciaopdindex.html#dht_find_and_store/2">dht_find_and_store/2</a>:</div><div class="deftext">First part of this predicate is similar to rest of <a class="idx_anchor" id="75" href="ciaoglindex.html#dht_find_and_*/2"><tt>dht_find_and_*/2</tt></a> family - perform search over existing DHT structure. After search - storage operation is performed.<p><strong>Usage:</strong> <tt>dht_find_and_store(Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="76" href="ciaoglindex.html#dht_find_and_store/2"><tt>dht_find_and_store/2</tt></a> is meant to perform two actions:<ul> <LI>search for a node responsible for the value supplied as <span class="var">Key</span>; <LI>perform <a class="idx_anchor" id="77" href="ciaoglindex.html#dht_store_to_server/4"><tt>dht_store_to_server/4</tt></a> on node found.</ul> Since the arguments of <a class="idx_anchor" id="78" href="ciaoglindex.html#dht_store_to_server/4"><tt>dht_store_to_server/4</tt></a> must be ground both arguments of <a class="idx_anchor" id="79" href="ciaoglindex.html#dht_find_and_store"><tt>dht_find_and_store</tt></a> are ground too.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Key</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_store_to_server/4" href="ciaopdindex.html#dht_store_to_server/4">dht_store_to_server/4</a>:</div><div class="deftext">Second part of <a class="idx_anchor" id="80" href="ciaoglindex.html#dht_find_and_store/2"><tt>dht_find_and_store/2</tt></a> predicate.<p><strong>Usage:</strong> <tt>dht_store_to_server(NodeId,Key,KeyHash,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Store <span class="var">Value</span> under given <span class="var">Key</span> and also record relation between <span class="var">Key</span> and <span class="var">KeyHash</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeId</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Key</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">KeyHash</span> is ground.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Value</span> is ground.
+</span>
+</ul></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Submodules</h2><ul><LI><a href="dht_routing.html">Finger table and routing information</a><LI><a href="dht_logic_misc.html">Various wrappers for DHT logics module</a><LI><a href="dht_rpr.html">Remote predicate calling utilities</a><LI><a href="dht_storage.html">Underlying data-storage module</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="dht_s2s.html">&#x25C4;</a><a class="navbutton" href="dht_routing.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

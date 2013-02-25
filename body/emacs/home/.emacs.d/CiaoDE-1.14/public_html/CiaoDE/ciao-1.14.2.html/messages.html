@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Printing status and error messages &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="strings.html">&#x25C4;</a><a class="navbutton" href="io_alias_redirection.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="MiscProlog.html">PART VI - Ciao library miscellanea</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Printing status and error messages</h1><a class="idx_anchor" href="ciaoliindex.html#messages"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="The CLIP Group" href="ciaoauindex.html#The CLIP Group">The CLIP Group</a>.<p>
+This is a very simple library for printing status and error messages to the console.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(messages)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#error_message/1"><tt>error_message/1</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#error_message/2"><tt>error_message/2</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#error_message/3"><tt>error_message/3</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#warning_message/1"><tt>warning_message/1</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#warning_message/2"><tt>warning_message/2</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#warning_message/3"><tt>warning_message/3</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#note_message/1"><tt>note_message/1</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#note_message/2"><tt>note_message/2</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#note_message/3"><tt>note_message/3</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#simple_message/1"><tt>simple_message/1</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#simple_message/2"><tt>simple_message/2</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#optional_message/2"><tt>optional_message/2</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#optional_message/3"><tt>optional_message/3</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#debug_message/1"><tt>debug_message/1</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#debug_message/2"><tt>debug_message/2</tt></a>, <a class="idx_anchor" id="15" href="ciaoglindex.html#debug_goal/2"><tt>debug_goal/2</tt></a>, <a class="idx_anchor" id="16" href="ciaoglindex.html#debug_goal/3"><tt>debug_goal/3</tt></a>, <a class="idx_anchor" id="17" href="ciaoglindex.html#show_message/2"><tt>show_message/2</tt></a>, <a class="idx_anchor" id="18" href="ciaoglindex.html#show_message/3"><tt>show_message/3</tt></a>, <a class="idx_anchor" id="19" href="ciaoglindex.html#show_message/4"><tt>show_message/4</tt></a>.
+<LI><em>Regular Types:</em><br/><a class="idx_anchor" id="20" href="ciaoglindex.html#message_t/1"><tt>message_t/1</tt></a>.
+<LI><em>Multifiles:</em><br/><a class="idx_anchor" id="21" href="ciaoglindex.html#issue_debug_messages/1"><tt>issue_debug_messages/1</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="22" href="ciaoglindex.html#format"><tt>format</tt></a>, <a class="idx_anchor" id="23" href="ciaoglindex.html#lists"><tt>lists</tt></a>, <a class="idx_anchor" id="24" href="ciaoglindex.html#write"><tt>write</tt></a>, <a class="idx_anchor" id="25" href="ciaoglindex.html#filenames"><tt>filenames</tt></a>, <a class="idx_anchor" id="26" href="ciaoglindex.html#compiler/c_itf_internal"><tt>compiler/c_itf_internal</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="error_message/1" href="ciaopdindex.html#error_message/1">error_message/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>error_message(Text)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <tt>message(error,Text)</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Text</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="error_message/2" href="ciaopdindex.html#error_message/2">error_message/2</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>error_message(?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>error_message(Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <tt>message(error,Text,ArgList)</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="error_message/3" href="ciaopdindex.html#error_message/3">error_message/3</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>error_message(?,?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>error_message(Lc,Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <tt>message(error,Lc,Text,ArgList)</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (c_itf_internal:location_t/1)</span><span>Identifies a source line range in a file. <pre>location_t(loc(File,L1,L2)) :-
+        atm(File),
+        int(L1),
+        int(L2).
+</pre>
+</span><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="warning_message/1" href="ciaopdindex.html#warning_message/1">warning_message/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>warning_message(Text)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <tt>message(warning,Text)</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Text</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="warning_message/2" href="ciaopdindex.html#warning_message/2">warning_message/2</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>warning_message(?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>warning_message(Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <tt>message(warning,Text,ArgList)</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="warning_message/3" href="ciaopdindex.html#warning_message/3">warning_message/3</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>warning_message(?,?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>warning_message(Lc,Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <tt>message(warning,Lc,Text,ArgList)</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (c_itf_internal:location_t/1)</span><span>Identifies a source line range in a file. <pre>location_t(loc(File,L1,L2)) :-
+        atm(File),
+        int(L1),
+        int(L2).
+</pre>
+</span><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="note_message/1" href="ciaopdindex.html#note_message/1">note_message/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>note_message(Text)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <tt>message(note,Text)</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Text</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="note_message/2" href="ciaopdindex.html#note_message/2">note_message/2</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>note_message(?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>note_message(Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <tt>message(note,Text,ArgList)</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="note_message/3" href="ciaopdindex.html#note_message/3">note_message/3</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>note_message(?,?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>note_message(Lc,Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <tt>message(note,Lc,Text,ArgList)</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (c_itf_internal:location_t/1)</span><span>Identifies a source line range in a file. <pre>location_t(loc(File,L1,L2)) :-
+        atm(File),
+        int(L1),
+        int(L2).
+</pre>
+</span><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="simple_message/1" href="ciaopdindex.html#simple_message/1">simple_message/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>simple_message(Text)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The text provided in <span class="var">Text</span> is printed.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Text</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="simple_message/2" href="ciaopdindex.html#simple_message/2">simple_message/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>simple_message(Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The text provided in <span class="var">Text</span> is printed as a message, using the arguments in <span class="var">ArgList</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="optional_message/2" href="ciaopdindex.html#optional_message/2">optional_message/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>optional_message(Text,Opts)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The text provided in <span class="var">Text</span> is printed as a message, but only if the atom <tt>-v</tt> is a member of <span class="var">Opts</span>. These predicates are meant to be used for optional messages, which are only to be printed when <em>verbose</em> output is requested explicitly.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Text</span> is a string (a list of character codes).
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Opts</span> is a list of <span class="var">atm</span>s.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="optional_message/3" href="ciaopdindex.html#optional_message/3">optional_message/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>optional_message(Text,ArgList,Opts)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The text provided in <span class="var">Text</span> is printed as a message, using the arguments in <span class="var">ArgList</span>, but only if the atom <tt>-v</tt> is a member of <span class="var">Opts</span>. These predicates are meant to be used for optional messages, which are only to be printed when <em>verbose</em> output is requested explicitly.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Opts</span> is a list of <span class="var">atm</span>s.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="debug_message/1" href="ciaopdindex.html#debug_message/1">debug_message/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>debug_message(Text)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The text provided in <span class="var">Text</span> is printed as a debugging message. These messages are turned <tt>on</tt> by defining a fact of <a class="idx_anchor" id="27" href="ciaoglindex.html#issue_debug_messages/1"><tt>issue_debug_messages/1</tt></a> with the module name as argument.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="debug_message/2" href="ciaopdindex.html#debug_message/2">debug_message/2</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>debug_message(?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>debug_message(Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The text provided in <span class="var">Text</span> is printed as a debugging message, using the arguments in <span class="var">ArgList</span> to interpret any variable-related formatting commands embedded in <span class="var">Text</span>. These messages are turned <tt>on</tt> by defining a fact of <a class="idx_anchor" id="28" href="ciaoglindex.html#issue_debug_messages/1"><tt>issue_debug_messages/1</tt></a> which the module name as argument.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="debug_goal/2" href="ciaopdindex.html#debug_goal/2">debug_goal/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>debug_goal(Goal,Text)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Goal</span> is called. The text provided in <span class="var">Text</span> is then printed as a debugging message. The whole process (including running <span class="var">Goal</span>) is turned <tt>on</tt> by defining a fact of <a class="idx_anchor" id="29" href="ciaoglindex.html#issue_debug_messages/1"><tt>issue_debug_messages/1</tt></a> with the module name as argument.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="debug_goal/3" href="ciaopdindex.html#debug_goal/3">debug_goal/3</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>debug_goal(goal,?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>debug_goal(Goal,Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Goal</span> is called. The text provided in <span class="var">Text</span> is then printed as a debugging message, using the arguments in <span class="var">ArgList</span> to interpret any variable-related formatting commands embedded in <span class="var">Text</span>. Note that the variables in <span class="var">ArgList</span> can be computed by <span class="var">Goal</span>. The whole process (including running <span class="var">Goal</span>) is turned <tt>on</tt> by defining a fact of <a class="idx_anchor" id="30" href="ciaoglindex.html#issue_debug_messages/1"><tt>issue_debug_messages/1</tt></a> with the module name as argument.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="show_message/2" href="ciaopdindex.html#show_message/2">show_message/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>show_message(Type,Text)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The text provided in <span class="var">Text</span> is printed as a message of type <span class="var">Type</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (messages:message_t/1)</span><span>The types of messaes supported by the message predicate
+</span><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Text</span> is a string (a list of character codes).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="show_message/3" href="ciaopdindex.html#show_message/3">show_message/3</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>show_message(?,?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>show_message(Type,Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The text provided in <span class="var">Text</span> is printed as a message of type <span class="var">Type</span>, using the arguments in <span class="var">ArgList</span> to interpret any variable-related formatting commands embedded in <span class="var">Text</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (messages:message_t/1)</span><span>The types of messaes supported by the message predicate
+</span><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="show_message/4" href="ciaopdindex.html#show_message/4">show_message/4</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>show_message(?,?,?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>show_message(Type,Lc,Text,ArgList)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The text provided in <span class="var">Text</span> is printed as a message of type <span class="var">Type</span>, using the arguments in <span class="var">ArgList</span> to interpret any variable-related formatting commands embedded in <span class="var">Text</span>, and reporting error location <span class="var">Lc</span> (file and line numbers).<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (messages:message_t/1)</span><span>The types of messaes supported by the message predicate
+</span><br/><span class="on_right"> (c_itf_internal:location_t/1)</span><span>Identifies a source line range in a file. <pre>location_t(loc(File,L1,L2)) :-
+        atm(File),
+        int(L1),
+        int(L2).
+</pre>
+</span><br/><span class="on_right"> (format:format_control/1)</span><span><span class="var">Text</span> is an atom or string describing how the arguments should be formatted. If it is an atom it will be converted into a string with <tt>name/2</tt>.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">ArgList</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="message_t/1" href="ciaoteindex.html#message_t/1">message_t/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Description:</em> The types of messaes supported by the message predicate</ul></div></div><p>
+<div><span class="on_right">(UNDOC_REEXPORT)</span><div class="defname"><span class="idx_anchor" id="location_t/1">location_t/1</span>:</div><div class="deftext">
+ Imported from <a class="idx_anchor" id="31" href="ciaoglindex.html#c_itf_internal"><tt>c_itf_internal</tt></a> (see the corresponding documentation for details).<br/></div></div><p>
+</div><div id="Documentation on multifiles"><h2>Documentation on multifiles</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="issue_debug_messages/1" href="ciaopdindex.html#issue_debug_messages/1">issue_debug_messages/1</a>:</div><div class="deftext"><br/>
+The predicate is <em>multifile</em>.<br/>
+The predicate is of type <em>data</em>.<br/><p><strong>Usage:</strong> <tt>issue_debug_messages(Module)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Printing of debugging messages is enabled for module <span class="var">Module</span>.<LI><em>The following properties hold upon exit:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Module</span> is an atom.
+</span>
+</ul></div></div><p>
+</div><div id="Known bugs and planned improvements"><h2>Known bugs and planned improvements</h2><ul><LI>Debug message switching should really be done with an expansion, for performance.</ul></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a><LI><a href="#Documentation on multifiles">Documentation on multifiles</a><LI><a href="#Known bugs and planned improvements">Known bugs and planned improvements</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="strings.html">&#x25C4;</a><a class="navbutton" href="io_alias_redirection.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

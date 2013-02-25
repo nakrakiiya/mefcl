@@ -1,0 +1,176 @@
+.TH ciao l "2011/8/12"
+
+.SH NAME
+.B ciao
+\- The Ciao System.
+.IX ciao
+
+
+.SH DESCRIPTION
+ 
+.B Ciao 
+is a 
+.I public domain
+, 
+.I next generation 
+multi-paradigm programming environment with a unique set of features:
+
+
+.(l F 
+
+* 
+.B Ciao 
+offers a complete Prolog system, supporting 
+.I ISO-Prolog
+, but its novel modular design allows both 
+.I restricting 
+and 
+.I extending 
+the language. As a result, it allows working with 
+.I fully declarative subsets 
+of Prolog and also to 
+.I extend 
+these subsets (or ISO-Prolog) both syntactically and semantically. Most importantly, these restrictions and extensions can be activated separately on each program module so that several extensions can coexist in the same application for different modules.
+
+* 
+.B Ciao 
+also supports (through such extensions) programming with functions, higher-order (with predicate abstractions), constraints, and objects, as well as feature terms (records), persistence, several control rules (breadth-first search, iterative deepening, ...), concurrency (threads/engines), a good base for distributed execution (agents), and parallel execution. Libraries also support WWW programming, sockets, external interfaces (C, Java, TclTk, relational databases, etc.), etc.
+
+* 
+.B Ciao 
+offers support for 
+.I programming in the large 
+with a robust module/object system, module-based separate/incremental compilation (automatically --no need for makefiles), an assertion language for declaring (
+.I optional
+) program properties (including types and modes, but also determinacy, non-failure, cost, etc.), automatic static inference and static/dynamic checking of such assertions, etc.
+
+* 
+.B Ciao 
+also offers support for 
+.I programming in the small 
+producing small executables (including only those libraries actually used by the program) and support for writing scripts.
+
+* The 
+.B Ciao 
+programming environment includes a classical top-level and a rich emacs interface with an embeddable source-level debugger and a number of execution visualization tools.
+
+* The 
+.B Ciao 
+compiler (which can be run outside the top level shell) generates several forms of architecture-independent and stand-alone executables, which run with speed, efficiency, and executable size which are very competitive with other commercial and academic languages (including other Prolog/CLP systems). Library modules can be compiled into compact bytecode or C source files, and linked statically, dynamically, or autoloaded.
+
+* The novel modular design of 
+.B Ciao 
+enables, in addition to modular program development, effective global program analysis and static debugging and optimization via source to source program transformation. These tasks are performed by the 
+.B Ciao preprocessor 
+(
+.B ciaopp
+, distributed separately).
+
+* The 
+.B Ciao 
+programming environment also includes 
+.B lpdoc
+, an automatic documentation generator for LP/CLP programs. It processes source files adorned with (
+.B Ciao
+) assertions and machine-readable comments and generates manuals in many formats including 
+.B postscript
+, 
+.B pdf
+, 
+.B texinfo
+, 
+.B info
+, 
+.B HTML
+, 
+.B man
+, etc. , as well as on-line help, ascii 
+.B README 
+files, entries for indices of manuals (
+.B info
+, WWW, ...), and maintains WWW distribution sites.
+
+.)l 
+
+.B Ciao 
+is distributed under the GNU Library General Public License (LGPL).
+
+ 
+
+
+
+
+.SH VERSION
+This man page corresponds to version 1.14#2 (2011/8/12).
+
+
+.SH MORE INFO
+This man page has been generated 
+automatically by the lpdoc autodocumenter. 
+The ciao reference manual 
+provides further information. Versions of the 
+manual are available on-line and in printable form 
+(info/html/dvi/ps/...) - see the source or your 
+local installation information.
+.SH COPYRIGHT
+Copyright (c) 1997-2011 Francisco Bueno, Manuel Carro, Remy Haemmerle\*', Manuel Hermenegildo, Pedro Lo\*'pez, Edison Mera, Jose\*' F. Morales, and Germa\*'n Puebla This document may be freely read, stored, reproduced, disseminated, translated or quoted by any means and on any medium provided the following conditions are met:
+
+.(l F 
+
+* Every reader or user of this document acknowledges that is aware that no guarantee is given regarding its contents, on any account, and specifically concerning veracity, accuracy and fitness for any purpose.
+
+* No modification is made other than cosmetic, change of representation format, translation, correction of obvious syntactic errors, or as permitted by the clauses below.
+
+* Comments and other additions may be inserted, provided they clearly appear as such; translations or fragments must clearly refer to an original complete version, preferably one that is easily accessed whenever possible.
+
+* Translations, comments and other additions or modifications must be dated and their author(s) must be identifiable (possibly via an alias).
+
+* This licence is preserved and applies to the whole document with modifications and additions (except for brief quotes), independently of the representation format.
+
+* Any reference to the "official version", "original version" or "how to obtain original versions" of the document is preserved verbatim. Any copyright notice in the document is preserved verbatim. Also, the title and author(s) of the original document should be clearly mentioned as such.
+
+* In the case of translations, verbatim sentences mentioned in (6.) are preserved in the language of the original document accompanied by verbatim translations to the language of the traslated document. All translations state clearly that the author is not responsible for the translated work. This license is included, at least in the language in which it is referenced in the original version.
+ 
+* Whatever the mode of storage, reproduction or dissemination, anyone able to access a digitized version of this document must be able to make a digitized copy in a format directly usable, and if possible editable, according to accepted, and publicly documented, public standards.
+
+* Redistributing this document to a third party requires simultaneous redistribution of this licence, without modification, and in particular without any further condition or restriction, expressed or implied, related or not to this redistribution. In particular, in case of inclusion in a database or collection, the owner or the manager of the database or the collection renounces any right related to this inclusion and concerning the possible uses of the document after extraction from the database or the collection, whether alone or in relation with other documents.
+
+.)l 
+
+Any incompatibility of the above clauses with legal, contractual or judiciary decisions or constraints implies a corresponding limitation of reading, usage, or redistribution rights for this document, verbatim or modified. 
+
+.SH AUTHOR
+.br
+
+.B Edited by:
+
+.br
+Francisco Bueno
+.br
+Manuel Carro
+.br
+Remy Haemmerle\*'
+.br
+Manuel Hermenegildo
+.br
+Pedro Lo\*'pez
+.br
+Edison Mera
+.br
+Jose\*' F. Morales
+.br
+Germa\*'n Puebla
+.br
+
+.br
+The Computational logic, Languages, 
+.br
+Implementation, and Parallelism (CLIP) Lab
+.br
+http://www.cliplab.org/
+.br
+webmaster@clip.dia.fi.upm.es
+.br
+School of CS, T. U. of Madrid (UPM)
+.br
+IMDEA Software Institute

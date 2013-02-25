@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Defining operators &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="write.html">&#x25C4;</a><a class="navbutton" href="iso_byte_char.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="IsoProlog.html">PART III - ISO-Prolog library (iso)</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Defining operators</h1><a class="idx_anchor" href="ciaoliindex.html#operators"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza (modifications and documentation, adapted from SICStus 0.6 code)</a>, <a class="idx_anchor" id="Manuel Carro" href="ciaoauindex.html#Manuel Carro">Manuel Carro (modifications and documentation)</a>.<p>
+Operators allow writting terms in a more clear way than the standard functional notation. Standard operators in Ciao are defined by this predicate (but note that the compiler itself defines more operators at compile time): <pre>standard_ops :-
+        op(1200,xfx,[:-]),
+        op(1200,fx,[:-,?-]),
+        op(1100,xfy,[;]),
+        op(1050,xfy,[-&gt;]),
+        op(1000,xfy,[&apos;,&apos;]),
+        op(900,fy,[\+]),
+        op(700,xfx,[=,\=,==,\==,@&lt;,@&gt;,@=&lt;,@&gt;=,=..,is,=:=,=\=,&lt;,=&lt;,&gt;,&gt;=]),
+        op(550,xfx,[:]),
+        op(500,yfx,[+,-,/\,\/,#]),
+        op(500,fy,[++,--]),
+        op(400,yfx,[*,/,//,rem,mod,&lt;&lt;,&gt;&gt;]),
+        op(200,fy,[+,-,\]),
+        op(200,xfx,[**]),
+        op(200,xfy,[^]).
+</pre><br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(operators)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#op/3"><tt>op/3</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#current_op/3"><tt>current_op/3</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#current_prefixop/3"><tt>current_prefixop/3</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#current_infixop/4"><tt>current_infixop/4</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#current_postfixop/3"><tt>current_postfixop/3</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#standard_ops/0"><tt>standard_ops/0</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="op/3" href="ciaopdindex.html#op/3">op/3</a>:</div><div class="deftext"><tt>op(Precedence,Type,Name)</tt>
+<p>Declares the atom <span class="var">Name</span> to be an operator of the stated <span class="var">Type</span> and <span class="var">Precedence</span> (0 =&lt; <span class="var">Precedence</span> =&lt; 1200). <span class="var">Name</span> may also be a list of atoms in which case all of them are declared to be operators. If <span class="var">Precedence</span> is 0 then the operator properties of <span class="var">Name</span> (if any) are cancelled. Note that, unlike in <a class="idx_anchor" id="6" href="ciaoglindex.html#ISO-Prolog">ISO-Prolog</a>, it is allowed to define two operators with the same name, one infix and the other postfix.<p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Precedence</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:operator_specifier/1)</span><span><span class="var">Type</span> specifies the type and associativity of an operator.
+</span><br/><span class="on_right"> (basic_props:atm_or_atm_list/1)</span><span><span class="var">Name</span> is an atom or a list of atoms.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="current_op/3" href="ciaopdindex.html#current_op/3">current_op/3</a>:</div><div class="deftext"><tt>current_op(Precedence,Type,Op)</tt>
+<p>The atom <span class="var">Op</span> is currently an operator of type <span class="var">Type</span> and precedence <span class="var">Precedence</span>. Neither <span class="var">Op</span> nor the other arguments need be instantiated at the time of the call; i.e., this predicate can be used to generate as well as to test.<p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Precedence</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:operator_specifier/1)</span><span><span class="var">Type</span> specifies the type and associativity of an operator.
+</span><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Op</span> is an atom.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Precedence</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:operator_specifier/1)</span><span><span class="var">Type</span> specifies the type and associativity of an operator.
+</span><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Op</span> is an atom.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="current_prefixop/3" href="ciaopdindex.html#current_prefixop/3">current_prefixop/3</a>:</div><div class="deftext"><tt>current_prefixop(Op,Less,Precedence)</tt>
+<p>Similar to <a class="idx_anchor" id="7" href="ciaoglindex.html#current_op/3"><tt>current_op/3</tt></a>, but it concerns only the prefix operators. It returns <strong>only one solution</strong>. Not a predicate for general use.<p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Op</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Less</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Precedence</span> is an integer.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Op</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Less</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Precedence</span> is an integer.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="current_infixop/4" href="ciaopdindex.html#current_infixop/4">current_infixop/4</a>:</div><div class="deftext"><tt>current_infixop(Op,LeftLess,Prec,RightLess)</tt>
+<p>Similar to <a class="idx_anchor" id="8" href="ciaoglindex.html#current_op/3"><tt>current_op/3</tt></a>, but it concerns only infix operators. It returns <strong>only one solution</strong>. Not a predicate for general use.<p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Op</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">LeftLess</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Prec</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">RightLess</span> is an integer.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Op</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">LeftLess</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Prec</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">RightLess</span> is an integer.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="current_postfixop/3" href="ciaopdindex.html#current_postfixop/3">current_postfixop/3</a>:</div><div class="deftext"><tt>current_postfixop(Op,Less,Precedence)</tt>
+<p>Similar to <a class="idx_anchor" id="9" href="ciaoglindex.html#current_op/3"><tt>current_op/3</tt></a>, but it concerns only the postfix operators. It returns <strong>only one solution</strong>. Not a predicate for general use.<p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Op</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Less</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Precedence</span> is an integer.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Op</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Less</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Precedence</span> is an integer.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="standard_ops/0" href="ciaopdindex.html#standard_ops/0">standard_ops/0</a>:</div><div class="deftext">No further documentation available for this predicate.</div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="write.html">&#x25C4;</a><a class="navbutton" href="iso_byte_char.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

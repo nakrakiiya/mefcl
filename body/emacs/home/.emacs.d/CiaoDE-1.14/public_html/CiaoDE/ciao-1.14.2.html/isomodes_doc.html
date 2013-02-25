@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>ISO-Prolog modes &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="native_props.html">&#x25C4;</a><a class="navbutton" href="basicmodes_doc.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="AnnotatedProlog.html">PART V - Assertions, Properties, Types, Modes, Comments (assertions)</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>ISO-Prolog modes</h1><a class="idx_anchor" href="ciaoliindex.html#isomodes"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza</a>, <a class="idx_anchor" id="Manuel Hermenegildo" href="ciaoauindex.html#Manuel Hermenegildo">Manuel Hermenegildo</a>.<p>
+This file defines the &ldquo;<a class="idx_anchor" id="0" href="ciaoglindex.html#modes">modes</a>&rdquo; used in the documentation of the ISO-Prolog standard. See also <a href="basicmodes_doc.html">Classical Prolog modes</a> for an alternative set of modes.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_package([assertions,isomodes]).</tt><LI><strong>New operators defined:</strong><br/><a class="idx_anchor" id="1" href="ciaoglindex.html#?/1"><tt>?/1</tt></a> [200,fy], <a class="idx_anchor" id="2" href="ciaoglindex.html#@/1"><tt>@/1</tt></a> [200,fy].
+<LI><strong>New modes defined:</strong><br/><a class="idx_anchor" id="3" href="ciaoglindex.html#+/1"><tt>+/1</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#@/1"><tt>@/1</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#-/1"><tt>-/1</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#?/1"><tt>?/1</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#*/1"><tt>*/1</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#+/2"><tt>+/2</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#@/2"><tt>@/2</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#-/2"><tt>-/2</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#?/2"><tt>?/2</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#*/2"><tt>*/2</tt></a>.
+</ul></div></div><div id="Documentation on new modes"><h2>Documentation on new modes</h2><div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="+/1" href="ciaomoindex.html#+/1">+/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>+A</tt>
+<ul class="itemize_minus"><LI><em>The following properties are added at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">A</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="@/1" href="ciaomoindex.html#@/1">@/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>@A</tt>
+<ul class="itemize_minus"><LI><em>The following properties are added globally:</em><br/><span class="on_right"> (basic_props:not_further_inst/2)</span><span><span class="var">A</span> is not further instantiated.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="-/1" href="ciaomoindex.html#-/1">-/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>-A</tt>
+<ul class="itemize_minus"><LI><em>The following properties are added at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">A</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="?/1" href="ciaomoindex.html#?/1">?/1</a>:</div><div class="deftext">Unspecified argument.</div></div><p>
+<div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="*/1" href="ciaomoindex.html#*/1">*/1</a>:</div><div class="deftext">Unspecified argument.</div></div><p>
+<div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="+/2" href="ciaomoindex.html#+/2">+/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>A+X</tt>
+<ul class="itemize_minus"><LI><em>The following properties are added at call time:</em><br/><span class="on_right"> (undefined property)</span><span>undefined:call(X,A)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="@/2" href="ciaomoindex.html#@/2">@/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>@(A,X)</tt>
+<ul class="itemize_minus"><LI><em>The following properties are added at call time:</em><br/><span class="on_right"> (undefined property)</span><span>undefined:call(X,A)
+</span>
+<LI><em>The following properties are added upon exit:</em><br/><span class="on_right"> (undefined property)</span><span>undefined:call(X,A)
+</span>
+<LI><em>The following properties are added globally:</em><br/><span class="on_right"> (basic_props:not_further_inst/2)</span><span><span class="var">A</span> is not further instantiated.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="-/2" href="ciaomoindex.html#-/2">-/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>A-X</tt>
+<ul class="itemize_minus"><LI><em>The following properties are added at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">A</span> is a free variable.
+</span>
+<LI><em>The following properties are added upon exit:</em><br/><span class="on_right"> (undefined property)</span><span>undefined:call(X,A)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="?/2" href="ciaomoindex.html#?/2">?/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>A?X</tt>
+<ul class="itemize_minus"><LI><em>Call and exit are compatible with:</em><br/><span class="on_right"> (undefined property)</span><span>undefined:call(X,A)
+</span>
+<LI><em>The following properties are added upon exit:</em><br/><span class="on_right"> (undefined property)</span><span>undefined:call(X,A)
+</span>
+</ul></div></div><p>
+<div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="*/2" href="ciaomoindex.html#*/2">*/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>A*X</tt>
+<ul class="itemize_minus"><LI><em>Call and exit are compatible with:</em><br/><span class="on_right"> (undefined property)</span><span>undefined:call(X,A)
+</span>
+</ul></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Package Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on new modes">Documentation on new modes</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="native_props.html">&#x25C4;</a><a class="navbutton" href="basicmodes_doc.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

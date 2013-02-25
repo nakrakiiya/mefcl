@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Dynamic predicates &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="aggregates.html">&#x25C4;</a><a class="navbutton" href="read.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="IsoProlog.html">PART III - ISO-Prolog library (iso)</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Dynamic predicates</h1><a class="idx_anchor" href="ciaoliindex.html#dynamic_rt"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza</a>, <a class="idx_anchor" id="The CLIP Group" href="ciaoauindex.html#The CLIP Group">The CLIP Group</a>.<p>
+The package <a class="idx_anchor" id="0" href="ciaoglindex.html#dynamic_clauses"><tt>dynamic_clauses</tt></a> provides the assert/retract family of predicates to manipulate dynamic predicates.<p>The defined predicates allow modification of the program as it is actually running. Clauses can be added to the program (<em>asserted</em>) or removed from the program (<em>retracted</em>), as well as inspected. Note that in Ciao only the dynamic predicates of the current module (or accessible dynamic multifile predicates) can be accessed and modified. This limits the bad impact to global analysis of this dynamic modification of the program. Thus, if dynamic predicates are exported, to be able to inspect or modify them externally some accessing predicates need to be implemented and exported alongside.<p>For the inspecting/manipulating predicates, the argument which corresponds to the clause head must be instantiated to an atom or a compound term. The argument corresponding to the clause must be instantiated either to a term <tt>Head :- Body</tt> or, if the body part is empty, to <tt>Head</tt>. An empty body part is represented as <tt>true</tt>.<p>Note that using this library is very detrimental to global analysis, and that for most uses the predicates listed in <a href="data_facts.html">Fast/concurrent update of facts</a> suffice.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/>To be able to handle dynamic predicates in a module, load the library package <a class="idx_anchor" id="1" href="ciaoglindex.html#dynamic_clauses"><tt>dynamic_clauses</tt></a>, either by putting it in the package list of the module or using the <a class="idx_anchor" id="2" href="ciaoglindex.html#use_package/1"><tt>use_package/1</tt></a> directive. Do not load directly the <a class="idx_anchor" id="3" href="ciaoglindex.html#dynamic_rt"><tt>dynamic_rt</tt></a> module.<LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="4" href="ciaoglindex.html#asserta/1"><tt>asserta/1</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#asserta/2"><tt>asserta/2</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#assertz/1"><tt>assertz/1</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#assertz/2"><tt>assertz/2</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#assert/1"><tt>assert/1</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#assert/2"><tt>assert/2</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#retract/1"><tt>retract/1</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#retractall/1"><tt>retractall/1</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#abolish/1"><tt>abolish/1</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#clause/2"><tt>clause/2</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#mfclause/2"><tt>mfclause/2</tt></a>, <a class="idx_anchor" id="15" href="ciaoglindex.html#current_predicate/1"><tt>current_predicate/1</tt></a>, <a class="idx_anchor" id="16" href="ciaoglindex.html#current_predicate/2"><tt>current_predicate/2</tt></a>, <a class="idx_anchor" id="17" href="ciaoglindex.html#dynamic/1"><tt>dynamic/1</tt></a>, <a class="idx_anchor" id="18" href="ciaoglindex.html#data/1"><tt>data/1</tt></a>, <a class="idx_anchor" id="19" href="ciaoglindex.html#wellformed_body/3"><tt>wellformed_body/3</tt></a>.
+<LI><em>Multifiles:</em><br/><a class="idx_anchor" id="20" href="ciaoglindex.html#do_on_abolish/1"><tt>do_on_abolish/1</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="21" href="ciaoglindex.html#prolog_sys"><tt>prolog_sys</tt></a>, <a class="idx_anchor" id="22" href="ciaoglindex.html#iso_misc"><tt>iso_misc</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="asserta/1" href="ciaopdindex.html#asserta/1">asserta/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span><tt>asserta(Clause)</tt></span>
+<ul class="itemize_minus"><LI><em>Description:</em> The current instance of <span class="var">Clause</span> is interpreted as a clause and is added to the current program. The predicate concerned must be dynamic. The new clause becomes the <em>first</em> clause for the predicate concerned. Any uninstantiated variables in <span class="var">Clause</span> will be replaced by new private variables.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Clause</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (dynamic_rt:clause/1)</span><span><span class="var">Clause</span> is a well-formed clause
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="asserta/2" href="ciaopdindex.html#asserta/2">asserta/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>asserta(Clause,Ref)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Like <tt>asserta/1</tt>. <span class="var">Ref</span> is a unique identifier of the asserted clause.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Clause</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Ref</span> is a free variable.
+</span><br/><span class="on_right"> (dynamic_rt:clause/1)</span><span><span class="var">Clause</span> is a well-formed clause
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="assertz/1" href="ciaopdindex.html#assertz/1">assertz/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span><tt>assertz(Clause)</tt></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Like <tt>asserta/1</tt>, except that the new clause becomes the <em>last</em> clause for the predicate concerned.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Clause</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (dynamic_rt:clause/1)</span><span><span class="var">Clause</span> is a well-formed clause
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="assertz/2" href="ciaopdindex.html#assertz/2">assertz/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>assertz(Clause,Ref)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Like <tt>assertz/1</tt>. <span class="var">Ref</span> is a unique identifier of the asserted clause.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Clause</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Ref</span> is a free variable.
+</span><br/><span class="on_right"> (dynamic_rt:clause/1)</span><span><span class="var">Clause</span> is a well-formed clause
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="assert/1" href="ciaopdindex.html#assert/1">assert/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>assert(Clause)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Identical to <tt>assertz/1</tt>. Included for compatibility.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Clause</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (dynamic_rt:clause/1)</span><span><span class="var">Clause</span> is a well-formed clause
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="assert/2" href="ciaopdindex.html#assert/2">assert/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>assert(Clause,Ref)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Identical to <tt>assertz/2</tt>. Included for compatibility.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Clause</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Ref</span> is a free variable.
+</span><br/><span class="on_right"> (dynamic_rt:clause/1)</span><span><span class="var">Clause</span> is a well-formed clause
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="retract/1" href="ciaopdindex.html#retract/1">retract/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span><tt>retract(Clause)</tt></span>
+<ul class="itemize_minus"><LI><em>Description:</em> The first clause in the program that matches <span class="var">Clause</span> is erased. The predicate concerned must be dynamic.<p>The predicate <tt>retract/1</tt> may be used in a non-determinate fashion, i.e., it will successively retract clauses matching the argument through backtracking. If reactivated by backtracking, invocations of the predicate whose clauses are being retracted will proceed unaffected by the retracts. This is also true for invocations of <tt>clause</tt> for the same predicate. The space occupied by a retracted clause will be recovered when instances of the clause are no longer in use.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Clause</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (dynamic_rt:clause/1)</span><span><span class="var">Clause</span> is a well-formed clause
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="retractall/1" href="ciaopdindex.html#retractall/1">retractall/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>retractall(Head)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Erase all clauses whose head matches <span class="var">Head</span>, where <span class="var">Head</span> must be instantiated to an atom or a compound term. The predicate concerned must be dynamic. The predicate definition is retained.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Head</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Head</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="abolish/1" href="ciaopdindex.html#abolish/1">abolish/1</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>abolish(spec)</tt>.<br/><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span><tt>abolish(Spec)</tt></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Erase all clauses of the predicate specified by the predicate spec <span class="var">Spec</span>. The predicate definition itself is also erased (the predicate is deemed undefined after execution of the abolish). The predicates concerned must all be user defined.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Spec</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (basic_props:predname/1)</span><span><span class="var">Spec</span> is a Name/Arity structure denoting a predicate name: <pre>predname(P/A) :-
+        atm(P),
+        nnegint(A).
+</pre>
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="clause/2" href="ciaopdindex.html#clause/2">clause/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span><tt>clause(Head,Body)</tt></span>
+<ul class="itemize_minus"><LI><em>Description:</em> The clause &apos;<span class="var">Head</span> <tt>:-</tt> <span class="var">Body</span>&apos; exists in the current module. The predicate concerned must be dynamic.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Head</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Head</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dynamic_rt:body/1)</span><span><span class="var">Body</span> is a clause body
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="mfclause/2" href="ciaopdindex.html#mfclause/2">mfclause/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span><tt>mfclause(Head,Body)</tt></span>
+<ul class="itemize_minus"><LI><em>Description:</em> There is a clause &apos;<span class="var">Head</span> <tt>:-</tt> <span class="var">Body</span>&apos; of a dynamic multifile predicate accessible from this module.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Head</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Head</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dynamic_rt:body/1)</span><span><span class="var">Body</span> is a clause body
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="current_predicate/1" href="ciaopdindex.html#current_predicate/1">current_predicate/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span><tt>current_predicate(Spec)</tt></span>
+<ul class="itemize_minus"><LI><em>Description:</em> A predicate in the current module is named <span class="var">Spec</span>.<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:predname/1)</span><span><span class="var">Spec</span> is a Name/Arity structure denoting a predicate name: <pre>predname(P/A) :-
+        atm(P),
+        nnegint(A).
+</pre>
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="current_predicate/2" href="ciaopdindex.html#current_predicate/2">current_predicate/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>current_predicate(Spec,Module)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> A predicate in <span class="var">Module</span> is named <span class="var">Spec</span>. <span class="var">Module</span> never is an engine module.<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:predname/1)</span><span><span class="var">Spec</span> is a Name/Arity structure denoting a predicate name: <pre>predname(P/A) :-
+        atm(P),
+        nnegint(A).
+</pre>
+</span><br/><span class="on_right"> (system_info:internal_module_id/1)</span><span><span class="var">Module</span> is an internal module identifier
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dynamic/1" href="ciaopdindex.html#dynamic/1">dynamic/1</a>:</div><div class="deftext"><tt>dynamic Spec</tt>
+<p><span class="var">Spec</span> is of the form <span class="var">F</span>/<span class="var">A</span>. The predicate named <span class="var">F</span> with arity <span class="var">A</span> is made <a class="idx_anchor" id="23" href="ciaoglindex.html#dynamic">dynamic</a> in the current module at runtime (useful for predicate names generated on-the-fly). If the predicate functor name <span class="var">F</span> is uninstatiated, a new, unique, predicate name is generated at runtime.<p><strong>Usage:</strong> <tt>dynamic Spec</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Spec</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (basic_props:predname/1)</span><span><span class="var">Spec</span> is a Name/Arity structure denoting a predicate name: <pre>predname(P/A) :-
+        atm(P),
+        nnegint(A).
+</pre>
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="data/1" href="ciaopdindex.html#data/1">data/1</a>:</div><div class="deftext"><tt>data Spec</tt>
+<p><span class="var">Spec</span> is of the form <span class="var">F</span>/<span class="var">A</span>. The predicate named <span class="var">F</span> with arity <span class="var">A</span> is made <a class="idx_anchor" id="24" href="ciaoglindex.html#data">data</a> in the current module at runtime (useful for predicate names generated on-the-fly). If the predicate functor name <span class="var">F</span> is uninstatiated, a new, unique, predicate name is generated at runtime. <p><strong>Usage:</strong> <tt>data Spec</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Spec</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (basic_props:predname/1)</span><span><span class="var">Spec</span> is a Name/Arity structure denoting a predicate name: <pre>predname(P/A) :-
+        atm(P),
+        nnegint(A).
+</pre>
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="erase/1" href="ciaopdindex.html#erase/1">erase/1</a>:</div><div class="deftext"><tt>erase(Ref)</tt>
+<p>Deletes the clause referenced by <span class="var">Ref</span>, the identifier obtained by using <a class="idx_anchor" id="25" href="ciaoglindex.html#asserta/2"><tt>asserta/2</tt></a> or <a class="idx_anchor" id="26" href="ciaoglindex.html#assertz/2"><tt>assertz/2</tt></a>.</div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="wellformed_body/3" href="ciaopdindex.html#wellformed_body/3">wellformed_body/3</a>:</div><div class="deftext"><tt>wellformed_body(BodyIn,Env,BodyOut)</tt>
+<p><span class="var">BodyIn</span> is a well-formed clause body. <span class="var">BodyOut</span> is its counterpart with no single-variable meta-goals (i.e., with <tt>call(X)</tt> for <tt>X</tt>). <tt>Env</tt> denotes if global cuts are admissible in <tt>BodyIn</tt> (<tt>+</tt> if they are, <tt>-</tt> if they are not).</div></div><p>
+</div><div id="Documentation on multifiles"><h2>Documentation on multifiles</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="do_on_abolish/1" href="ciaopdindex.html#do_on_abolish/1">do_on_abolish/1</a>:</div><div class="deftext"><tt>do_on_abolish(Head)</tt>
+<p>A hook predicate which will be called when the definition of the predicate of <span class="var">Head</span> is abolished.<br/>
+The predicate is <em>multifile</em>.<br/><p><strong>Usage:</strong> <tt>do_on_abolish(G)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">G</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul></div></div><p>
+</div><div id="Known bugs and planned improvements"><h2>Known bugs and planned improvements</h2><ul><LI>Package dynamic_clauses cannot be loaded into the shell.</ul></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a><LI><a href="#Documentation on multifiles">Documentation on multifiles</a><LI><a href="#Known bugs and planned improvements">Known bugs and planned improvements</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="aggregates.html">&#x25C4;</a><a class="navbutton" href="read.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

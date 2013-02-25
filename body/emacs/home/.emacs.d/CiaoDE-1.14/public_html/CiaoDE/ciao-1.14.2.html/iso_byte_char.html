@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>The Iso Byte Char module &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="operators.html">&#x25C4;</a><a class="navbutton" href="iso_misc.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="IsoProlog.html">PART III - ISO-Prolog library (iso)</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>The Iso Byte Char module</h1><a class="idx_anchor" href="ciaoliindex.html#iso_byte_char"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="The CLIP Group" href="ciaoauindex.html#The CLIP Group">The CLIP Group</a>, <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza</a>, <a class="idx_anchor" id="Edison Mera" href="ciaoauindex.html#Edison Mera">Edison Mera (documentation)</a>, <a class="idx_anchor" id="Manuel Hermenegildo" href="ciaoauindex.html#Manuel Hermenegildo">Manuel Hermenegildo (minor mods)</a>.<p>
+This module provides some basic predicates according to the ISO specification of byte and char manipulation.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(iso_byte_char)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#char_code/2"><tt>char_code/2</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#atom_chars/2"><tt>atom_chars/2</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#number_chars/2"><tt>number_chars/2</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#char_codes/2"><tt>char_codes/2</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#get_byte/1"><tt>get_byte/1</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#get_byte/2"><tt>get_byte/2</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#peek_byte/1"><tt>peek_byte/1</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#peek_byte/2"><tt>peek_byte/2</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#put_byte/1"><tt>put_byte/1</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#put_byte/2"><tt>put_byte/2</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#get_char/1"><tt>get_char/1</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#get_char/2"><tt>get_char/2</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#peek_char/1"><tt>peek_char/1</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#peek_char/2"><tt>peek_char/2</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#put_char/1"><tt>put_char/1</tt></a>, <a class="idx_anchor" id="15" href="ciaoglindex.html#put_char/2"><tt>put_char/2</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="char_code/2" href="ciaopdindex.html#char_code/2">char_code/2</a>:</div><div class="deftext"><tt>char_code(Char,Code)</tt>
+<p>Succeeds iff the character code of the one char atom <span class="var">Char</span> is <span class="var">Code</span>.<p><strong>Usage 1:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:character_code/1)</span><span><span class="var">Code</span> is an integer which is a character code.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Char</span> is an atom.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:character_code/1)</span><span><span class="var">Code</span> is an integer which is a character code.
+</span>
+</ul><p><strong>Usage 2:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Char</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:character_code/1)</span><span><span class="var">Code</span> is an integer which is a character code.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Char</span> is an atom.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="atom_chars/2" href="ciaopdindex.html#atom_chars/2">atom_chars/2</a>:</div><div class="deftext"><tt>atom_chars(Atom,Chars)</tt>
+<p>Succeeds iff <span class="var">Chars</span> is a list whose elements are the one-char atoms whose names are the successive characters of the name of atom <span class="var">Atom</span><p><strong>Usage 1:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Chars</span> is a list of <span class="var">atm</span>s.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Atom</span> is an atom.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Chars</span> is a list of <span class="var">atm</span>s.
+</span>
+</ul><p><strong>Usage 2:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Atom</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Chars</span> is a list of <span class="var">atm</span>s.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Atom</span> is an atom.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="number_chars/2" href="ciaopdindex.html#number_chars/2">number_chars/2</a>:</div><div class="deftext"><tt>number_chars(Number,Chars)</tt>
+<p>Success iff <span class="var">Chars</span> is a list whose elements are the one-char atoms corresponding to a character sequence of <span class="var">Number</span> which could be output<p><strong>Usage 1:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Chars</span> is a list of <span class="var">atm</span>s.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:num/1)</span><span><span class="var">Number</span> is a number.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Chars</span> is a list of <span class="var">atm</span>s.
+</span>
+</ul><p><strong>Usage 2:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Number</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Chars</span> is a list of <span class="var">atm</span>s.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:num/1)</span><span><span class="var">Number</span> is a number.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="char_codes/2" href="ciaopdindex.html#char_codes/2">char_codes/2</a>:</div><div class="deftext"><p><strong>Usage 1:</strong> <ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Arg2</span> is a list of <span class="var">character_code</span>s.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Arg1</span> is a list of <span class="var">atm</span>s.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Arg2</span> is a list of <span class="var">character_code</span>s.
+</span>
+</ul><p><strong>Usage 2:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Arg1</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Arg2</span> is a list of <span class="var">character_code</span>s.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/2)</span><span><span class="var">Arg1</span> is a list of <span class="var">atm</span>s.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="get_byte/1" href="ciaopdindex.html#get_byte/1">get_byte/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <a class="idx_anchor" id="16" href="ciaoglindex.html#get_byte/2"><tt>get_byte/2</tt></a>, but use the current input.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Arg1</span> is an integer.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Arg1</span> is an integer.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="get_byte/2" href="ciaopdindex.html#get_byte/2">get_byte/2</a>:</div><div class="deftext"><tt>get_byte(Stream,Byte)</tt>
+<p>Is true iff <span class="var">Byte</span> unifies with the next byte to be input from the target <span class="var">Stream</span>.<p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Byte</span> is an integer.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Stream</span> is an open stream.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Stream</span> is an open stream.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Byte</span> is an integer.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:not_further_inst/2)</span><span><span class="var">Stream</span> is not further instantiated.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="peek_byte/1" href="ciaopdindex.html#peek_byte/1">peek_byte/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <a class="idx_anchor" id="17" href="ciaoglindex.html#peek_byte/2"><tt>peek_byte/2</tt></a>, but use the current input.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Arg1</span> is an integer.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Arg1</span> is an integer.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="peek_byte/2" href="ciaopdindex.html#peek_byte/2">peek_byte/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Is true iff <span class="var">Byte</span> unifies with the next byte to be input from the target <span class="var">Stream</span>.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Arg2</span> is an integer.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Arg1</span> is an open stream.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Arg1</span> is an open stream.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Arg2</span> is an integer.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:not_further_inst/2)</span><span><span class="var">Arg1</span> is not further instantiated.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="put_byte/1" href="ciaopdindex.html#put_byte/1">put_byte/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <a class="idx_anchor" id="18" href="ciaoglindex.html#put_byte/2"><tt>put_byte/2</tt></a>, but use the current input.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Arg1</span> is an integer.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="put_byte/2" href="ciaopdindex.html#put_byte/2">put_byte/2</a>:</div><div class="deftext"><tt>put_byte(Stream,Byte)</tt>
+<p>Is true. Procedurally, <a class="idx_anchor" id="19" href="ciaoglindex.html#putbyte/2"><tt>putbyte/2</tt></a> is executed as follows:<p>a) Outputs the byte <span class="var">Byte</span> to the target stream.<p>b) Changes the stream position of the target stream to take account of the byte which has been output.<p>c) The goal succeeds.<p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Stream</span> is an open stream.
+</span><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Byte</span> is an integer.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Stream</span> is an open stream.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:not_further_inst/2)</span><span><span class="var">Stream</span> is not further instantiated.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="get_char/1" href="ciaopdindex.html#get_char/1">get_char/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Same as <a class="idx_anchor" id="20" href="ciaoglindex.html#get_char/2"><tt>get_char/2</tt></a>, but use the current input.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Arg1</span> is an atom.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Arg1</span> is an atom.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="get_char/2" href="ciaopdindex.html#get_char/2">get_char/2</a>:</div><div class="deftext"><tt>get_char(Stream,Char)</tt>
+<p>Is true iif <span class="var">Char</span> unifies with the next character to be input from the target <span class="var">Stream</span>.<p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Char</span> is an atom.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Stream</span> is an open stream.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Stream</span> is an open stream.
+</span><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Char</span> is an atom.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:not_further_inst/2)</span><span><span class="var">Stream</span> is not further instantiated.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="peek_char/1" href="ciaopdindex.html#peek_char/1">peek_char/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Similar to <a class="idx_anchor" id="21" href="ciaoglindex.html#peek_code/1"><tt>peek_code/1</tt></a>, but using char instead of code.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Arg1</span> is an atom.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Arg1</span> is an atom.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="peek_char/2" href="ciaopdindex.html#peek_char/2">peek_char/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Similar to <a class="idx_anchor" id="22" href="ciaoglindex.html#peek_code/2"><tt>peek_code/2</tt></a>, but using char instead of code.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Arg2</span> is an atom.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Arg1</span> is an open stream.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Arg1</span> is an open stream.
+</span><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Arg2</span> is an atom.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:not_further_inst/2)</span><span><span class="var">Arg1</span> is not further instantiated.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="put_char/1" href="ciaopdindex.html#put_char/1">put_char/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Similar to <a class="idx_anchor" id="23" href="ciaoglindex.html#put_code/1"><tt>put_code/1</tt></a>, but using char instead of code.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Arg1</span> is an atom.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="put_char/2" href="ciaopdindex.html#put_char/2">put_char/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Description:</em> Similar to <a class="idx_anchor" id="24" href="ciaoglindex.html#put_code/2"><tt>put_code/2</tt></a>, but using char instead of code.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Arg1</span> is an open stream.
+</span><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">Arg2</span> is an atom.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (streams_basic:stream/1)</span><span><span class="var">Arg1</span> is an open stream.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:not_further_inst/2)</span><span><span class="var">Arg1</span> is not further instantiated.
+</span>
+</ul></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="operators.html">&#x25C4;</a><a class="navbutton" href="iso_misc.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

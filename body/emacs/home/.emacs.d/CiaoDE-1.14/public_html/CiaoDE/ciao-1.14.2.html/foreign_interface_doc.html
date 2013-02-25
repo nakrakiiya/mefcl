@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Foreign Language Interface &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="Interfaces.html">&#x25C4;</a><a class="navbutton" href="foreign_interface_properties.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="Interfaces.html">PART VIII - Interfaces to other languages and systems</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Foreign Language Interface</h1><a class="idx_anchor" href="ciaoliindex.html#foreign_interface"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Jose F. Morales" href="ciaoauindex.html#Jose F. Morales">Jose F. Morales</a>, <a class="idx_anchor" id="Manuel Carro" href="ciaoauindex.html#Manuel Carro">Manuel Carro</a>.<p>
+Ciao Prolog includes a high-level, flexible way to interface C and Prolog, based on the use of assertions to declare what are the expected types and modes of the arguments of a Prolog predicate, and which C files contain the corresponding code. To this end, the user provides:<p><ul> <LI>A set of C files, or a precompiled shared library, <LI>A Ciao Prolog module defining whith predicates are implemented in the C files and the types and modes of their arguments, and <LI>an (optional) set of flags required for the compilation of the files. </ul> <p>The Ciao Prolog compiler analyzes the Prolog code written by the user and gathers this information in order to generate automatically C &quot;glue&quot; code implementing the data translation between Prolog and C, and to compile the C code into dynamically loadable C object files, which are linked automatically when needed.<p> <div id="Declaration of Types"><h2>Declaration of Types</h2> <p>Each predicate implemented as a foreign C function must have accompanying declarations in the Ciao Prolog associated file stating the types and modes of the C function. A sample declaration for <tt>prolog_predicate</tt> which is implemented as <tt>foreign_function_name</tt> is:<p> <pre>     :- true pred prolog_predicate(m1(Arg1), ... mN(ArgN)) :: 
+                  type1 * ... * typeN + 
+                  (foreign(foreign_function_name), returns(ArgR)).
+   </pre> <p>where <tt>m1</tt>, ..., <tt>mN</tt> and <tt>type1</tt>, ..., <tt>typeN</tt> are respectively the modes and types of the arguments. <tt>foreign_function_name</tt> is the name of the C function implementing <a class="idx_anchor" id="0" href="ciaoglindex.html#prolog_predicate/N"><tt>prolog_predicate/N</tt></a>, and the result of this function is unified with <tt>ArgR</tt>, which must be one of <tt>Arg1</tt> ... <tt>ArgN</tt>.<p>This notation can be simplified in several ways. If the name of the foreign function is the same as the name of the Ciao Prolog predicate, <tt>foreign(foreign_function_name)</tt> can be replaced by <tt>foreign/0</tt>. <tt>returns(ArgR)</tt> specifies that the result of the function corresponds to the <tt>ArgR</tt> argument of the Ciao Prolog predicate. If the foreign function does not return anything (or if its value is ignored), then <tt>returns(ArgR)</tt> must be removed. Note that <tt>returns</tt> cannot be used without <tt>foreign</tt>. A simplified, minimal form is thus:<p><pre>     :- true pred prolog_predicate(m1(Arg1), ... mN(ArgN)) :: 
+                  type1 * ... * typeN + foreign.
+   </pre> <p></div><div id="Equivalence between Ciao Prolog and C types"><h2>Equivalence between Ciao Prolog and C types</h2> <p>The automatic translation between Ciao Prolog and C types is defined (at the moment) only for some simple but useful types. The translation to be performed is solely defined by the types of the arguments in the Ciao Prolog file (i.e., no inspection of the corresponding C file is done). The names (and meaning) of the types known for performing that translation are to be found in <a href="foreign_interface_properties.html">Foreign Language Interface Properties</a>; they are also summarized below (Prolog types are on the left, and the corresponding C types on the right):<p><ul> <LI>num &lt;-&gt; double <LI>int &lt;-&gt; int <LI>atm &lt;-&gt; char * <LI>string &lt;-&gt; char * (with trailing zero) <LI>byte_list &lt;-&gt; char * (a buffer of bytes, with associated length) <LI>int_list &lt;-&gt; int * (a buffer of integers, with associated length) <LI>double_list &lt;-&gt; double * (a buffer of doubles, with associated length) <LI>address &lt;-&gt; void * </ul> <p>Strings, atoms, and lists of bytes are passed to (and from) C as dynamically (<tt>ciao_malloc</tt>) created arrays of characters (bytes). Those arrays are freed by Ciao Prolog upon return of the foreign function unless the property <a class="idx_anchor" id="1" href="ciaoglindex.html#do_not_free/2"><tt>do_not_free/2</tt></a> is specified (see examples below). This caters for the case in which the C files save in a private state (either by themselves, or by a library function being called by them) the values passed on from Prolog. The type <a class="idx_anchor" id="2" href="ciaoglindex.html#byte_list/1"><tt>byte_list/1</tt></a> requires an additional property, <a class="idx_anchor" id="3" href="ciaoglindex.html#size_of/2"><tt>size_of/2</tt></a>, to indicate which argument represents its size.<p> Empty lists of bytes and integers are converted into C <tt>NULL</tt> pointers, and vice versa. Empty strings (<tt>[]</tt>) and null atoms (&rdquo;) are converted into zero-length, zero-ended C strings (<em>&quot;&quot;</em>). C <tt>NULL</tt> strings and empty buffers (i.e., buffers with zero length) are transformed into the empty list or the null atom (<tt>&rdquo;</tt>).<p>Most of the work is performed by the predicates in the <a href="build_foreign_interface.html">Foreign Language Interface Builder</a>, which can be called explicitly by the user. Doing that is not usually needed, since the Ciao Prolog Compiler takes care of building glue code files an of compiling and linking whatever is necessary.<p> </div><div id="Equivalence between Ciao Prolog and C modes"><h2>Equivalence between Ciao Prolog and C modes</h2> <p>The (prefix) <tt>+/1</tt> ISO mode (or, equivalently, the in/1 mode) states that the corresponding Prolog argument is ground at the time of the call, and therefore it is an input argument in the C part; this groundness is automatically checked upon entry. The (prefix) <tt>-/1</tt> ISO mode (or, equivalently, the go/1 mode) states that Prolog expects the C side to generate a (ground) value for that argument. Arguments with output mode should appear in C functions as pointers to the corresponding base type (as it is usual with C), i.e., an argument which is an integer generated by the C file, declared as<p><pre>:- true pred get_int(go(ThisInt)) :: int + foreign
+</pre> <p>or as<p><pre>:- true pred get_int(-ThisInt) :: int + foreign
+</pre> <p>should appear in the C code as<p><pre>void get_int(int *thisint)
+{
+        ....
+}
+</pre> <p>Note the type of the (single) argument of the function. Besides, the return value of a function can always be used as an output argument, just by specifying to which Prolog arguments it corresponds, using the <tt>foreing/1</tt> property. The examples below illustrate this point, and the use of several assertions to guide the compilation.<p></div><div id="Custom access to Prolog from C"><h2>Custom access to Prolog from C</h2> <p>Automatic type conversions does not cover all the possible cases. When the automatic type conversion is not enough (or if the user, for any reason, does not want to go through the automatic conversion), it is possible to instruct Ciao Prolog not to make implicit type conversion. The strategy in that case is to pass the relevant argument(s) with a special type (a <tt>ciao_term</tt>) which can represent any term which can be built in Prolog. Operations to construct, traverse, and test this data abstraction from C are provided. The prototypes of these operations are placed on the <tt>&quot;ciao_prolog.h&quot;</tt> file, under the <tt>include</tt> subdirectory of the installation directory (the Ciao Prolog compiler knowns where it has been installed, and gives the C compiler the appropriate flags). This <em>non direct correspondence</em> mode is activated whenever a Ciao Prolog type unknown to the foreign interface (i.e., none of these in <a href="foreign_interface_properties.html">Foreign Language Interface Properties</a>) or the type <tt>any_term</tt> (which is explicitly recognised by the foreign language interface) is found. The latter is preferred, as it is much more informative, and external tools, as the the <a class="idx_anchor" id="4" href="ciaoglindex.html#CiaoPP">CiaoPP</a> preprocessor, can take advantage of them.<p><div id="Term construction"><h3>Term construction</h3> <p>All term construction primitives return an argument of type <tt>ciao_term</tt>, which is the result of constructing a term. All Ciao Prolog terms can be built using the interface operations <tt>ciao_var()</tt>, <tt>ciao_structure()</tt>, <tt>ciao_integer()</tt>, and <tt>ciao_float()</tt>. There are, however, variants and specialized versions of these operations which can be freely intermixed. Using one version or another is a matter of taste and convenience. We list below the prototypes of the primitives in order of complexity.<p>Throughout this section, <strong>true</strong>, when referred to a boolean value, correspond to the integer value <tt>1</tt>, and <strong>false</strong> correspond to the integer value <tt>0</tt>, as is customary in C boolean expressions. These values also available as the (predefined) constants <tt>ciao_true</tt> and <tt>ciao_false</tt>, both of type <tt>ciao_bool</tt>.<p><ul> <LI> <tt>ciao_term ciao_var();</tt> <p>Returns a fresh, unbound variable.<p><LI><tt>ciao_term ciao_integer(int i);</tt> <p>Creates a term, representing an integer from the Prolog point of view, from a C integer.<p><LI><tt>ciao_term ciao_float(double i);</tt> <p>Creates a term, representing a floating point number, from a floating point number.<p><LI><tt>ciao_term ciao_put_number_chars(char *number_string);</tt> <p>It converts <tt>number_string</tt> (which must a string representing a syntactically valid number) into a <tt>ciao_term</tt>.<p><LI><tt>ciao_term ciao_atom(char *name);</tt> <p>Creates an atom whose printable name is given as a C string.<p><LI><tt>ciao_term ciao_structure_a(char *name, int arity, ciao_term *args);</tt> <p>Creates a structure with name &apos;name&apos; (i.e., the functor name ), arity &apos;arity&apos; and the components of the array &apos;args&apos; as arguments: <tt>args[0]</tt> will be the first argument, <tt>args[1]</tt> the second, and so on. The &apos;args&apos; array itself is not needed after the term is created, and can thus be a variable local to a procedure. An atom can be represented as a 0-arity structure (with <tt>ciao_structure(name, 0)</tt>), and a list cell can be constructed using the &apos;.&apos;/2 structure name. The <tt>_a</tt> suffix stands for <em>array</em>.<p> <LI><tt>ciao_term ciao_structure(char *name, int arity, ...);</tt> <p>Similar to ciao_structure_a, but the C arguments after the arity are used to fill in the arguments of the structure.<p> <LI><tt>ciao_term ciao_list(ciao_term head, ciao_term tail);</tt> <p>Creates a list from a <tt>head</tt> and a <tt>tail</tt>. It is equivalent to <tt>ciao_structure(&quot;.&quot;, 2, head, tail)</tt>.<p> <LI><tt>ciao_term ciao_empty_list();</tt> <p>Creates an empty list. It is equivalent to <tt>ciao_atom(&quot;[]&quot;)</tt>.<p><LI><tt>ciao_term ciao_listn_a(int len, ciao_term *args);</tt> <p>Creates a list with &apos;len&apos; elements from the array <tt>args</tt>. The <em>nth</em> element of the list (starting at 1) is <tt>args[n-1]</tt> (starting at zero).<p><LI><tt>ciao_term ciao_listn(int length, ...);</tt> <p>Like <tt>ciao_listn_a()</tt>, but the list elements appear explicitly as arguments in the call.<p><LI><tt>ciao_term ciao_dlist_a(int len, ciao_term *args, ciao_term base);</tt> <p>Like <tt>ciao_listn_a</tt>, but a difference list is created. <tt>base</tt> whill be used as the tail of the list, instead of the empty list.<p><LI><tt>ciao_term ciao_dlist(int length, ...);</tt> <p>Similar to <tt>ciao_dlist_a()</tt> with a variable number of arguments. The last one is the tail of the list.<p><LI><tt>ciao_term ciao_copy_term(ciao_term src_term);</tt> <p>Returns a new copy of the <tt>term</tt>, with fresh variables (as <tt>copy_term/2</tt> does).<p></ul> <p> </div><div id="Testing the Type of a Term"><h3>Testing the Type of a Term</h3> <p>A <tt>ciao_term</tt> can contain <em>any</em> Prolog term, and its implementation is opaque to the C code. Therefore the only way to know reliably what data is passed on is using explicit functions to test term types. Below, <tt>ciao_bool</tt> is a type defined in <tt>&quot;ciao_prolog.h&quot;</tt> which can take the values 1 (for <strong>true</strong>) and 0 (for <strong>false</strong>).<p> <ul> <LI><tt>ciao_bool ciao_is_variable(ciao_term term);</tt> <p>Returns true if <tt>term</tt> is currently an uninstantiated variable.<p><LI><tt>ciao_bool ciao_is_number(ciao_term term);</tt> <p>Returns true if <tt>term</tt> is an integer (of any length) or a floating point number.<p><LI><tt>ciao_bool ciao_is_integer(ciao_term term);</tt> <p>Returns true if <tt>term</tt> is instantiated to an integer.<p><LI><tt>ciao_bool ciao_fits_in_int(ciao_term term);</tt> <p>Returns true if <tt>term</tt> is instantiated to an integer which can be stored in an <tt>int</tt>, and false otherwise.<p><LI><tt>ciao_bool ciao_is_atom(ciao_term atom);</tt> <p>Returns true if <tt>term</tt> is an atom.<p><LI><tt>ciao_bool ciao_is_list(ciao_term term);</tt> <p>Returns true if <tt>term</tt> is a list (actually, a <tt>cons</tt> cell).<p><LI><tt>ciao_bool ciao_is_empty_list(ciao_term term);</tt> <p>Returns true if <tt>term</tt> is the atom which represents the empty list (i.e., <tt>[]</tt>).<p><LI><tt>ciao_bool ciao_is_structure(ciao_term term);</tt> <p>Returns true if <tt>term</tt> is a structure of any arity. This includes atoms (i.e., structures of arity zero) and lists, but excludes variables and numbers.<p></ul> <p> </div><div id="Term navigation"><h3>Term navigation</h3> <p>The functions below can be used to recover the value of a <tt>ciao_term</tt> into C variables, or to inspect Prolog structures.<p> <ul> <p><LI><tt>int ciao_to_integer(ciao_term term); </tt> <p>Converts <tt>term</tt> to an integer. <tt>ciao_is_integer(term)</tt> must hold.<p><LI><tt>ciao_bool ciao_to_integer_check(ciao_term term, int *result); </tt> <p>Checks whether <tt>term</tt> fits into the size of an integer. If so, true is returned and <tt>*result</tt> is unified with the integer <tt>term</tt> represents. Otherwise, false is returned and <tt>*result</tt> is not touched.<p><LI><tt>double ciao_to_float(ciao_term term);</tt> <p>Converts <tt>term</tt> to a float value. <tt>ciao_is_number(term)</tt> must hold.<p><LI><tt>char *ciao_get_number_chars(ciao_term term);</tt> <p>It converts <tt>ciao_term</tt> (which must be instantiated to a number) into a C string representing the number in the current radix. The string returned is a copy, which must (eventually) be explicitly deallocated by the user C code using the operation <tt>ciao_free()</tt> <p><LI><tt>char *ciao_atom_name(ciao_term atom);</tt> <p>Returns the name of the atom. The returned string <em>is the one internally used by Ciao Prolog</em>, and should not be deallocated, changed or altered in any form. The advantage of using it is that it is fast, as no data copying is needed.<p><LI><tt>char *ciao_atom_name_dup(ciao_term atom);</tt> <p>Obtains a <strong>copy</strong> of the name of the atom. The string can be modified, and the programmer has the responsibility of deallocating it after being used. Due to the copy, it is slower than calling <tt>char *ciao_atom_name()</tt>.<p><LI><tt>ciao_term ciao_list_head(ciao_term term);</tt> <p>Extracts the head of the list <tt>term</tt>. Requires <tt>term</tt> to be a list.<p><LI><tt>ciao_term ciao_list_tail(ciao_term term);</tt> <p>Extracts the tail of the list <tt>term</tt>. Requires <tt>term</tt> to be a list.<p><LI><tt>char *ciao_structure_name(ciao_term term);</tt> <p>Extracts the name of the structure <tt>term</tt>. Requires <tt>term</tt> to be a structure.<p><LI><tt>int ciao_structure_arity(ciao_term term);</tt> <p>Extracts the arity of the structure <tt>term</tt>.<p>Requires <tt>term</tt> to be a structure.<p><LI><tt>ciao_term ciao_structure_arg(ciao_term term, int n);</tt> <p>Extracts the <em>nth</em> argument of the structure <tt>term</tt>. It behaves like <tt>arg/3</tt>, so the first argument has index 1. Requires <tt>term</tt> to be a structure.<p></ul> <p> </div><div id="Testing for Equality and Performing Unification"><h3>Testing for Equality and Performing Unification</h3> <p>Variables of type <tt>ciao_term</tt> cannot be tested directly for equality: they are (currently) implemented as a sort of pointers which may be aliased (two different pointers may refer to the same object). The interface provides helper functions for testing term equality and to perform unification of terms.<p><ul> <LI><tt>ciao_bool ciao_unify(ciao_term x, ciao_term y);</tt> <p>Performs the unification of the terms <tt>x</tt> and <tt>y</tt>, and returns true if the unification was successful. This is equivalent to calling the (infix) Prolog predicate <tt>=/2</tt>. The bindings are trailed and undone on backtracking.<p><LI><tt>ciao_bool ciao_equal(ciao_term x, ciao_term y);</tt> <p>Performs equality testing of terms, and returns true if the test was successful. This is equivalent to calling the (infix) Prolog predicate <tt>==/2</tt>. Equality testing does not modify the terms compared.<p></ul> <p> </div><div id="Raising Exceptions"><h3>Raising Exceptions</h3> <p>The following functions offers a way of throwing <a class="idx_anchor" id="5" href="ciaoglindex.html#exceptions">exceptions</a> from C that can be caught in Prolog with <tt>catch/3</tt>. The term that reaches Prolog is exactly the same which was thrown by C. The execution flow is broken at the point where <tt>ciao_raise_exception()</tt> is executed, and it returns to Prolog.<p><ul> <p><LI><tt>void ciao_raise_exception(ciao_term ball);</tt> <p>Raises an exception an throws the term <tt>ball</tt>.<p></ul> <p> </div><div id="Creating and disposing of memory chunks"><h3>Creating and disposing of memory chunks</h3> <p>Memory to be used solely by the user C code can be reserved/disposed of using, e.g., the well-known <tt>malloc()</tt>/<tt>free()</tt> functions (or whatever other functions the user may have available). However, memory explicitly allocated by Ciao Prolog and passed to C code, or allocated by C code and passed on to Ciao Prolog (and subject to garbage collection by it) should be allotted and freed (when necessary) by using the functions:<p><ul> <p><LI><tt>void *ciao_malloc(int size);</tt> <p><LI><tt>void ciao_free(void *pointer);</tt> <p></ul> <p> whose behavior is similar to <tt>malloc()</tt>/<tt>free()</tt>, but which will cooordinate properly with Ciao Prolog&apos;s internal memory management.<p> </div><div id="Calling Prolog from C"><h3>Calling Prolog from C</h3> <p>It is also possible to make arbitraty calls to Prolog predicates from C. There are two basic ways of make a query, depending on whether only one solution is needed (or if the predicate to be called is known to generate only one solution), or if several solutions are required.<p>When only one solution is needed <tt>ciao_commit_call</tt> obtains it (the solution obtained will obviously be the first one) and discards the resources used for finding it:<p><ul> <p><LI><tt>ciao_bool ciao_commit_call(char *name, int arity, ...);</tt> <p>Makes a call to a predicate and returns true or false depending on whether the query has succedeed or not. In case of success, the (possibly) instantiated variables are reachable from C.<p><LI><tt>ciao_bool ciao_commit_call_term(ciao_term goal);</tt> <p>Like <tt>ciao_commit_call()</tt> but uses the previously built term <tt>goal</tt> as goal.<p></ul> <p>If more than one solution is needed, it is necessary to use the <tt>ciao_query</tt> operations. A consult begins with a <tt>ciao_query_begin</tt> which returns a <tt>ciao_query</tt> object. Whenever an additional solution is required, the <tt>ciao_query_next</tt> function can be called. The query ends by calling <tt>ciao_query_end</tt> and all pending search branches are pruned.<p><ul> <p><LI><tt>ciao_query *ciao_query_begin(char *name, int arity, ...);</tt> <p>The predicate with the given name, arity and arguments (similar to the <tt>ciao_structure()</tt> operation) is transformed into a <tt>ciao_query</tt> object which can be used to make the actual query.<p><LI><tt>ciao_query *ciao_query_begin_term(ciao_term goal);</tt> <p>Like ciao_query_begin but using the term <tt>goal</tt> instead.<p><LI><tt>ciao_bool ciao_query_ok(ciao_query *query);</tt> <p>Determines whether the query may have pending solutions. A false return value means that there are no more solutions; a true return value means that there are more possible solutions.<p> <LI><tt>void ciao_query_next(ciao_query *query);</tt> <p>Ask for a new solution.<p><LI><tt>void ciao_query_end(ciao_query *query);</tt> <p>Ends the query and frees the used resources.<p></ul> <p></div></div><div id="Examples"><h2>Examples</h2> <p><div id="Mathematical functions"><h3>Mathematical functions</h3> <p>In this example, the standard mathematical library is accessed to provide the <em>sin</em>, <em>cos</em>, and <em>fabs</em> functions. Note that the library is specified simply as<p><pre>:- use_foreign_library([m]).
+</pre> <p>The foreign interface adds the <tt>-lm</tt> at compile time. Note also how some additional options are added to optimize the compiled code (only glue code, in this case) and mathematics (only in the case of Linux in an Intel processor).<p><strong>File</strong> <em>math.pl</em>:<p><pre>:- module(math, [sin/2, cos/2, fabs/2], [foreign_interface]).
+
+:- true pred sin(in(X),go(Y)) :: num * num + (foreign,returns(Y)).
+:- true pred cos(in(X),go(Y)) :: num * num + (foreign,returns(Y)).
+:- true pred fabs(in(X),go(Y)) :: num * num + (foreign,returns(Y)).
+
+:- extra_compiler_opts([&apos;-O2&apos;]).
+:- extra_compiler_opts(&apos;LINUXi86&apos;,[&apos;-ffast-math&apos;]).
+:- use_foreign_library(&apos;LINUXi86&apos;, m).
+
+</pre> <p></div><div id="Addresses and C pointers"><h3>Addresses and C pointers</h3> <p>The <tt>address</tt> type designates any pointer, and provides a means to deal with C pointers in Prolog without interpreting them whatsoever. The C source file which implements the operations accessed from Prolog is declared with the<p><pre>:- use_foreign_source(objects_c).
+</pre> <p>directive.<p><strong>File</strong> <em>objects.pl</em>:<p><pre>:- module(objects, [object/2, show_object/1], [foreign_interface]).
+
+:- true pred object(in(N),go(Object)) ::
+	int * address + (foreign,returns(Object)).
+
+:- true pred show_object(in(Object)) ::
+	address + foreign.
+
+:- use_foreign_source(objects_c).
+:- extra_compiler_opts(&apos;-O2&apos;).
+
+</pre> <p><strong>File</strong> <em>objects_c.c</em>:<p><pre>#include &lt;stdio.h&gt;
+
+struct object {
+  char *name;
+  char *colour;
+};
+
+#define OBJECTS 3
+
+struct object objects[OBJECTS] =
+{ {&quot;ring&quot;,&quot;golden&quot;},
+  {&quot;table&quot;,&quot;brown&quot;},
+  {&quot;bottle&quot;,&quot;green&quot;} };
+
+struct object *object(int n) {
+  return &amp;objects[n % OBJECTS];
+}
+
+void show_object(struct object *o) {
+  printf(&quot;I show you a %s %s\n&quot;, o-&gt;colour, o-&gt;name);
+}
+
+
+</pre> <p></div><div id="Lists of bytes and buffers"><h3>Lists of bytes and buffers</h3> <p>A list of bytes (c.f., a list of ints) corresponds to a byte buffer in C. The length of the buffer is associated to that of the list using the property <tt>size_of/2</tt>. The returned buffer <strong>is freed by Ciao Prolog</strong> upon its recepction, unless the <tt>do_not_free/1</tt> property is specified (see later). Conversely, a list of natural numbers in the range 0 to 255 can be passed to C as a buffer.<p><strong>File</strong> <em>byte_lists.pl</em>:<p><pre>:- module(byte_lists, [obtain_list/3, show_list/2], [foreign_interface]).
+	 
+:- true pred obtain_list(in(N),go(Length),go(List)) :: int * int * byte_list
+	+ (foreign,size_of(List,Length)).
+:- true pred show_list(in(Length),in(List)) :: int * byte_list
+	+ (foreign,size_of(List,Length)).
+
+:- use_foreign_source(bytes_op).
+
+</pre> <p><strong>File</strong> <em>bytes_op.c</em>:<p><pre>#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+void obtain_list(int n, int *l, char **s) {
+  int i;
+  int c;
+  if (n &lt; 0) n = 0;
+  *l = n;
+  *s = (char *)malloc(*l);
+  for (i = 0; i &lt; *l; i++) {
+    (*s)[i] = i;
+  }
+}
+
+void show_list(int l, char *s) {
+  if (s) {
+    int n;
+    printf(&quot;From C:&quot;);
+    for (n = 0; n &lt; l; n++) {
+      printf(&quot; %d&quot;, s[n]);
+    }
+    printf(&quot;.\n&quot;);
+  } else {
+    printf(&quot;From C: []\n&quot;);
+  }
+}
+
+
+
+
+
+
+
+
+</pre> <p></div><div id="Lists of integers"><h3>Lists of integers</h3> <p><strong>File</strong> <em>int_lists.pl</em>:<p><pre>:- module(int_lists, [obtain_list/3, show_list/2], [foreign_interface]).
+	 
+:- true pred obtain_list(in(N),go(Length),go(List)) :: int * int * int_list
+	+ (foreign,size_of(List,Length)).
+:- true pred show_list(in(Length),in(List)) :: int * int_list
+	+ (foreign,size_of(List,Length)).
+
+:- use_foreign_source(ints_op).
+
+</pre> <p><strong>File</strong> <em>ints_op.c</em>:<p><pre>#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+void obtain_list(int n, int *l, int **s) {
+  int i;
+  int c;
+  if (n &lt; 0) n = 0;
+  *l = n;
+  *s = (int *)malloc((*l) * sizeof(int));
+  for (i = 0; i &lt; *l; i++) {
+    (*s)[i] = i;
+  }
+}
+
+void show_list(int l, int *s) {
+  if (s) {
+    int n;
+    printf(&quot;From C:&quot;);
+    for (n = 0; n &lt; l; n++) {
+      printf(&quot; %d&quot;, s[n]);
+    }
+    printf(&quot;.\n&quot;);
+  } else {
+    printf(&quot;From C: []\n&quot;);
+  }
+}
+
+
+
+
+
+
+
+
+</pre> <p></div><div id="Strings and atoms"><h3>Strings and atoms</h3> <p>A C string can be seen as a buffer whose end is denoted by the trailing zero, and therefore stating its length is not needed. Two translations are possible into Ciao Prolog: as a Prolog string (list of bytes, with no trailing zero) and as an atom. These are selected automatically just by choosing the corresponding type (look at the examples below).<p>Note how the <tt>do_not_free/1</tt> property is specified in the <a class="idx_anchor" id="6" href="ciaoglindex.html#a_string/1"><tt>a_string/1</tt></a> predicate: the string returned by C is static, and therefore it should not be freed by Prolog.<p> <strong>File</strong> <em>strings_and_atoms.pl</em>:<p><pre>:- module(strings_and_atoms,
+	[ lookup_string/2,
+	  lookup_atom/2,
+	  a_string/1,
+	  show_string/1,
+	  show_atom/1
+	],
+	[foreign_interface]).
+
+:- true pred a_string(go(S)) ::
+	string + (foreign(get_static_str),returns(S),do_not_free(S)).
+	 
+:- true pred lookup_string(in(N),go(S)) ::
+	int * string + (foreign(get_str),returns(S)).
+:- true pred lookup_atom(in(N),go(S)) ::
+	int * atm + (foreign(get_str),returns(S)).
+
+:- true pred show_string(in(S)) :: string + foreign(put_str).
+:- true pred show_atom(in(S)) :: atm + foreign(put_str).
+
+:- use_foreign_source(str_op).
+
+</pre> <p><strong>File</strong> <em>str_op.c</em>:<p><pre>#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+char *get_static_str() {
+  return &quot;this is a string Prolog should not free&quot;;
+}
+
+char *get_str(int n) {
+  char *s;
+  int size;
+  int i;
+  int c;
+  if (n &lt; 0) n = -n;
+  size = (n%4) + 5;
+  s = (char *)malloc(size+1);
+  for (i = 0, c = ((i + n) % (&apos;z&apos; - &apos;a&apos; + 1)) + &apos;a&apos;; i &lt; size; i++,c++) {
+    if (c &gt; &apos;z&apos;) c = &apos;a&apos;; 
+    s[i] = c;
+  }
+  s[i] = 0;
+  return s;
+}
+
+void put_str(char *s) {
+  if (s) {
+    printf(&quot;From C: \&quot;%s\&quot;\n&quot;, s);
+  } else {
+    printf(&quot;From C: null\n&quot;);
+  }
+}
+
+
+
+
+
+
+
+
+</pre> <p></div><div id="Arbitrary Terms"><h3>Arbitrary Terms</h3> <p>This example shows how data Prolog can be passed untouched to C code, and how it can be manipulated there.<p> <strong>File</strong> <em>any_term.pl</em>:<p><pre>:- module(any_term,
+	[custom_display_term/1,
+	 custom_create_term/2
+	],
+	[foreign_interface]).
+
+:- true pred custom_display_term(in(X)) :: any_term + foreign.
+:- true pred custom_create_term(in(L), go(X)) :: int * any_term + (foreign,returns(X)).
+
+:- use_foreign_source(any_term_c).
+:- extra_compiler_opts(&apos;-O2&apos;).
+
+</pre> <p><strong>File</strong> <em>any_term_c.c</em>:<p><pre>#include &lt;stdio.h&gt;
+#include &quot;ciao_prolog.h&quot;
+
+ciao_term custom_create_term(int n) {
+  ciao_term t;
+  t = ciao_empty_list();
+  while (n &gt; 0) {
+    t = ciao_list(ciao_integer(n), t);
+    n--;
+  }
+  return t;
+}
+
+void custom_display_term(ciao_term term) {
+  if (ciao_is_atom(term)) {
+    printf(&quot;&lt;atom name=\&quot;%s\&quot;/&gt;&quot;, ciao_atom_name(term));
+  } else if (ciao_is_structure(term)) {
+    int i;
+    int a;
+    a = ciao_structure_arity(term);
+    printf(&quot;&lt;structure name=\&quot;%s\&quot; arity=\&quot;%d\&quot;&gt;&quot;, ciao_structure_name(term), a);
+    for (i = 1; i &lt;= a; i++) {
+      printf(&quot;&lt;argument number=\&quot;%d\&quot;&gt;&quot;, i);
+      custom_display_term(ciao_structure_arg(term, i));
+      printf(&quot;&lt;/argument&gt;&quot;);
+    }
+    printf(&quot;&lt;/structure&gt;&quot;);
+  } else if (ciao_is_list(term)) {
+    printf(&quot;&lt;list&gt;&quot;);
+    printf(&quot;&lt;head&gt;&quot;);
+    custom_display_term(ciao_list_head(term));
+    printf(&quot;&lt;/head&gt;&quot;);
+    printf(&quot;&lt;tail&gt;&quot;);
+    custom_display_term(ciao_list_tail(term));
+    printf(&quot;&lt;/tail&gt;&quot;);
+    printf(&quot;&lt;/list&gt;&quot;);
+  } else if (ciao_is_empty_list(term)) {
+    printf(&quot;&lt;empty_list/&gt;&quot;);
+  } else if (ciao_is_integer(term)) {
+    printf(&quot;&lt;integer value=\&quot;%d\&quot;/&gt;&quot;, ciao_to_integer(term));
+  } else if (ciao_is_number(term)) {
+    printf(&quot;&lt;float value=\&quot;%f\&quot;/&gt;&quot;, ciao_to_float(term));
+  } else {
+    printf(&quot;&lt;unknown/&gt;&quot;);
+  }
+}
+
+
+
+</pre> <p></div><div id="Exceptions"><h3>Exceptions</h3> <p>The following example defines a predicate in C that converts a list of codes into a number using <tt>strtol()</tt>. If this conversion fails, then a exception is raised.<p> <strong>File</strong> <em>exceptions_example.pl</em>:<p><pre>:- module(exceptions_example,
+	[codes_to_number_c/2,
+	 safe_codes_to_number/2
+	],
+	[foreign_interface]).
+
+:- use_module(library(format)).
+
+% If the string is not a number raises an exception.
+:- true pred codes_to_number_c(in(X), go(Y)) :: string * int + (foreign, returns(Y)).
+
+safe_codes_to_number(X, Y) :-
+        catch(codes_to_number_c(X, Y), Error, handle_exception(Error)).
+
+handle_exception(Error) :- format(&quot;Exception caught ~w~n&quot;, [Error]).
+
+:- use_foreign_source(exceptions_c).
+:- extra_compiler_opts(&apos;-O2&apos;).
+
+</pre> <p><strong>File</strong> <em>exceptions_c.c</em>:<p><pre>#include &lt;string.h&gt;
+#include &quot;ciao_prolog.h&quot;
+
+int codes_to_number_c(char *s) {
+  char *endptr;
+  int n;
+  n = strtol(s, &amp;endptr, 10);
+  if (endptr == NULL || *endptr != &apos;\0&apos;) {
+    ciao_raise_exception(ciao_structure(&quot;codes_to_number_exception&quot;, 
+                                        1,
+                                        ciao_atom(s)));
+  }
+  return n;
+}
+
+
+
+</pre> <p></div><div id="Testing number types and using unbound length integers"><h3>Testing number types and using unbound length integers</h3> <p>Unbound length integers (and, in general, any number) can be converted to/from <tt>ciao_terms</tt> by using strings. The following examples show two possibilities: one which tries to be as smart as possible (checking whether numbers fit into a machine int or not), and being lazy and simpler -and probably slower.<p><strong>File</strong> <em>bigints.pl</em>:<p><pre>:- module(bigints,
+	[ 
+          make_smart_conversion/3, % Checks and uses convenient format
+          force_string_conversion/2  % Passes around using strings
+	],
+	[foreign_interface]).
+
+:- true pred make_smart_conversion_c(in(X), go(Y), go(How)):: 
+        any_term * any_term * any_term + foreign # 
+&quot;Given a number @var{X}, it is unified with @var{Y} by using the most
+specific internal representation (short integer, float, or long
+integer).  @var{How} returns how the conversion was done.
+It behaves unpredictably if @var{X} is not a number.&quot;.
+
+:- true pred force_string_conversion_c(in(X), go(Y)):: 
+        any_term * any_term + foreign #
+&quot;Given a number @var{X}, it is unified with @var{Y} by using the most
+general internal representation (a string of characters). It behaves
+unpredictably if @var{X} is not a number.&quot;.
+
+:- use_foreign_source(bigints_c).
+
+make_smart_conversion(A, B, C):-
+        number(A),                              % Safety test
+        make_smart_conversion_c(A, B, C).
+
+force_string_conversion(A, B):-
+        number(A),                              % Safety test
+        force_string_conversion_c(A, B).
+
+</pre> <p><strong>File</strong> <em>bigints_c.c</em>:<p><pre>#include &quot;ciao_prolog.h&quot;
+
+void make_smart_conversion_c(ciao_term  number_in,
+                             ciao_term *number_out,
+                             ciao_term *how_converted) {
+  int    inter_int;
+  double inter_float;
+  char * inter_str;
+
+  if (ciao_fits_in_int(number_in)) {/* Includes the case of being a float */
+    inter_int = ciao_to_integer(number_in);
+    *number_out = ciao_integer(inter_int);
+    *how_converted = ciao_atom(&quot;machine_integer&quot;);
+  } else
+    if (ciao_is_integer(number_in)) { /* Big number */
+      inter_str   = ciao_get_number_chars(number_in);
+      *number_out = ciao_put_number_chars(inter_str);
+      ciao_free(inter_str);
+      *how_converted = ciao_atom(&quot;string&quot;);
+    } else { /* Must be a float */
+      inter_float = ciao_to_float(number_in);
+      *number_out = ciao_float(inter_float);
+      *how_converted = ciao_atom(&quot;float&quot;);
+    }
+}
+
+void force_string_conversion_c(ciao_term  number_in, 
+                               ciao_term *number_out) {
+  char *inter_str;
+  inter_str  = ciao_get_number_chars(number_in);
+  *number_out = ciao_put_number_chars(inter_str);
+  ciao_free(inter_str);
+}
+
+</pre> </div></div><br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/>The foreign interface is used by including <tt>foreign_interface</tt> in the include list of a module, or by means of an explicit <tt>:- use_package(foreign_interface)</tt>.</ul></div></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Package Sections</h2><ul><LI><a href="#Declaration of Types">Declaration of Types</a><LI><a href="#Equivalence between Ciao Prolog and C types">Equivalence between Ciao Prolog and C types</a><LI><a href="#Equivalence between Ciao Prolog and C modes">Equivalence between Ciao Prolog and C modes</a><LI><a href="#Custom access to Prolog from C">Custom access to Prolog from C</a><ul><LI><a href="#Term construction">Term construction</a><LI><a href="#Testing the Type of a Term">Testing the Type of a Term</a><LI><a href="#Term navigation">Term navigation</a><LI><a href="#Testing for Equality and Performing Unification">Testing for Equality and Performing Unification</a><LI><a href="#Raising Exceptions">Raising Exceptions</a><LI><a href="#Creating and disposing of memory chunks">Creating and disposing of memory chunks</a><LI><a href="#Calling Prolog from C">Calling Prolog from C</a></ul><LI><a href="#Examples">Examples</a><ul><LI><a href="#Mathematical functions">Mathematical functions</a><LI><a href="#Addresses and C pointers">Addresses and C pointers</a><LI><a href="#Lists of bytes and buffers">Lists of bytes and buffers</a><LI><a href="#Lists of integers">Lists of integers</a><LI><a href="#Strings and atoms">Strings and atoms</a><LI><a href="#Arbitrary Terms">Arbitrary Terms</a><LI><a href="#Exceptions">Exceptions</a><LI><a href="#Testing number types and using unbound length integers">Testing number types and using unbound length integers</a></ul><LI><a href="#Usage and interface">Usage and interface</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="Interfaces.html">&#x25C4;</a><a class="navbutton" href="foreign_interface_properties.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

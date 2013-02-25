@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Object Oriented Programming &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="fuzzy_doc.html">&#x25C4;</a><a class="navbutton" href="class_doc.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="ExtendProlog.html">PART VII - Ciao extensions</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Object Oriented Programming</h1><a class="idx_anchor" href="ciaoliindex.html#ociao"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Angel Fernandez Pineda" href="ciaoauindex.html#Angel Fernandez Pineda">Angel Fernandez Pineda</a>.<p>
+O&apos;Ciao is a set of libraries which allows object-oriented programming in Ciao Prolog. It extends the Ciao Prolog module system by introducing two new concepts:<p><ul> <LI>Inheritance. <LI>Instantiation. </ul> <p><a class="idx_anchor" id="0" href="ciaocoindex.html#Polymorphism"><em>Polymorphism</em></a> is the third fundamental concept provided by object oriented programming. This concept is not mentioned here since <strong>traditional PROLOG systems are polymorphic by nature</strong>.<p>Classes are declared in the same way as modules. However, they may be enriched with inheritance declarations and other object-oriented constructs. For an overview of the fundamentals of O&apos;Ciao, see <a href="http://www.clip.dia.fi.upm.es/~clip/papers/ociao-tr.ps.gz">http://www.clip.dia.fi.upm.es/~clip/papers/ociao-tr.ps.gz</a>. However, we will introduce the concepts in a tutorial way via examples.<p><div id="Early examples"><h2>Early examples</h2> <p>The following one is a very simple example which declares a class -- a simple stack. Note that if you replace <em>class/1</em> declaration with a <em>module/1</em> declaration, it will compile correctly, and can be used as a normal Prolog module.<p><p><pre>%%----------------------------------------------%%
+%% A class for stacks.                          %%
+%%----------------------------------------------%%
+
+%% Class declaration: the current source defines a class.
+:- class(stack,[],[]).
+
+% State declaration: storage/1 is an attribute.
+:- dynamic storage/1.
+
+% Interface declaration: the following predicates will
+% be available at run-time.
+:- export(push/1).
+:- export(pop/1).
+:- export(top/1).
+:- export(is_empty/0).
+
+% Methods
+
+push(Item) :-
+	nonvar(Item), 
+	asserta_fact(storage(Item)).
+
+pop(Item) :-
+	var(Item),
+	retract_fact(storage(Item)).
+
+top(Top) :-
+	storage(Top), !.
+
+is_empty :-
+	storage(_), !, fail.
+is_empty.
+
+</pre> <p>If we load this code at the Ciao toplevel shell:<p><pre>        ?- use_package(objects).
+
+        yes
+        ?- use_class(library(&apos;class/examples/stack&apos;)).
+
+        yes
+        ?-
+</pre> <p>we can create two stack <em>instances</em> :<p><pre>        ?- St1 new stack,St2 new stack.
+
+        St1 = stack(&apos;9254074093385163&apos;),
+        St2 = stack(&apos;9254074091&apos;) ? ,
+</pre> <p>and then, we can operate on them separately:<p><pre>        1 ?- St1:push(8),St2:push(9).
+
+        St1 = stack(&apos;9254074093385163&apos;),
+        St2 = stack(&apos;9254074091&apos;) ? 
+
+        yes
+        1 ?- St1:top(I),St2:top(K).
+
+        I = 8,
+        K = 9,
+        St1 = stack(&apos;9254074093385163&apos;),
+        St2 = stack(&apos;9254074091&apos;) ? 
+
+        yes
+        1 ?-
+</pre> <p>The interesting point is that there are two stacks. If the previous example had been a normal module, we would have a stack , but <strong>only one</strong> stack.<p>The next example introduces the concepts of <em>inheritable</em> predicate, <em>constructor</em>, <em>destructor</em> and <em>virtual method</em>. Refer to the following sections for further explanation.<p><pre>%%----------------------------------------------%%
+%% A generic class for item storage.            %%
+%%----------------------------------------------%%
+:- class(generic).
+
+% Public interface declaration:
+:- export([set/1,get/1,callme/0]).
+
+% An attribute
+:- data datum/1.
+
+% Inheritance declaration: datum/1 will be available to 
+% descendant classes (if any).
+:- inheritable(datum/1).
+
+% Attribute initialization: attributes are easily initialized
+% by writing clauses for them.
+datum(none).
+
+% Methods
+
+set(X) :-
+        type_check(X),
+        set_fact(datum(X)).
+
+get(X) :-
+        datum(X).
+
+callme :-
+	a_virtual(IMPL),
+	display(IMPL),
+	display(&apos; implementation of a_virtual/0 &apos;),
+	nl.
+
+% Constructor: in this case, every time an instance
+% of this class is created, it will display a message.
+generic :-
+	display(&apos; generic class constructor &apos;),
+	nl.
+
+% Destructor: analogous to the previous constructor,
+% it will display a message every time an instance
+% of this class is eliminated.
+destructor :-
+	display(&apos; generic class destructor &apos;),
+	nl.
+
+% Predicates:
+% cannot be called as messages (X:method)
+
+% Virtual declaration: tells the system to use the most
+% descendant implementation of a_virtual/1 when calling
+% it from inside this code (see callme/0).
+% If there is no descendant implementation for it, 
+% the one defined bellow will be used.
+:- virtual a_virtual/1.
+
+a_virtual(generic).
+
+:- virtual type_check/1.
+
+type_check(X) :-
+	nonvar(X).
+
+</pre> <p>And the following example, is an extension of previous class. This is performed by establishing an inheritance relationship:<p><pre>%%----------------------------------------------%%
+%% This class provides additional functionality %%
+%% to the &quot;generic&quot; class.                      %%
+%%----------------------------------------------%%
+:- class(specific).
+
+% Establish an inheritance relationship with class &quot;generic&quot;.
+:- inherit_class(library(&apos;class/examples/generic&apos;)).
+
+% Override inherited datum/1.
+% datum/1 is said to be overriden because there are both an
+% inherited definition (from class &quot;generic&quot;) and a local one,
+% which overrides the one inherited.
+:- data datum/1. 
+:- inheritable datum/1.
+
+% Extend the public interface inherited from &quot;generic&quot;.
+% note that set/1 and a_virtual/0 are also overriden. 
+% undo/0 is a new functionality added.
+:- export([set/1,undo/0]).
+
+% Methods
+
+set(Value) :-
+	inherited datum(OldValue),
+	!,
+	inherited set(Value),
+	asserta_fact(datum(OldValue)).
+set(Value) :-
+	inherited set(Value).
+
+undo :-
+        retract_fact(datum(Last)), !,
+        asserta_fact(inherited(datum(Last))).
+undo :-
+	retractall_fact(inherited(datum(_))).
+
+% Constructor
+specific :-
+	generic,
+	retractall_fact(inherited(datum(_))),
+	display(&apos; specific class constructor &apos;),
+	nl.
+
+% Destructor
+destructor :-
+	display(&apos; specific class destructor &apos;),
+	nl.
+
+% Predicates
+
+% New implementation of a_virtual/1. 
+% Since this predicate was declared virtual, the
+% implementation below will be called from the inherited 
+% method callme/0 instead of the version defined at &quot;generic&quot;.
+a_virtual(specific).
+
+</pre> <p><strong>Additional examples</strong> may be found on the <em>library/class/examples</em> directory relative to your Ciao Prolog instalation.<p></div><div id="Recommendations on when to use objects"><h2>Recommendations on when to use objects</h2> <p><p>We would like to give some advice in the use of object oriented programming, in conjunction with the declarative paradigm.<p>You should reconsider using O&apos;Ciao in the following cases:<p><ul> <p><LI>The pretended &quot;objects&quot; have no state,i.e., no data or dynamic predicates. In this case, a normal module will suffice.<p><LI>There is state, but there will be only one instance of a pretended class. Again, a module suffices.<p><LI>The &quot;objects&quot; are data structures (list,trees,etc) already supported by Prolog. However, it does make sense to model, using objects, data structures whose change implies a side-effect such as drawing a particular window on the screen.<p></ul> <p>We recommend the usage of O&apos;Ciao in the following cases:<p><ul> <p><LI>You feel you will need to have several copies of a &quot;module&quot;. <LI>Local copies of a module are needed instead of a global module beeing modified by several ones. <LI>The &quot;classes&quot; are a representation of external entities to Prolog. For example: the X-Window system. <LI>There is state or code outside the Prolog system which needs to be manipulated. For example: interfaces to Java or Tcl/Tk code. <LI>You are not familiar with Prolog, but you know about object oriented programming. O&apos;Ciao may be used as a learning tool to introduce yourself on the declarative programming paradigm.<p></ul> <p></div><div id="Limitations on object usage"><h2>Limitations on object usage</h2> <p>O&apos;Ciao run-time speed is limited by the usage of meta-programming structures, for instance: <tt>X = (Object:mymethod(25)), call(X)</tt>. O&apos;Ciao will optimize static manipulation of objects (those that can be determined at compile time). </div><br/></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Sections</h2><ul><LI><a href="#Early examples">Early examples</a><LI><a href="#Recommendations on when to use objects">Recommendations on when to use objects</a><LI><a href="#Limitations on object usage">Limitations on object usage</a></ul><h2>Subparts</h2><ul><LI><a href="class_doc.html">Declaring classes and interfaces</a><LI><a href="objects_doc.html">Compile-time usage of objects</a><LI><a href="objects_rt.html">Run time usage of objects</a><LI><a href="interface_doc.html">Declaring abstract interfaces for classes</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="fuzzy_doc.html">&#x25C4;</a><a class="navbutton" href="class_doc.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

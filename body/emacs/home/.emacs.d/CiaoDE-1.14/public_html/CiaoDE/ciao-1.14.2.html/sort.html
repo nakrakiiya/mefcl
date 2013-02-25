@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Sorting lists &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="lists.html">&#x25C4;</a><a class="navbutton" href="compiler.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="ClassicProlog.html">PART IV - Classic Prolog library (classic)</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Sorting lists</h1><a class="idx_anchor" href="ciaoliindex.html#sort"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Richard A. O&apos;Keefe" href="ciaoauindex.html#Richard A. O&apos;Keefe">Richard A. O&apos;Keefe (original version)</a>, <a class="idx_anchor" id="The CLIP Group" href="ciaoauindex.html#The CLIP Group">The CLIP Group (changes and modifications)</a>.<p>
+This module implements some sorting list predicates.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(sort)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#sort/2"><tt>sort/2</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#keysort/2"><tt>keysort/2</tt></a>.
+<LI><em>Regular Types:</em><br/><a class="idx_anchor" id="2" href="ciaoglindex.html#keylist/1"><tt>keylist/1</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#keypair/1"><tt>keypair/1</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="sort/2" href="ciaopdindex.html#sort/2">sort/2</a>:</div><div class="deftext"><tt>sort(List1,List2)</tt>
+<p>The elements of <span class="var">List1</span> are sorted into the standard order (see <a href="term_compare.html">Comparing terms</a>) and any identical elements are merged, yielding <span class="var">List2</span>. The time and space complexity of this operation is at worst <span class="var">O(N lg N)</span> where <span class="var">N</span> is the length of <span class="var">List1</span>.<br/>
+<strong>General properties:</strong> <tt>sort(A,B)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties should hold at call time:</em><br/><span class="on_right"> (term_basic:= /2)</span><span>term_basic:A=[1,2,6,5,2,1]
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (term_compare:== /2)</span><span>The terms <span class="var">B</span> and <span class="var">[1,2,5,6]</span> are strictly identical.
+</span>
+</ul><tt>sort(A,B)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">A</span> is a list.
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (basic_props:eval/1)</span><span><span class="var">sort(A,B)</span> is evaluable at compile-time.
+</span>
+</ul><tt>sort(A,B)</tt>
+<ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (basic_props:sideff/2)</span><span><span class="var">sort(A,B)</span> is side-effect <span class="var">free</span>.
+</span>
+</ul><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List2</span> is the sorted list corresponding to <span class="var">List1</span>.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List2</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List1</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">List2</span> is a list.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="keysort/2" href="ciaopdindex.html#keysort/2">keysort/2</a>:</div><div class="deftext"><tt>keysort(List1,List2)</tt>
+<p><span class="var">List1</span> is sorted into order according to the value of the <em>keys</em> of its elements, yielding the list <span class="var">List2</span>. No merging takes place. This predicate is <em>stable</em>, i.e., if an element <tt>A</tt> occurs before another element <tt>B</tt> <em>with the same key</em> in the input, then <tt>A</tt> will occur before <tt>B</tt> also in the output. The time and space complexity of this operation is at worst <span class="var">O(N lg N)</span> where <span class="var">N</span> is the length of <span class="var">List1</span>.<p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Description:</em> <span class="var">List2</span> is the (key-)sorted list corresponding to <span class="var">List1</span>.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (sort:keylist/1)</span><span><span class="var">List2</span> is a list of pairs of the form <tt>Key-Value</tt>.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (sort:keylist/1)</span><span><span class="var">List1</span> is a list of pairs of the form <tt>Key-Value</tt>.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (sort:keylist/1)</span><span><span class="var">List2</span> is a list of pairs of the form <tt>Key-Value</tt>.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (basic_props:native/1)</span><span>This predicate is understood natively by CiaoPP.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="keylist/1" href="ciaoteindex.html#keylist/1">keylist/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>keylist(L)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">L</span> is a list of pairs of the form <tt>Key-Value</tt>.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="keypair/1" href="ciaoteindex.html#keypair/1">keypair/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>keypair(P)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">P</span> is a pair of the form &quot;<tt>K-_</tt>&quot;, where <tt>K</tt> is considered the <em>key</em>.</ul></div></div><p>
+</div><div id="Known bugs and planned improvements"><h2>Known bugs and planned improvements</h2><ul><LI>Run-time checks have been reported not to work with this code. That means that either the assertions here, or the code that implements the run-time checks are erroneous.</ul></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a><LI><a href="#Known bugs and planned improvements">Known bugs and planned improvements</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="lists.html">&#x25C4;</a><a class="navbutton" href="compiler.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

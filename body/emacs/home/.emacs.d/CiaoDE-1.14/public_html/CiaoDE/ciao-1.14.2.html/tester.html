@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Automatic tester &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="regexp_code.html">&#x25C4;</a><a class="navbutton" href="time_analyzer.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="Contrib.html">PART XI - Contributed libraries</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Automatic tester</h1><a class="idx_anchor" href="ciaoliindex.html#tester"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="David Trallero Mena" href="ciaoauindex.html#David Trallero Mena">David Trallero Mena</a>.<p>
+This module have been created to automate the test that a predicate should pass hopefully. With that intention we have to provide a set of test and its correct answers. The predicate <a class="idx_anchor" id="0" href="ciaoglindex.html#run_tester/10"><tt>run_tester/10</tt></a> will execute every test and compare it with its answer, generating two traces, one with detailed information, and another with the summary of executions of the tests.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(tester)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="1" href="ciaoglindex.html#run_tester/10"><tt>run_tester/10</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="2" href="ciaoglindex.html#lists"><tt>lists</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#write"><tt>write</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#io_alias_redirection"><tt>io_alias_redirection</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="run_tester/10" href="ciaopdindex.html#run_tester/10">run_tester/10</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>run_tester(?,?,(pred 0),(pred 1),?,(pred 1),?,(pred 0),?,?)</tt>.<br/><p><strong>Usage:</strong> <tt>run_tester(LogFile,ResultFile,Begin,Test,TestList,Check,CheckList,End,GoodExamples,Slider)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> run_tester is a predicate for automatizate testers. It get 2 file names as entry (<span class="var">LogFile</span> and <span class="var">ResultFile</span>) for saving the trace and the short result scheme respectevely. <span class="var">Being</span> and <span class="var">End</span> are called at the beginning and at the end of the test. <span class="var">Test</span> is called which each element of <span class="var">TestList</span> and after, <span class="var">Check</span> is called with the corresponding element in <span class="var">CheckList</span> for checking the results of <span class="var">Test</span> predicate. <span class="var">GoodExample</span> is ground(int) at the exit and tells the number of examples that passed the test correctly. <span class="var">Slider</span> can take the values slider(no) or slider(Title) and slider will be shown everytime a new test is called <LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">LogFile</span> is a string (a list of character codes).
+</span><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">ResultFile</span> is a string (a list of character codes).
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Begin</span> is a term which represents a goal, i.e., an atom or a structure.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Test</span> is a term which represents a goal, i.e., an atom or a structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">TestList</span> is a list.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Check</span> is a term which represents a goal, i.e., an atom or a structure.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">CheckList</span> is a list.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">End</span> is a term which represents a goal, i.e., an atom or a structure.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">GoodExamples</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:term/1)</span><span><span class="var">Slider</span> is any term.
+</span>
+</ul></div></div><p>
+</div><div id="Other information"><h2>Other information</h2>
+<p>Two simple examples of the use of the run_tester are provided.<p><div id="Understanding run_test predicate"><h3>Understanding run_test predicate</h3> <p><pre>:- module( tester_test2 , _ , _ ).
+
+
+:- use_module(&apos;..&apos;(tester)).
+%:- use_module( library(tester) ).
+:- use_module(library(lists)).
+:- use_module(library(write)).
+
+init_func :-
+	write( &apos;Starting the test\n&apos; ).
+
+tester_func( (X,X,_) ) :-
+	write( &apos;The argument is correct &apos; ),
+	write( X ) , nl.
+
+checker_func( (_,X,X) ) :-
+	write( &apos;check is fine\n\n&apos; ).
+	
+
+end_func :-
+	write( &apos;Test ended\n&apos; ).
+
+
+main :-
+	L = [ (1,1,1),   % CORRECT
+	      (2,2,1),   % Test CORRECT , CHECK FALSE
+	      (1,2,2)    % Test FALSE
+	    ],
+	      
+ 	run_tester(
+		      &apos;test.log&apos;,
+		      &apos;result.log&apos;,
+		      init_func ,
+		      tester_func ,
+		      L,
+		      checker_func,
+		      L,
+		      end_func,
+		      Res,
+		      slider( &apos;Tester2: &apos; )
+		  ),
+
+	 length( L , LL ),
+	 Op is (Res / LL) * 100,
+	 message( note , [ &apos;Analysis result: &apos; , Op , &apos;%&apos; ] ).
+
+</pre> <p></div><div id="More complex example"><h3>More complex example</h3> <p>In this example we just want to test if the output of Ciaopp is readable by CIAO.<p>Tester function succeds if it is able to write the output file.<p>Checker function succeds if it is able to load the written file.<p><pre>:- module( tester_test1 , _ , [] ).
+
+%:- use_module( library(tester) , [run_tester/10] ).
+:- use_module(&apos;..&apos;(tester), [run_tester/10]).
+
+
+:- use_module(library(ciaopp)).
+:- use_module(library(compiler)).
+
+:- use_module(library(filenames)).
+
+:- use_module(library(write)).
+
+:- use_module(library(lists)).
+
+init_func.
+	
+
+test_files( &apos;/home/dtm/Ciaopp/Benchmarks/ciaopp/modes/&apos; ).
+
+tester_func( FileArg ) :-
+	test_files( Path ),
+	atom_concat( Path , FileArg , File0 ),
+
+	message( note ,
+         [ &apos;+++++++++++++++++++++++++++++++++++++++++++++++\n&apos; ] ),
+	(unload( File0 )-&gt;true;true),
+	module( File0 ),
+
+	atom_concat( TFile , &apos;.pl&apos;, File0 ),
+	atom_concat( TFile , &apos;_test.pl&apos; , TestFile ),
+
+	output( TestFile ).
+
+
+get_module( Path , Module ) :-
+	no_path_file_name( Path , File ),
+	(atom_concat( Module , &apos;.pl&apos; , File )
+	-&gt; true ; Module = File ).
+
+checker_func( FileArg ) :-
+	get_module( FileArg , Module ),
+	(unload( Module )-&gt;true;true),
+
+	atom_concat(RawFile, &apos;.pl&apos;     , FileArg ),	 
+	atom_concat(RawFile, &apos;_test.pl&apos; , OptFile ),
+
+	test_files( Path ),
+	atom_concat( Path , OptFile, OptFilePath ),
+
+	message( note , [ &apos;Cargando &apos; , OptFilePath ] ),
+	use_module( OptFilePath ).
+
+end_func.
+
+
+
+
+
+main :-
+	L = [
+		&apos;aiakl.pl&apos;,
+		&apos;query.pl&apos;,
+		&apos;mmatrix.pl&apos;,
+		&apos;ann.pl&apos;,
+		&apos;bid.pl&apos;,
+		&apos;rdtok.pl&apos;,
+		&apos;myread.pl&apos;,
+		&apos;boyer.pl&apos;,
+		&apos;read.pl&apos;,
+		&apos;occur.pl&apos;,
+		&apos;serialize.pl&apos;,
+		&apos;browse.pl&apos;,
+		&apos;peephole.pl&apos;,
+		&apos;tak.pl&apos;,
+		&apos;deriv.pl&apos;,
+		&apos;progeom.pl&apos;,
+		&apos;warplan.pl&apos;,
+		&apos;fib.pl&apos;,
+		&apos;qplan.pl&apos;,
+		&apos;witt.pl&apos;,
+		&apos;grammar.pl&apos;,
+		&apos;zebra.pl&apos;,
+		&apos;qsortapp.pl&apos;,
+		&apos;hanoiapp.pl&apos;
+	      ],
+
+	run_tester(
+		      &apos;test.log&apos;,
+		      &apos;result.log&apos;,
+		      init_func ,
+		      tester_func ,
+		      L,
+		      checker_func,
+		      L,
+		      end_func,
+		      Res,
+		      slider( &apos;Tester1: &apos; )
+		  ),
+	 length( L , LL ),
+	 Op is (Res / LL) * 100,
+	 message( note , [ &apos;Analysis result: &apos; , Op , &apos;%&apos; ] ).
+
+</pre> <p></div><br/></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a><LI><a href="#Other information">Other information</a><ul><LI><a href="#Understanding run_test predicate">Understanding run_test predicate</a><LI><a href="#More complex example">More complex example</a></ul></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="regexp_code.html">&#x25C4;</a><a class="navbutton" href="time_analyzer.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

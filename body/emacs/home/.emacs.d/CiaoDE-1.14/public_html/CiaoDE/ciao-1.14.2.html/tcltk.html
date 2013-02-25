@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>The Tcl/Tk interface &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="davinci.html">&#x25C4;</a><a class="navbutton" href="tcltk_low_level.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="Interfaces.html">PART VIII - Interfaces to other languages and systems</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>The Tcl/Tk interface</h1><a class="idx_anchor" href="ciaoliindex.html#tcltk"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Montse Iglesias Urraca" href="ciaoauindex.html#Montse Iglesias Urraca">Montse Iglesias Urraca</a>, <a class="idx_anchor" id="The CLIP Group" href="ciaoauindex.html#The CLIP Group">The CLIP Group</a>.<p>
+The <a class="idx_anchor" id="0" href="ciaoglindex.html#tcltk"><tt>tcltk</tt></a> library package is a bidirectional interface to the <em>Tcl</em> language and the <em>Tk</em> toolkit. Tcl is an interpreted scripting language with many extension packages, particularly the graphical interface toolkit, Tk. The interaction between both languages is expressed in terms of an interface between the Tcl/Tk process and the Prolog process. This approach allows the development of mixed applications where both sides, Tcl/Tk and Prolog, can be combined in order to exploit their respective capabilities.<p>This library uses two sockets to connect both the Tcl and the Prolog processes: <em>event_socket</em> and <em>term_socket</em>. There are also two Tcl global variables: <em>prolog_variables</em> and <em>terms</em>. The value of any of the bound variables in a goal will be stored in the array <tt>prolog_variables</tt> with the variable name as index. <em>Terms</em> is the string which contains the printed representation of prolog <em>terms</em>.<p> <p><strong>Prolog to Tcl</strong> <p>The Tcl/Tk side waits for requests from the Prolog side, and executes the Tcl/Tk code received. Also, the Tcl/Tk side handles the events and exceptions which may be raised on its side, passing on control to the Prolog side in case it is necessary.<p>To use Tcl, you must create a <em>Tcl interpreter</em> object and send commands to it. A <em>Tcl</em> command is specified as follows:<p><pre>      Command         --&gt; Atom  { other than [] }
+                        | Number
+                        | chars(PrologString)
+                        | write(Term)
+                        | format(Fmt,Args)
+                        | dq(Command)
+                        | br(Command)
+                        | sqb(Command)
+                        | min(Command)
+                        | ListOfCommands
+      ListOfCommands  --&gt; []
+                        |[Command|ListOfCommands]
+</pre> <p>where:<p><dl> <p><DT><tt>Atom</tt><dd> denotes the printed representation of the atom.<p><DT><tt>Number</tt><dd> denotes their printed representations.<p><DT><tt>chars(PrologString)</tt><dd> denotes the string represented by <em>PrologString</em> (a list of character codes).<p><DT><tt>write(Term)</tt><dd> denotes the string that is printed by the corresponding built-in predicate.<p><DT><tt>format(Term)</tt><dd> denotes the string that is printed by the corresponding built-in predicate.<p><DT><tt>dq(Command)</tt><dd> denotes the string specified by <em>Command</em>, enclosed in double quotes.<p><DT><tt>br(Command)</tt><dd> denotes the string specified by <em>Command</em>, enclosed in braces.<p><DT><tt>sqb(Command)</tt><dd> denotes the string specified by <em>Command</em>, enclosed in square brackets.<p><DT><tt>min(Command)</tt><dd> denotes the string specified by <em>Command</em>, immediately preceded by a hyphen.<p><DT><tt>ListOfCommands</tt><dd> denotes the strings denoted by each element, separated by spaces.<p></dl> <p>The predicates to use Tcl from Prolog are <a class="idx_anchor" id="1" href="ciaoglindex.html#tcl_new/1"><tt>tcl_new/1</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#tcl_delete/1"><tt>tcl_delete/1</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#tcl_eval/3"><tt>tcl_eval/3</tt></a>, and <a class="idx_anchor" id="4" href="ciaoglindex.html#tcl_event/3"><tt>tcl_event/3</tt></a>.<p>An example of use with Prolog as master and Tcl as slave, consisting of a GUI to a program which calculates the factorial of a number:<p><pre>:- use_module(library(tcltk)).
+
+go :-
+        tcl_new(X),
+        tcl_eval(X,[button,&apos;.b&apos;,min(text),dq(&apos;Compute!&apos;)],_),
+        tcl_eval(X,[button,&apos;.c&apos;,&apos;-text&apos;,dq(&apos;Quit&apos;)],_),
+        tcl_eval(X,[entry,&apos;.e1&apos;,min(textvariable),&apos;inputval&apos;],_),
+        tcl_eval(X,[label,&apos;.l1&apos;,min(text),dq(&apos;The factorial of &apos;)],_),
+        tcl_eval(X,[pack, &apos;.l1&apos;,&apos;.e1&apos;],_),
+        tcl_eval(X,[entry,&apos;.e2&apos;,min(textvariable),&apos;outputval&apos;],_),
+        tcl_eval(X,[label,&apos;.l2&apos;,min(text),dq(&apos;is  &apos;)],_),
+        tcl_eval(X,[pack, &apos;.l2&apos;,&apos;.e2&apos;],_),
+        tcl_eval(X,[pack,&apos;.b&apos;,&apos;.c&apos;,min(side),&apos;left&apos;],_),
+        tcl_eval(X,[bind,&apos;.b&apos;,&apos;&lt;ButtonPress-1&gt;&apos;,
+	        br([set,&apos;inputval&apos;,&apos;$inputval&apos;,&apos;\n&apos;,
+		prolog_one_event,
+		dq(write(execute(tk_test_aux:factorial(&apos;$inputval&apos;, &apos;Outputval&apos;)))),
+		&apos;\n&apos;,
+		set, &apos;outputval&apos;,&apos;$prolog_variables(Outputval)&apos;])],
+		_),
+        tcl_eval(X,[bind,&apos;.c&apos;,&apos;&lt;ButtonPress-1&gt;&apos;,
+	        br([prolog_one_event,
+		dq(write(execute(exit_tk_event_loop)))])],
+		_),
+        tk_event_loop(X).
+
+</pre> <p> <strong>Tcl to Prolog</strong> <p>This is the usual way to build a GUI application. The slave, Prolog, behaves as a server that fulfills eventual requests from the master side, Tcl. At some point, during the user interaction with the GUI, an action may take place that triggers the execution of some procedure on the slave side (a form submit, for example). Thus, the slave is invoked, performs a service, and returns the result to the GUI through the socket connection.<p>This library includes two main specific Tcl commands:<p><dl> <p><DT><tt>prolog</tt> <em>Goal</em><dd> <em>Goal</em> is a string containing the printed representation of a Prolog goal. The goal will be called in the user module unless it is prefixed with another module name. The call is always deterministic and its can be either of the following:<p><dl> <p><DT><em>1</em>, in case of success<dd> The value of any of the variables in the goal that is bound to a term will be returned to Tcl in the array prolog_variables with the variable name as index.<p><DT><em>0</em>, if the execution fails<dd> The Prolog exception Tcl exception is raised. The error message will be &quot;Prolog Exception: &quot; appended with a string representation of such exception.<p></dl> <p><DT><tt>prolog_event</tt> <em>Term</em><dd> Adds the new <em>term</em> to the <em>terms</em> queue. These can be later retrieved through predicates <a class="idx_anchor" id="5" href="ciaoglindex.html#tcl_event/3"><tt>tcl_event/3</tt></a> and <a class="idx_anchor" id="6" href="ciaoglindex.html#tk_next_event/2"><tt>tk_next_event/2</tt></a>.<p></dl> <p>Additionally, seven extra Tcl commands are defined.<p><dl> <p><DT><tt>prolog_delete_event</tt><dd> Deletes the first <em>term</em> of the <em>terms</em> queue.<p><DT><tt>prolog_list_events</tt><dd> Sends all the <em>terms</em> of the <em>terms</em> queue through the <em>event_socket</em>. The last element is <em>end_of_event_list</em>.<p><DT><tt>prolog_cmd</tt> <em>Command</em><dd> Receives as an argument the Tcl/Tk code, evaluates it and returns through the <em>term_socket</em> the term <em>tcl_error</em> in case of error or the term <em>tcl_result</em> with the result of the command executed. If the command is <em>prolog</em>, upon return, the goal run on the prolog side is received. In order to get the value of the variables, predicates are compared using the <em>unify_term</em> command. Returns 0 when the sript runs without errors, and 1 if there is an error.<p><DT><tt>prolog_one_event</tt> <em>Term</em><dd> Receives as an argument the <em>term</em> associated to one of the Tk events. Sends the <em>term</em> through the <em>event_socket</em> and waits for its unification. Then <em>unify_term</em> command is called to update the <em>prolog_variables</em> array.<p><DT><tt>prolog_thread_event</tt> <em>Term</em><dd> Receives as an argument the <em>term</em> associated to one of the Tk events. Sends the <em>term</em> through the <em>event_socket</em> and waits for its unification. Then <em>unify_term</em> command is called to update the <em>prolog_variables</em> array. In this case the <em>term_socket</em> is non blocking.<p><DT><tt>convert_variables</tt> <em>String</em><dd> Its argument is a string containing symbols that can not be sent through the sockets. This procedure deletes them from the input string and returns the new string.<p><DT><tt>unify_term</tt> <em>Term1</em> <em>Term2</em><dd> Unifies <em>Term1</em> and <em>Term2</em> and updates the the <em>prolog_variables</em> array.<p></dl> <p>The predicates to use Prolog from Tcl are <a class="idx_anchor" id="7" href="ciaoglindex.html#tk_event_loop/1"><tt>tk_event_loop/1</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#tk_main_loop/1"><tt>tk_main_loop/1</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#tk_new/2"><tt>tk_new/2</tt></a>, and <a class="idx_anchor" id="10" href="ciaoglindex.html#tk_next_event/2"><tt>tk_next_event/2</tt></a>.<p>An example of use with Tcl as master and Prolog as slave, implementing the well known &quot;Hello, world!&quot; dummy program (more can be seen in directory examples):<p>Prolog side:<p><pre>:- use_module(library(tcltk)).
+:- use_package(classic).
+     
+hello(&apos;Hello, world!&apos;).
+     
+go :-
+	tk_new([name(&apos;Simple&apos;)], Tcl),
+	tcl_eval(Tcl, &apos;source simple.tcl&apos;, _),
+	tk_main_loop(Tcl),
+	tcl_delete(Tcl).
+
+</pre> <p>Tcl side (simple.tcl):<p><pre>label .l -textvariable tvar
+button .b -text &quot;Go!&quot; -command {run}
+pack .l .b -side top
+
+proc run {} {
+
+    global prolog_variables
+    global tvar 
+
+    prolog hello(X)
+    set tvar $prolog_variables(X)
+}
+
+</pre> <p><br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(tcltk)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="11" href="ciaoglindex.html#tcl_new/1"><tt>tcl_new/1</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#tcl_eval/3"><tt>tcl_eval/3</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#tcl_delete/1"><tt>tcl_delete/1</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#tcl_event/3"><tt>tcl_event/3</tt></a>, <a class="idx_anchor" id="15" href="ciaoglindex.html#tk_event_loop/1"><tt>tk_event_loop/1</tt></a>, <a class="idx_anchor" id="16" href="ciaoglindex.html#tk_main_loop/1"><tt>tk_main_loop/1</tt></a>, <a class="idx_anchor" id="17" href="ciaoglindex.html#tk_new/2"><tt>tk_new/2</tt></a>, <a class="idx_anchor" id="18" href="ciaoglindex.html#tk_next_event/2"><tt>tk_next_event/2</tt></a>.
+<LI><em>Regular Types:</em><br/><a class="idx_anchor" id="19" href="ciaoglindex.html#tclInterpreter/1"><tt>tclInterpreter/1</tt></a>, <a class="idx_anchor" id="20" href="ciaoglindex.html#tclCommand/1"><tt>tclCommand/1</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="21" href="ciaoglindex.html#tcltk/tcltk_low_level"><tt>tcltk/tcltk_low_level</tt></a>, <a class="idx_anchor" id="22" href="ciaoglindex.html#write"><tt>write</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="tcl_new/1" href="ciaopdindex.html#tcl_new/1">tcl_new/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>tcl_new(TclInterpreter)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Creates a new interpreter, initializes it, and returns a handle to it in <span class="var">TclInterpreter</span>.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (tcltk:tclInterpreter/1)</span><span><span class="var">TclInterpreter</span> is a reference to a <em>Tcl</em> interpreter.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">TclInterpreter</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="tcl_eval/3" href="ciaopdindex.html#tcl_eval/3">tcl_eval/3</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>tcl_eval(?,?,addmodule(?))</tt>.<br/><p><strong>Usage:</strong> <tt>tcl_eval(TclInterpreter,Command,Result)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Evaluates the commands given in <span class="var">Command</span> in the Tcl interpreter <span class="var">TclInterpreter</span>. The result will be stored as a string in <span class="var">Result</span>. If there is an error in <em>Command</em> an exception is raised. The error messages will be <em>Tcl Exception:</em> if the error is in the syntax of the Tcl/Tk code or <em>Prolog Exception:</em>, if the error is in the prolog term.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (tcltk:tclInterpreter/1)</span><span><span class="var">TclInterpreter</span> is a reference to a <em>Tcl</em> interpreter.
+</span><br/><span class="on_right"> (tcltk:tclCommand/1)</span><span><span class="var">Command</span> is a <em>Tcl</em> command.
+</span><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Result</span> is a string (a list of character codes).
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">TclInterpreter</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Command</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Result</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="tcl_delete/1" href="ciaopdindex.html#tcl_delete/1">tcl_delete/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>tcl_delete(TclInterpreter)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Given a handle to a Tcl interpreter in variable <span class="var">TclInterpreter</span>, it deletes the interpreter from the system.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (tcltk:tclInterpreter/1)</span><span><span class="var">TclInterpreter</span> is a reference to a <em>Tcl</em> interpreter.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">TclInterpreter</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="tcl_event/3" href="ciaopdindex.html#tcl_event/3">tcl_event/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>tcl_event(TclInterpreter,Command,Events)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Evaluates the commands given in <span class="var">Command</span> in the Tcl interpreter whose handle is provided in <span class="var">TclInterpreter</span>. <span class="var">Events</span> is a list of terms stored from Tcl by <em>prolog_event</em>. Blocks until there is something on the event queue<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (tcltk:tclInterpreter/1)</span><span><span class="var">TclInterpreter</span> is a reference to a <em>Tcl</em> interpreter.
+</span><br/><span class="on_right"> (tcltk:tclCommand/1)</span><span><span class="var">Command</span> is a <em>Tcl</em> command.
+</span><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Events</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">TclInterpreter</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Command</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Events</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="tclInterpreter/1" href="ciaoteindex.html#tclInterpreter/1">tclInterpreter/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>tclInterpreter(I)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">I</span> is a reference to a <em>Tcl</em> interpreter.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="tclCommand/1" href="ciaoteindex.html#tclCommand/1">tclCommand/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>tclCommand(C)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">C</span> is a <em>Tcl</em> command.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="tk_event_loop/1" href="ciaopdindex.html#tk_event_loop/1">tk_event_loop/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>tk_event_loop(TclInterpreter)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Waits for an event and executes the goal associated to it. Events are stored from Tcl with the <em>prolog</em> command. The unified term is sent to the Tcl interpreter in order to obtain the value of the tcl array of <em>prolog_variables</em>. If the term received does not have the form <tt>execute(Goal)</tt>, the predicate silently exits. If the execution of <span class="var">Goal</span> raises a Prolog error, the interpreter is deleted and an error message is given.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (tcltk:tclInterpreter/1)</span><span><span class="var">TclInterpreter</span> is a reference to a <em>Tcl</em> interpreter.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">TclInterpreter</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="tk_main_loop/1" href="ciaopdindex.html#tk_main_loop/1">tk_main_loop/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>tk_main_loop(TclInterpreter)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Passes control to Tk until all windows are gone.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (tcltk:tclInterpreter/1)</span><span><span class="var">TclInterpreter</span> is a reference to a <em>Tcl</em> interpreter.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">TclInterpreter</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="tk_new/2" href="ciaopdindex.html#tk_new/2">tk_new/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>tk_new(Options,TclInterpreter)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Performs basic Tcl and Tk initialization and creates the main window of a Tk application.<span class="var">Options</span> is a list of optional elements according to:<p><dl> <p><DT><tt>name(+ApplicationName)</tt><dd> Sets the Tk main window title to <span class="var">ApplicationName</span>. It is also used for communicating between Tcl/Tk applications via the Tcl <em>send</em> command. Default name is an empty string.<p><DT><tt>display(+Display)</tt><dd> Gives the name of the screen on which to create the main window. Default is normally determined by the <tt>DISPLAY</tt> environment variable.<p><DT><tt>file</tt><dd> Opens the sript <tt>file</tt>. Commands will not be read from standard input and the execution returns back to Prolog only after all windows (and the interpreter) have been deleted.<p></dl> <p><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (basic_props:list/1)</span><span><span class="var">Options</span> is a list.
+</span><br/><span class="on_right"> (tcltk:tclInterpreter/1)</span><span><span class="var">TclInterpreter</span> is a reference to a <em>Tcl</em> interpreter.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Options</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">TclInterpreter</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="tk_next_event/2" href="ciaopdindex.html#tk_next_event/2">tk_next_event/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>tk_next_event(TclInterpreter,Event)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Processes events until there is at least one Prolog event associated with <span class="var">TclInterpreter</span>. <span class="var">Event</span> is the term correspondig to the head of a queue of events stored from Tcl with the <em>prolog_event</em> command.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (tcltk:tclInterpreter/1)</span><span><span class="var">TclInterpreter</span> is a reference to a <em>Tcl</em> interpreter.
+</span><br/><span class="on_right"> (basic_props:string/1)</span><span><span class="var">Event</span> is a string (a list of character codes).
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">TclInterpreter</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Event</span> is a free variable.
+</span>
+</ul></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Submodules</h2><ul><LI><a href="tcltk_low_level.html">Low level interface library to Tcl/Tk</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="davinci.html">&#x25C4;</a><a class="navbutton" href="tcltk_low_level.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

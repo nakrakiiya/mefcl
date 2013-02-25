@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Remote predicate calling utilities &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="dht_logic_misc.html">&#x25C4;</a><a class="navbutton" href="dht_storage.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="Contrib.html">PART XI - Contributed libraries</a> &raquo; <a href="dht_doc.html">Ciao DHT Implementation</a> &raquo; <a href="dht_server.html">Top-level interface to a DHT server</a> &raquo; <a href="dht_logic.html">DHT-related logics</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Remote predicate calling utilities</h1><a class="idx_anchor" href="ciaoliindex.html#dht_rpr"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Arsen Kostenko" href="ciaoauindex.html#Arsen Kostenko">Arsen Kostenko</a>.<p>
+RPR stands for Remote PRedicate calling. The basic functionality of a remote procedure (or predicate, in Prolog terms of Prolog) call is gathered here. Thus module contains predicates for the execution of remote calls and manipulation routines of the module-specific database.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(dht_rpr)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#dht_rpr_register_node/1"><tt>dht_rpr_register_node/1</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#dht_rpr_register_node/2"><tt>dht_rpr_register_node/2</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#dht_rpr_node_by_id/2"><tt>dht_rpr_node_by_id/2</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#dht_rpr_id_by_node/2"><tt>dht_rpr_id_by_node/2</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#dht_rpr_compose_id/3"><tt>dht_rpr_compose_id/3</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#dht_rpr_clear_by_node/1"><tt>dht_rpr_clear_by_node/1</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#dht_rpr_node/1"><tt>dht_rpr_node/1</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#dht_rpr_call/2"><tt>dht_rpr_call/2</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#dht_rpr_call/3"><tt>dht_rpr_call/3</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a>.
+<LI><em>Regular Types:</em><br/><a class="idx_anchor" id="10" href="ciaoglindex.html#dht_rpr_node_id/1"><tt>dht_rpr_node_id/1</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="11" href="ciaoglindex.html#format"><tt>format</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#sockets/sockets"><tt>sockets/sockets</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#dht/dht_config"><tt>dht/dht_config</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#dht/dht_misc"><tt>dht/dht_misc</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_rpr_register_node/1" href="ciaopdindex.html#dht_rpr_register_node/1">dht_rpr_register_node/1</a>:</div><div class="deftext">Sometimes information from remote nodes is received in the form of a <a class="idx_anchor" id="15" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a>. In these cases a single argument predicate might be useful.<p><strong>Usage:</strong> <tt>dht_rpr_register_node(NodeID)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Save node identity to module-specific DB.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="16" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_rpr_register_node/2" href="ciaopdindex.html#dht_rpr_register_node/2">dht_rpr_register_node/2</a>:</div><div class="deftext">General write interface to DB of physical nodes (those that have IP addresses). Information is re-written every time, so no old entries are expected to remain.<p><strong>Usage:</strong> <tt>dht_rpr_register_node(Node,NodeIP)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="17" href="ciaoglindex.html#dht_rpr_register_node/2"><tt>dht_rpr_register_node/2</tt></a> is responsible for the management of a module-specific database that stores information on node identifiers and IP addresses corresponding to them. Despite there is only one usage mode the behavior may differ depending on the state of module-specific database. For instance, if the database already contains information about a node, whose identifier is equal to the one supplied in <span class="var">Node</span>, a newly supplied entry would be written over the old one. A new entry is added to the module-specific database otherwise.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeIP</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_rpr_node_by_id/2" href="ciaopdindex.html#dht_rpr_node_by_id/2">dht_rpr_node_by_id/2</a>:</div><div class="deftext">Just a convenient wrapper around module-specific data structures, which is used in combination with Ciao functional syntax.<p><strong>Usage 1:</strong> <tt>dht_rpr_node_by_id(NodeID,Node)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Extract value of node from the node identifier <span class="var">NodeID</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="18" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Node</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="19" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Node</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_rpr_node_by_id(NodeID,Node)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Check whether the value of the <span class="var">NodeID</span> node identifier corresponds to the <span class="var">Node</span> value.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="20" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Node</span> is ground.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="21" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Node</span> is ground.
+</span>
+</ul><p><strong>Usage 3:</strong> <tt>dht_rpr_node_by_id(NodeID,Node)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Return the node identifier associated to the exact node number.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NodeID</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Node</span> is ground.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_addr/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="22" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer and second as free variable or IP/DNS address
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Node</span> is ground.
+</span>
+</ul><p><strong>Usage 4:</strong> <tt>dht_rpr_node_by_id(NodeID,Node)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This case is merely useless, however perfectly possible.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NodeID</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Node</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_rpr_id_by_node/2" href="ciaopdindex.html#dht_rpr_id_by_node/2">dht_rpr_id_by_node/2</a>:</div><div class="deftext">Convenient wrapper around internal data structures, as well as <a class="idx_anchor" id="23" href="ciaoglindex.html#dht_rpr_node_by_id/2"><tt>dht_rpr_node_by_id/2</tt></a>, this predicate is usually used in combination with Ciao functional syntax.<p><strong>Usage 1:</strong> <tt>dht_rpr_id_by_node(Node,NodeID)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Get node identity by it&apos;s number.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NodeID</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="24" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_rpr_id_by_node(Node,NodeID)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Lookup and fill ramaining id field.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="25" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as free variable or integer and second an IP/DNS address
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="26" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span>
+</ul><p><strong>Usage 3:</strong> <tt>dht_rpr_id_by_node(Node,NodeID)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Lookup and fill remainting address field.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_addr/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="27" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer and second as free variable or IP/DNS address
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="28" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span>
+</ul><p><strong>Usage 4:</strong> <tt>dht_rpr_id_by_node(Node,NodeID)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Check whether local database really has record about <span class="var">NodeID</span> with <span class="var">Node</span> as its node number.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="29" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="dht_rpr_node_id/1" href="ciaoteindex.html#dht_rpr_node_id/1">dht_rpr_node_id/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>dht_rpr_node_id(NodeID)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="30" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_rpr_compose_id/3" href="ciaopdindex.html#dht_rpr_compose_id/3">dht_rpr_compose_id/3</a>:</div><div class="deftext">Compose identity structure out of arguments provided<p><strong>Usage 1:</strong> <tt>dht_rpr_compose_id(Node,NodeIP,NodeID)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Compose an internal structure.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeIP</span> is ground.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NodeID</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeIP</span> is ground.
+</span><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="31" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_rpr_compose_id(Node,NodeIP,NodeID)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Check whether arguments correspond to structure supplied.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeIP</span> is ground.
+</span><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="32" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">Node</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">NodeIP</span> is ground.
+</span><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">NodeID</span> is a term of type <a class="idx_anchor" id="33" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_rpr_clear_by_node/1" href="ciaopdindex.html#dht_rpr_clear_by_node/1">dht_rpr_clear_by_node/1</a>:</div><div class="deftext">Write-interface (or more precisely, erase-interface) to DB of physical nodes (those that have IP-address). <a class="idx_anchor" id="34" href="ciaoglindex.html#dht_rpr_clear_node"><tt>dht_rpr_clear_node</tt></a> is a dumb-wrapper around retraction operation over module-specific database. As usually, retraction may be performed when the argument is a free variable.<p><strong>Usage 1:</strong> <tt>dht_rpr_clear_by_node(Node)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Erase any (possibly random) node information.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_addr/1)</span><span><span class="var">Node</span> is a term of type <a class="idx_anchor" id="35" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer and second as free variable or IP/DNS address
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Node</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_rpr_clear_by_node(Node)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Erase exact node.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">Node</span> is a term of type <a class="idx_anchor" id="36" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Node</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_rpr_node/1" href="ciaopdindex.html#dht_rpr_node/1">dht_rpr_node/1</a>:</div><div class="deftext">Generic read interface to DB of physical nodes.<p><strong>Usage 1:</strong> <tt>dht_rpr_node(Node)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Checks for presence of any information on a node supplied as <span class="var">Node</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">Node</span> is a term of type <a class="idx_anchor" id="37" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_rpr_node(Node)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Get node that matches given template.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node/1)</span><span><span class="var">Node</span> is a term of type <a class="idx_anchor" id="38" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument is either a free variable or an integer and second is either a free variable or a IP/DNS address
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_rpr_call/2" href="ciaopdindex.html#dht_rpr_call/2">dht_rpr_call/2</a>:</div><div class="deftext"><a class="idx_anchor" id="39" href="ciaoglindex.html#dht_rpr_call/2"><tt>dht_rpr_call/2</tt></a> execute a goal remotely. The platform for remote execution is specified by <span class="var">HostId</span>. <span class="var">Goal</span> might be a fully instantiated term as well as partially instantiated one (as used in any other goal).<p><strong>Usage 1:</strong> <tt>dht_rpr_call(HostId,Goal)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Perform remote call of partially instantiated goal: e.g., a pattern search. Remote host for execution is specified via IP/DNS address of node identity, rest of identity is ignored<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_id/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="40" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as free variable or integer and second an IP/DNS address
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Goal</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_id/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="41" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as free variable or integer and second an IP/DNS address
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_rpr_call(HostId,Goal)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Perform remote call of partially instantiated goal: e.g., a pattern search. Remote host for execution is specified via integer of node identity, IP/DNS address is searched through local database.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_addr/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="42" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer and second as free variable or IP/DNS address
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Goal</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_addr/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="43" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer and second as free variable or IP/DNS address
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul><p><strong>Usage 3:</strong> <tt>dht_rpr_call(HostId,Goal)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Perform remote call of partially instantiated goal: e.g., a pattern search. Remote host for execution is specified via IP/DNS address of node identity, rest of identity is ignored<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="44" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Goal</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="45" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul><p><strong>Usage 4:</strong> <tt>dht_rpr_call(HostId,Goal)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Perform remote call of partially instantiated goal: e.g., a pattern search.Remote host for execution is specified via integer, IP/DNS address is searched through local database using that integer as part of node identity.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">HostId</span> is an integer.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Goal</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">HostId</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul><p><strong>Usage 5:</strong> <tt>dht_rpr_call(HostId,Goal)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Perform remote call of partially instantiated goal: e.g., a pattern search. Finally make a try to use first argument as directly-specified IP/DNS address.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">HostId</span> is an atom.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Goal</span> is a free variable.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">HostId</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul><p><strong>Usage 6:</strong> <tt>dht_rpr_call(HostId,Goal)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Perform remote call of fully instantiated goal: e.g., a pattern search. Remote host for execution is specified via IP/DNS address of node identity, rest of identity is ignored<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_id/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="46" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as free variable or integer and second an IP/DNS address
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_id/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="47" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as free variable or integer and second an IP/DNS address
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul><p><strong>Usage 7:</strong> <tt>dht_rpr_call(HostId,Goal)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Perform remote call of fully instantiated goal: e.g., a pattern search. Remote host for execution is specified via integer of node identity, IP/DNS address is searched through local database.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_addr/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="48" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer and second as free variable or IP/DNS address
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_comp_node_addr/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="49" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer and second as free variable or IP/DNS address
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul><p><strong>Usage 8:</strong> <tt>dht_rpr_call(HostId,Goal)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Perform remote call of fully instantiated goal: e.g., a pattern search. Remote host for execution is specified via IP/DNS address of node identity, rest of identity is ignored<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="50" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (dht_rpr:dht_rpr_node_id/1)</span><span><span class="var">HostId</span> is a term of type <a class="idx_anchor" id="51" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a> with first argument as integer value and second as IP/DNS address.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul><p><strong>Usage 9:</strong> <tt>dht_rpr_call(HostId,Goal)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Perform remote call of fully instantiated goal: e.g., a pattern search.Remote host for execution is specified via integer, IP/DNS address is searched through local database using that integer as part of node identity.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">HostId</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">HostId</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul><p><strong>Usage 10:</strong> <tt>dht_rpr_call(HostId,Goal)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Perform remote call of fully instantiated goal: e.g., a pattern search. Finally make a try to use first argument as directly-specified IP/DNS address.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">HostId</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (basic_props:atm/1)</span><span><span class="var">HostId</span> is an atom.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Goal</span> is ground.
+</span><br/><span class="on_right"> (basic_props:callable/1)</span><span><span class="var">Goal</span> is a term which represents a goal, i.e., an atom or a structure.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="dht_rpr_call/3" href="ciaopdindex.html#dht_rpr_call/3">dht_rpr_call/3</a>:</div><div class="deftext">The only difference this predicate has with <a class="idx_anchor" id="52" href="ciaoglindex.html#dht_rpr_call/2"><tt>dht_rpr_call/2</tt></a> is debug-enabling switch. Third parameter is expected to be responsible for that. It takes one of two possible values &apos;debug&apos; or &apos;nodebug&apos;. The first one is default. If default value is used, the standard output stream is populated with various debugging information.<p><strong>Usage 1:</strong> <tt>dht_rpr_call(HostId,Goal,Debug)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="53" href="ciaoglindex.html#dht_rpr_call/3"><tt>dht_rpr_call/3</tt></a> executes a <span class="var">Goal</span> remotely and prints some debugging information locally. The platform for the remote execution is specified by <span class="var">HostId</span>.<span class="var">Debug</span> variable must be bound to value &apos;debug&apos; in order for this case to fire.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">HostId</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:term/1)</span><span><span class="var">Goal</span> is any term.
+</span><br/><span class="on_right"> (basic_props:gnd/1)</span><span><span class="var">Debug</span> is ground.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>dht_rpr_call(HostId,Term,Anything)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <a class="idx_anchor" id="54" href="ciaoglindex.html#dht_rpr_call/3"><tt>dht_rpr_call/3</tt></a> executes a <span class="var">Goal</span> remotely without writing any information on the local output stream. The platform for the remote execution is specified by <span class="var">HostId</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (basic_props:int/1)</span><span><span class="var">HostId</span> is an integer.
+</span><br/><span class="on_right"> (basic_props:term/1)</span><span><span class="var">Term</span> is any term.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Anything</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="node_id/2" href="ciaopdindex.html#node_id/2">node_id/2</a>:</div><div class="deftext"><a class="idx_anchor" id="55" href="ciaoglindex.html#node_id/2"><tt>node_id/2</tt></a>is an auxilary prediate for internal data structures hanling.<br/>
+The predicate is of type <em>concurrent</em>.<br/></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="dht_logic_misc.html">&#x25C4;</a><a class="navbutton" href="dht_storage.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

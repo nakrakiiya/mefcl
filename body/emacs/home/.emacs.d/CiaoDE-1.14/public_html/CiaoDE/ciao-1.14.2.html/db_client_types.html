@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Types for the Low-level interface to SQL databases &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="mysql_client.html">&#x25C4;</a><a class="navbutton" href="sqltypes.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="Interfaces.html">PART VIII - Interfaces to other languages and systems</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Types for the Low-level interface to SQL databases</h1><a class="idx_anchor" href="ciaoliindex.html#db_client_types"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza</a>, <a class="idx_anchor" id="Manuel Carro" href="ciaoauindex.html#Manuel Carro">Manuel Carro</a>, <a class="idx_anchor" id="Ignacio Caballero" href="ciaoauindex.html#Ignacio Caballero">Ignacio Caballero</a>, <a class="idx_anchor" id="Manuel Hermenegildo" href="ciaoauindex.html#Manuel Hermenegildo">Manuel Hermenegildo</a>.<p>
+This module implement the types for the low level interface to SQL databases<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(db_client_types)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Regular Types:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#socketname/1"><tt>socketname/1</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#dbname/1"><tt>dbname/1</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#user/1"><tt>user/1</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#passwd/1"><tt>passwd/1</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#answertableterm/1"><tt>answertableterm/1</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#tuple/1"><tt>tuple/1</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#answertupleterm/1"><tt>answertupleterm/1</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#sqlstring/1"><tt>sqlstring/1</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="socketname/1" href="ciaoteindex.html#socketname/1">socketname/1</a>:</div><div class="deftext"><pre>socketname(IPAddress:PortNumber) :-
+        atm(IPAddress),
+        int(PortNumber).
+</pre><p><strong>Usage:</strong> <tt>socketname(IPP)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">IPP</span> is a structure describing a complete TCP/IP port address.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="dbname/1" href="ciaoteindex.html#dbname/1">dbname/1</a>:</div><div class="deftext"><pre>dbname(DBId) :-
+        atm(DBId).
+</pre><p><strong>Usage:</strong> <tt>dbname(DBId)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">DBId</span> is the identifier of an database.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="user/1" href="ciaoteindex.html#user/1">user/1</a>:</div><div class="deftext"><pre>user(User) :-
+        atm(User).
+</pre><p><strong>Usage:</strong> <tt>user(User)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">User</span> is a user name in the database.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="passwd/1" href="ciaoteindex.html#passwd/1">passwd/1</a>:</div><div class="deftext"><pre>passwd(Passwd) :-
+        atm(Passwd).
+</pre><p><strong>Usage:</strong> <tt>passwd(Passwd)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Passwd</span> is the password for the user name in the database.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="answertableterm/1" href="ciaoteindex.html#answertableterm/1">answertableterm/1</a>:</div><div class="deftext">Represents the types of responses that will be returned from the database interface. These can be a set of answer tuples, or the atom <tt>ok</tt> in case of a successful addition or deletion.<p><strong>Usage:</strong> <tt>answertableterm(AT)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">AT</span> is a response from the database interface.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="tuple/1" href="ciaoteindex.html#tuple/1">tuple/1</a>:</div><div class="deftext"><pre>tuple(T) :-
+        list(T,atm).
+</pre><p><strong>Usage:</strong> <tt>tuple(T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">T</span> is a tuple of values from the database interface.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="answertupleterm/1" href="ciaoteindex.html#answertupleterm/1">answertupleterm/1</a>:</div><div class="deftext"><pre>answertupleterm([]).
+answertupleterm(tup(T)) :-
+        tuple(T).
+</pre><p><strong>Usage:</strong> <tt>answertupleterm(X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">X</span> is a predicate containing a tuple.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="sqlstring/1" href="ciaoteindex.html#sqlstring/1">sqlstring/1</a>:</div><div class="deftext"><pre>sqlstring(S) :-
+        string(S).
+</pre><p><strong>Usage:</strong> <tt>sqlstring(S)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">S</span> is a string of SQL code.</ul></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="mysql_client.html">&#x25C4;</a><a class="navbutton" href="sqltypes.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

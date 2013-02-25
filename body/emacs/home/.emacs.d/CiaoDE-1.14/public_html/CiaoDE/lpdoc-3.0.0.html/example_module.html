@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Auto Documenter Output for the Example Module &mdash; The lpdoc Documentation Generator v3.0</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="lpdoc_examples.html">&#x25C4;</a><a class="navbutton" href="rtchecks_doc.html">&#x25BA;</a></span><span><a href="lpdoc.html">The lpdoc Documentation Generator</a> &raquo; <a href="Reference.html">PART I - LPdoc Reference Manual</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Auto Documenter Output for the Example Module</h1><a class="idx_anchor" href="lpdocliindex.html#example_module"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Anonymous Author 1" href="lpdocauindex.html#Anonymous Author 1">Anonymous Author 1</a>, <a class="idx_anchor" id="Anonymous Author 2" href="lpdocauindex.html#Anonymous Author 2">Anonymous Author 2</a>.<p>
+This is where general comments on the file go. In this case the file is a library which contains some assertion examples for testing the <em>automatic documentation system</em>. <br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(example_module)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="lpdocglindex.html#q/2"><tt>q/2</tt></a>, <a class="idx_anchor" id="1" href="lpdocglindex.html#r/1"><tt>r/1</tt></a>, <a class="idx_anchor" id="2" href="lpdocglindex.html#p/1"><tt>p/1</tt></a>, <a class="idx_anchor" id="3" href="lpdocglindex.html#p/5"><tt>p/5</tt></a>, <a class="idx_anchor" id="4" href="lpdocglindex.html#u/3"><tt>u/3</tt></a>, <a class="idx_anchor" id="5" href="lpdocglindex.html#w/1"><tt>w/1</tt></a>, <a class="idx_anchor" id="6" href="lpdocglindex.html#mytype/1"><tt>mytype/1</tt></a>, <a class="idx_anchor" id="7" href="lpdocglindex.html#t/5"><tt>t/5</tt></a>, <a class="idx_anchor" id="8" href="lpdocglindex.html#s/1"><tt>s/1</tt></a>, <a class="idx_anchor" id="9" href="lpdocglindex.html#q/1"><tt>q/1</tt></a>.
+<LI><em>Properties:</em><br/><a class="idx_anchor" id="10" href="lpdocglindex.html#long/1"><tt>long/1</tt></a>.
+<LI><em>Regular Types:</em><br/><a class="idx_anchor" id="11" href="lpdocglindex.html#bar/1"><tt>bar/1</tt></a>, <a class="idx_anchor" id="12" href="lpdocglindex.html#baz/1"><tt>baz/1</tt></a>, <a class="idx_anchor" id="13" href="lpdocglindex.html#aorb/1"><tt>aorb/1</tt></a>, <a class="idx_anchor" id="14" href="lpdocglindex.html#tree_of/2"><tt>tree_of/2</tt></a>, <a class="idx_anchor" id="15" href="lpdocglindex.html#list_or_aorb/2"><tt>list_or_aorb/2</tt></a>.
+<LI><em>Multifiles:</em><br/><a class="idx_anchor" id="16" href="lpdocglindex.html#p/3"><tt>p/3</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>Files of module <tt>user</tt>:</em><br/><a class="idx_anchor" id="17" href="lpdocglindex.html#foo"><tt>foo</tt></a>.
+<LI><em>System library modules:</em><br/><a class="idx_anchor" id="18" href="lpdocglindex.html#assertions/native_props"><tt>assertions/native_props</tt></a>, <a class="idx_anchor" id="19" href="lpdocglindex.html#engine/basic_props"><tt>engine/basic_props</tt></a>, <a class="idx_anchor" id="20" href="lpdocglindex.html#lists"><tt>lists</tt></a>.
+<LI><em>Internal (engine) modules:</em><br/><a class="idx_anchor" id="21" href="lpdocglindex.html#term_basic"><tt>term_basic</tt></a>, <a class="idx_anchor" id="22" href="lpdocglindex.html#arithmetic"><tt>arithmetic</tt></a>, <a class="idx_anchor" id="23" href="lpdocglindex.html#atomic_basic"><tt>atomic_basic</tt></a>, <a class="idx_anchor" id="24" href="lpdocglindex.html#attributes"><tt>attributes</tt></a>, <a class="idx_anchor" id="25" href="lpdocglindex.html#basic_props"><tt>basic_props</tt></a>, <a class="idx_anchor" id="26" href="lpdocglindex.html#basiccontrol"><tt>basiccontrol</tt></a>, <a class="idx_anchor" id="27" href="lpdocglindex.html#data_facts"><tt>data_facts</tt></a>, <a class="idx_anchor" id="28" href="lpdocglindex.html#exceptions"><tt>exceptions</tt></a>, <a class="idx_anchor" id="29" href="lpdocglindex.html#io_aux"><tt>io_aux</tt></a>, <a class="idx_anchor" id="30" href="lpdocglindex.html#io_basic"><tt>io_basic</tt></a>, <a class="idx_anchor" id="31" href="lpdocglindex.html#prolog_flags"><tt>prolog_flags</tt></a>, <a class="idx_anchor" id="32" href="lpdocglindex.html#streams_basic"><tt>streams_basic</tt></a>, <a class="idx_anchor" id="33" href="lpdocglindex.html#system_info"><tt>system_info</tt></a>, <a class="idx_anchor" id="34" href="lpdocglindex.html#term_compare"><tt>term_compare</tt></a>, <a class="idx_anchor" id="35" href="lpdocglindex.html#term_typing"><tt>term_typing</tt></a>, <a class="idx_anchor" id="36" href="lpdocglindex.html#hiord_rt"><tt>hiord_rt</tt></a>, <a class="idx_anchor" id="37" href="lpdocglindex.html#debugger_support"><tt>debugger_support</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="bar/1" href="lpdocteindex.html#bar/1">bar/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>bar(X)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">X</span> is an acceptable kind of bar.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="baz/1" href="lpdocteindex.html#baz/1">baz/1</a>:</div><div class="deftext">A regular type, defined as follows:<pre>baz(a).
+baz(b).
+</pre> </div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="aorb/1" href="lpdocteindex.html#aorb/1">aorb/1</a>:</div><div class="deftext">A regular type, defined as follows:<pre>aorb(a).
+aorb(b).
+</pre> </div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="tree_of/2" href="lpdocteindex.html#tree_of/2">tree_of/2</a>:</div><div class="deftext">A regular type, defined as follows:<pre>tree_of(_1,void).
+tree_of(T,tree(_1,_2,_3)) :-
+        call(T,_1),
+        tree_of(T,_2),
+        tree_of(T,_3).
+</pre> </div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="list_or_aorb/2" href="lpdocteindex.html#list_or_aorb/2">list_or_aorb/2</a>:</div><div class="deftext">A regular type, defined as follows:<pre>list_or_aorb(T,_1) :-
+        list(T,_1).
+list_or_aorb(_T,_1) :-
+        aorb(_1).
+</pre> </div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="q/2" href="lpdocpdindex.html#q/2">q/2</a>:</div><div class="deftext"><br/>
+The predicate is of type <em>dynamic</em>.<br/><p><strong>Usage 1:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="38" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Arg1</span> is a free variable.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="39" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">Arg2</span> is ground.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="40" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg2</span> is an integer.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="41" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">Arg1</span> is ground.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="42" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg1</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="43" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg2</span> is an integer.
+</span>
+</ul><p><strong>Usage 2:</strong> <ul class="itemize_minus"><LI><em>Description:</em> Non-moded types are best used this way.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (<a class="idx_anchor" id="44" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg1</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="45" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">Arg2</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="r/1" href="lpdocpdindex.html#r/1">r/1</a>:</div><div class="deftext"><br/>
+The predicate is of type <em>data</em>.<br/><p><strong>Usage:</strong> <tt>r(A)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This uses parametric types<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="46" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">A</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="47" href="lpdocglindex.html#list/2"><tt>list/2</tt></a>)</span><span><span class="var">A</span> is a list of <span class="var">int</span>s.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="48" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">A</span> is ground.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (<a class="idx_anchor" id="49" href="lpdocglindex.html#not_fails/1"><tt>not_fails/1</tt></a>)</span><span>All the calls of the form <span class="var">r(A)</span> do not fail.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="p/1" href="lpdocpdindex.html#p/1">p/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="50" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Arg1</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="51" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">Arg1</span> is a list.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="p/5" href="lpdocpdindex.html#p/5">p/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>p(Arg1,Arg2,Arg3,Arg4,A)</tt>
+<ul class="itemize_minus"><LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (<a class="idx_anchor" id="52" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg1</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="53" href="lpdocglindex.html#list/2"><tt>list/2</tt></a>)</span><span><span class="var">Arg3</span> is a list of <span class="var">int</span>s.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="54" href="lpdocglindex.html#ground/1"><tt>ground/1</tt></a>)</span><span><span class="var">Arg2</span> is currently ground (it contains no variables).
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="55" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Arg4</span> is a free variable.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="56" href="lpdocglindex.html#nonvar/1"><tt>nonvar/1</tt></a>)</span><span><span class="var">A</span> is currently a term which is not a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="57" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">Arg1</span> is ground.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="58" href="lpdocglindex.html#ground/1"><tt>ground/1</tt></a>)</span><span><span class="var">Arg2</span> is currently ground (it contains no variables).
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (<a class="idx_anchor" id="59" href="lpdocglindex.html#not_further_inst/2"><tt>not_further_inst/2</tt></a>)</span><span><span class="var">Arg3</span> is not further instantiated.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="60" href="lpdocglindex.html#steps_lb/2"><tt>steps_lb/2</tt></a>)</span><span><span class="var">1+length(A)</span> is a lower bound on the cost of any call of the form <span class="var">p(Arg1,Arg2,Arg3,Arg4,A)</span>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="u/3" href="lpdocpdindex.html#u/3">u/3</a>:</div><div class="deftext"><p><strong>Usage 1:</strong> <ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="61" href="lpdocglindex.html#nonvar/1"><tt>nonvar/1</tt></a>)</span><span><span class="var">Arg1</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="62" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Arg2</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="63" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">Arg3</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PROPERTY</span><div class="defname"><a class="idx_anchor" id="long/1" href="lpdocprindex.html#long/1">long/1</a>:</div><div class="deftext">This is a property, describing a list that is longish. The definition is:<p><pre>long(L) :-
+        length(L,N),
+        N&gt;100.
+</pre> <p><p><strong>Usage:</strong> <tt>long(L)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">L</span> is rather long.</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="w/1" href="lpdocpdindex.html#w/1">w/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <ul class="itemize_minus"><LI><em>Calls should, and exit will be compatible with:</em><br/><span class="on_right"> (<a class="idx_anchor" id="64" href="lpdocglindex.html#list/2"><tt>list/2</tt></a>)</span><span><span class="var">Arg1</span> is a list of <span class="var">mytype</span>s.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="65" href="lpdocglindex.html#nonvar/1"><tt>nonvar/1</tt></a>)</span><span><span class="var">Arg1</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="mytype/1" href="lpdocpdindex.html#mytype/1">mytype/1</a>:</div><div class="deftext">No further documentation available for this predicate.</div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="t/5" href="lpdocpdindex.html#t/5">t/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>t(A,B,C,D,E)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This predicate uses <em>modes</em> extensively.<LI><em>Call and exit should be compatible with:</em><br/><span class="on_right"> (<a class="idx_anchor" id="66" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">A</span> is a list.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="67" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">B</span> is a list.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="68" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">C</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="69" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">D</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="70" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">E</span> is a list.
+</span>
+<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="71" href="lpdocglindex.html#nonvar/1"><tt>nonvar/1</tt></a>)</span><span><span class="var">A</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="72" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">B</span> is a free variable.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="73" href="lpdocglindex.html#long/1"><tt>long/1</tt></a>)</span><span><span class="var">B</span> is rather long.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="74" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">E</span> is ground.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="75" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">C</span> is ground.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="76" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">A</span> is ground.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (<a class="idx_anchor" id="77" href="lpdocglindex.html#not_further_inst/2"><tt>not_further_inst/2</tt></a>)</span><span><span class="var">D</span> is not further instantiated.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="78" href="lpdocglindex.html#not_fails/1"><tt>not_fails/1</tt></a>)</span><span>All the calls of the form <span class="var">t(A,B,C,D,E)</span> do not fail.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="s/1" href="lpdocpdindex.html#s/1">s/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>s(A)</tt>
+<ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="79" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">A</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="80" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">A</span> is a list.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="81" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">A</span> is ground.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (<a class="idx_anchor" id="82" href="lpdocglindex.html#not_fails/1"><tt>not_fails/1</tt></a>)</span><span>All the calls of the form <span class="var">s(A)</span> do not fail.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="q/1" href="lpdocpdindex.html#q/1">q/1</a>:</div><div class="deftext"><p><strong>Usage 1:</strong> <tt>q(A)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Foo<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="83" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">A</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="84" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">A</span> is a list.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="85" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">A</span> is ground.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (<a class="idx_anchor" id="86" href="lpdocglindex.html#not_fails/1"><tt>not_fails/1</tt></a>)</span><span>All the calls of the form <span class="var">q(A)</span> do not fail.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>q(A)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Not a bad use at all.</ul></div></div><p>
+<div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="list/1" href="lpdocteindex.html#list/1">list/1</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>list(L)</tt>
+<ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (<a class="idx_anchor" id="87" href="lpdocglindex.html#sideff/2"><tt>sideff/2</tt></a>)</span><span><span class="var">list(L)</span> is side-effect <span class="var">free</span>.
+</span>
+</ul><tt>list(L)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="88" href="lpdocglindex.html#ground/1"><tt>ground/1</tt></a>)</span><span><span class="var">L</span> is currently ground (it contains no variables).
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (<a class="idx_anchor" id="89" href="lpdocglindex.html#eval/1"><tt>eval/1</tt></a>)</span><span><span class="var">list(L)</span> is evaluable at compile-time.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="90" href="lpdocglindex.html#is_det/1"><tt>is_det/1</tt></a>)</span><span>All calls of the form <span class="var">list(L)</span> are deterministic.
+</span>
+</ul><tt>list(T)</tt>
+<ul class="itemize_minus"><LI><em>The following properties hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="91" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">T</span> is a list.
+</span>
+</ul><p><strong>Usage:</strong> <tt>list(L)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">L</span> is a list.</ul></div></div><p>
+</div><div id="Documentation on multifiles"><h2>Documentation on multifiles</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="p/3" href="lpdocpdindex.html#p/3">p/3</a>:</div><div class="deftext">A <strong>general comment</strong> on the predicate.<br/>
+The predicate is <em>multifile</em>.<br/>
+The predicate is of type <em>dynamic</em>.<br/>
+<strong>General properties:</strong> <ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="92" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">Arg1</span> is ground.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="93" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Arg2</span> is a free variable.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="94" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Arg3</span> is a free variable.
+</span>
+</ul><ul class="itemize_minus"><LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (undefined property)</span><span><a class="idx_anchor" id="95" href="lpdocglindex.html#foo(Arg1)"><tt>foo(Arg1)</tt></a>
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="96" href="lpdocglindex.html#bar/1"><tt>bar/1</tt></a>)</span><span><span class="var">Arg2</span> is an acceptable kind of bar.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="98" href="lpdocglindex.html#baz/1"><tt>baz/1</tt></a>)</span><span><a class="idx_anchor" id="97" href="lpdocglindex.html#baz(Arg3)"><tt>baz(Arg3)</tt></a>
+</span>
+</ul><ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="99" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg1</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="100" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg2</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="101" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Arg3</span> is a free variable.
+</span>
+
+
+<em>then the following properties should hold upon exit:</em>
+<br/><span class="on_right"> (<a class="idx_anchor" id="102" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg1</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="103" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg2</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="104" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">Arg3</span> is ground.
+</span>
+</ul><ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="105" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg1</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="106" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg2</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="107" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Arg3</span> is a free variable.
+</span>
+
+
+<em>then the following properties should hold globally:</em>
+<br/><span class="on_right"> (<a class="idx_anchor" id="108" href="lpdocglindex.html#not_fails/1"><tt>not_fails/1</tt></a>)</span><span>All the calls of the form <span class="var">p(Arg1,Arg2,Arg3)</span> do not fail.
+</span>
+</ul><p><strong>Usage 1:</strong> <span class="on_right"><span class="iso">ISO</span></span><span></span>
+<ul class="itemize_minus"><LI><em>Description:</em> This mode is nice.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="109" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg1</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="110" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg2</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="111" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Arg3</span> is a free variable.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="112" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg1</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="113" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg2</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="114" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">Arg3</span> is a list.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (<a class="idx_anchor" id="115" href="lpdocglindex.html#iso/1"><tt>iso/1</tt></a>)</span><span><em>Complies with the ISO-Prolog standard.</em>
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="116" href="lpdocglindex.html#not_fails/1"><tt>not_fails/1</tt></a>)</span><span>All the calls of the form <span class="var">p(Arg1,Arg2,Arg3)</span> do not fail.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>p(Preds,Value,Assoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This mode is also nice.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="117" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Preds</span> is a free variable.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="118" href="lpdocglindex.html#var/1"><tt>var/1</tt></a>)</span><span><span class="var">Value</span> is a free variable.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="119" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">Assoc</span> is a list.
+</span>
+<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="120" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Preds</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="121" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Value</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="122" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">Assoc</span> is a list.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (<a class="idx_anchor" id="123" href="lpdocglindex.html#not_fails/1"><tt>not_fails/1</tt></a>)</span><span>All the calls of the form <span class="var">p(Preds,Value,Assoc)</span> do not fail.
+</span>
+</ul><p><strong>Usage 3:</strong> <ul class="itemize_minus"><LI><em>Description:</em> Just playing around.<LI><em>The following properties should hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="124" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">Arg1</span> is a list.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="125" href="lpdocglindex.html#int/1"><tt>int/1</tt></a>)</span><span><span class="var">Arg2</span> is an integer.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="126" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">Arg3</span> is a list.
+</span>
+<LI><em>The following properties should hold globally:</em><br/><span class="on_right"> (<a class="idx_anchor" id="127" href="lpdocglindex.html#not_fails/1"><tt>not_fails/1</tt></a>)</span><span>All the calls of the form <span class="var">p(Arg1,Arg2,Arg3)</span> do not fail.
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="128" href="lpdocglindex.html#not_fails/1"><tt>not_fails/1</tt></a>)</span><span>All the calls of the form <span class="var">p(Arg1,Arg2,Arg3)</span> do not fail.
+</span>
+</ul></div></div><p>
+</div><div id="Documentation on internals"><h2>Documentation on internals</h2><div><span class="on_right">REGTYPE</span><div class="defname"><a class="idx_anchor" id="list/2" href="lpdocteindex.html#list/2">list/2</a>:</div><div class="deftext"><br/>
+<strong>General properties:</strong> <tt>list(L,T)</tt>
+<ul class="itemize_minus"><LI><em>The following properties hold globally:</em><br/><span class="on_right"> (<a class="idx_anchor" id="129" href="lpdocglindex.html#sideff/2"><tt>sideff/2</tt></a>)</span><span><span class="var">list(L,T)</span> is side-effect <span class="var">free</span>.
+</span>
+</ul><tt>list(L,T)</tt>
+<ul class="itemize_minus"><LI><em>If the following properties hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="130" href="lpdocglindex.html#ground/1"><tt>ground/1</tt></a>)</span><span><span class="var">L</span> is currently ground (it contains no variables).
+</span><br/><span class="on_right"> (<a class="idx_anchor" id="131" href="lpdocglindex.html#ground/1"><tt>ground/1</tt></a>)</span><span><span class="var">T</span> is currently ground (it contains no variables).
+</span>
+
+
+<em>then the following properties hold globally:</em>
+<br/><span class="on_right"> (<a class="idx_anchor" id="132" href="lpdocglindex.html#eval/1"><tt>eval/1</tt></a>)</span><span><span class="var">list(L,T)</span> is evaluable at compile-time.
+</span>
+</ul><tt>list(X,T)</tt>
+<ul class="itemize_minus"><LI><em>The following properties hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="133" href="lpdocglindex.html#list/1"><tt>list/1</tt></a>)</span><span><span class="var">X</span> is a list.
+</span>
+</ul><p><strong>Usage:</strong> <tt>list(L,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">L</span> is a list of <span class="var">T</span>s.</ul></div></div><p>
+<div><span class="on_right">MODE</span><div class="defname"><a class="idx_anchor" id="og/2" href="lpdocmoindex.html#og/2">og/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>og(A,T)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This is a <em>parametric mode definition</em>.<LI><em>Call and exit are compatible with:</em><br/><span class="on_right"> (undefined property)</span><span><a class="idx_anchor" id="134" href="lpdocglindex.html#call(T,A)"><tt>call(T,A)</tt></a>
+</span>
+<LI><em>The following properties are added upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="135" href="lpdocglindex.html#gnd/1"><tt>gnd/1</tt></a>)</span><span><span class="var">A</span> is ground.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="is/2" href="lpdocpdindex.html#is/2">is/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>Num is Expr</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Typical way to describe/document an external predicate (e.g., written in C).<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (<a class="idx_anchor" id="136" href="lpdocglindex.html#arithexpression/1"><tt>arithexpression/1</tt></a>)</span><span><span class="var">Expr</span> is an arithmetic expression.
+</span>
+<LI><em>The following properties hold upon exit:</em><br/><span class="on_right"> (<a class="idx_anchor" id="137" href="lpdocglindex.html#num/1"><tt>num/1</tt></a>)</span><span><span class="var">Num</span> is a number.
+</span>
+</ul></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofiglpdoc-logo-128.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a><LI><a href="#Documentation on multifiles">Documentation on multifiles</a><LI><a href="#Documentation on internals">Documentation on internals</a></ul><h2>Global Links</h2><ul><LI><a href="lpdocfulltoc.html">Table of Contents</a><LI><a href="lpdocchanges.html">Version/Change Log</a><LI><a href="lpdocrefs.html">References</a><LI><a href="lpdoccopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="lpdocliindex.html">Library/Module Index</a><LI><a href="lpdocpdindex.html">Predicate/Method Index</a><LI><a href="lpdocprindex.html">Property Index</a><LI><a href="lpdocteindex.html">Regular Type Index</a><LI><a href="lpdocdeindex.html">Declaration Index</a><LI><a href="lpdoccoindex.html">Concept Index</a><LI><a href="lpdocauindex.html">Author Index</a><LI><a href="lpdocglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="lpdoc_examples.html">&#x25C4;</a><a class="navbutton" href="rtchecks_doc.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

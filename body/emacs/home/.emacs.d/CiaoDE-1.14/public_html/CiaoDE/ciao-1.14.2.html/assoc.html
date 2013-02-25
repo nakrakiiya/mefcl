@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Association between key and value &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="arrays.html">&#x25C4;</a><a class="navbutton" href="counters.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="ADTs.html">PART IX - Abstract data types</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Association between key and value</h1><a class="idx_anchor" href="ciaoliindex.html#assoc"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Pablo Chico" href="ciaoauindex.html#Pablo Chico">Pablo Chico</a>, <a class="idx_anchor" id="Manuel Carro" href="ciaoauindex.html#Manuel Carro">Manuel Carro</a>.<p>
+This library implements a table. It takes its name from the classical &quot;association lists&quot;. It allows storing a set of values and a key for each value, such that the values can later be accessed through these keys. These keys could not be ground terms, but they could not be instanciated later (so, this implementation unify with &apos;==&apos; instead of &apos;=&apos;). The implementation uses a dynamically changing data structure for efficiency. When there are few elements the data structure used is a list of pairs. When the number of elements stored goes beyond some number, an AVL tree is used. There is a certain level of hysteresis so that no repeated data structure conversions occur when the number of elements is close to the threshold.<br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_module(library(assoc)).</tt><LI><strong>Exports:</strong><br/><ul class="itemize_minus"><LI><em>Predicates:</em><br/><a class="idx_anchor" id="0" href="ciaoglindex.html#empty_assoc/1"><tt>empty_assoc/1</tt></a>, <a class="idx_anchor" id="1" href="ciaoglindex.html#assoc_to_list/2"><tt>assoc_to_list/2</tt></a>, <a class="idx_anchor" id="2" href="ciaoglindex.html#is_assoc/1"><tt>is_assoc/1</tt></a>, <a class="idx_anchor" id="3" href="ciaoglindex.html#min_assoc/3"><tt>min_assoc/3</tt></a>, <a class="idx_anchor" id="4" href="ciaoglindex.html#max_assoc/3"><tt>max_assoc/3</tt></a>, <a class="idx_anchor" id="5" href="ciaoglindex.html#gen_assoc/3"><tt>gen_assoc/3</tt></a>, <a class="idx_anchor" id="6" href="ciaoglindex.html#get_assoc/3"><tt>get_assoc/3</tt></a>, <a class="idx_anchor" id="7" href="ciaoglindex.html#get_assoc/5"><tt>get_assoc/5</tt></a>, <a class="idx_anchor" id="8" href="ciaoglindex.html#get_next_assoc/4"><tt>get_next_assoc/4</tt></a>, <a class="idx_anchor" id="9" href="ciaoglindex.html#get_prev_assoc/4"><tt>get_prev_assoc/4</tt></a>, <a class="idx_anchor" id="10" href="ciaoglindex.html#list_to_assoc/2"><tt>list_to_assoc/2</tt></a>, <a class="idx_anchor" id="11" href="ciaoglindex.html#ord_list_to_assoc/2"><tt>ord_list_to_assoc/2</tt></a>, <a class="idx_anchor" id="12" href="ciaoglindex.html#map_assoc/2"><tt>map_assoc/2</tt></a>, <a class="idx_anchor" id="13" href="ciaoglindex.html#map_assoc/3"><tt>map_assoc/3</tt></a>, <a class="idx_anchor" id="14" href="ciaoglindex.html#map/3"><tt>map/3</tt></a>, <a class="idx_anchor" id="15" href="ciaoglindex.html#foldl/4"><tt>foldl/4</tt></a>, <a class="idx_anchor" id="16" href="ciaoglindex.html#put_assoc/4"><tt>put_assoc/4</tt></a>, <a class="idx_anchor" id="17" href="ciaoglindex.html#put_assoc/5"><tt>put_assoc/5</tt></a>, <a class="idx_anchor" id="18" href="ciaoglindex.html#add_assoc/4"><tt>add_assoc/4</tt></a>, <a class="idx_anchor" id="19" href="ciaoglindex.html#update_assoc/5"><tt>update_assoc/5</tt></a>, <a class="idx_anchor" id="20" href="ciaoglindex.html#del_assoc/4"><tt>del_assoc/4</tt></a>, <a class="idx_anchor" id="21" href="ciaoglindex.html#del_min_assoc/4"><tt>del_min_assoc/4</tt></a>, <a class="idx_anchor" id="22" href="ciaoglindex.html#del_max_assoc/4"><tt>del_max_assoc/4</tt></a>.
+</ul><LI><strong>Other modules used:</strong><br/><ul class="itemize_minus"><LI><em>System library modules:</em><br/><a class="idx_anchor" id="23" href="ciaoglindex.html#hiordlib"><tt>hiordlib</tt></a>, <a class="idx_anchor" id="24" href="ciaoglindex.html#lists"><tt>lists</tt></a>.
+</ul></ul></div></div><div id="Documentation on exports"><h2>Documentation on exports</h2><div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="empty_assoc/1" href="ciaopdindex.html#empty_assoc/1">empty_assoc/1</a>:</div><div class="deftext"><p><strong>Usage 1:</strong> <tt>empty_assoc(Assoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> True if <span class="var">Assoc</span> is an empty <tt>assoc_table</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>empty_assoc(Assoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Assoc</span> is an empty <tt>assoc_table</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Assoc</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="assoc_to_list/2" href="ciaopdindex.html#assoc_to_list/2">assoc_to_list/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>assoc_to_list(Assoc,L)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Transforms <span class="var">Assoc</span> into <span class="var">L</span> where each pair of <span class="var">L</span> was a association in <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">L</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:ord_pairs/1)</span><span><span class="var">L</span> is a ordered list of elements of the form <tt>key</tt>-<tt>value</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="is_assoc/1" href="ciaopdindex.html#is_assoc/1">is_assoc/1</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>is_assoc(Assoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> True if <span class="var">Assoc</span> is an <tt>assoc_table</tt>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="min_assoc/3" href="ciaopdindex.html#min_assoc/3">min_assoc/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>min_assoc(Assoc,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Key</span> and <span class="var">Value</span> are <tt>key</tt> and <tt>value</tt> of the element with the smallest <tt>key</tt> in <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Key</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Value</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">Value</span> is a valid value in a <tt>assoc_table</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="max_assoc/3" href="ciaopdindex.html#max_assoc/3">max_assoc/3</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>max_assoc(Assoc,Key,Value)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Key</span> and <span class="var">Value</span> are the <tt>key</tt> and <tt>value</tt> of the element with the largest <tt>key</tt> in <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Key</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Value</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">Key</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">Value</span> is a valid value in a <tt>assoc_table</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="gen_assoc/3" href="ciaopdindex.html#gen_assoc/3">gen_assoc/3</a>:</div><div class="deftext"><p><strong>Usage 1:</strong> <tt>gen_assoc(K,Assoc,V)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Enumerate matching elements of Assoc in ascending order of their keys via backtracking.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">K</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">V</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>gen_assoc(K,Assoc,V)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Enumerate matching elements of Assoc in ascending order of their keys via backtracking whose value is <span class="var">V</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">K</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">V</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="get_assoc/3" href="ciaopdindex.html#get_assoc/3">get_assoc/3</a>:</div><div class="deftext"><p><strong>Usage 1:</strong> <tt>get_assoc(K,Assoc,V)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> True if <span class="var">V</span> is the value associated to the key <span class="var">K</span> in the assoc_table <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">K</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">V</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span>
+</ul><p><strong>Usage 2:</strong> <tt>get_assoc(K,Assoc,V)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">V</span> is the value associated to the key <span class="var">K</span> in the assoc_table <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">K</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">V</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="get_assoc/5" href="ciaopdindex.html#get_assoc/5">get_assoc/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>get_assoc(K,Assoc,Old,NewAssoc,New)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">NewAssoc</span> is an <tt>assoc_table</tt> identical to <span class="var">Assoc</span> except that the value associated with <span class="var">Key</span> is <span class="var">New</span> instead of <span class="var">Old</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">K</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Old</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NewAssoc</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">New</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">Old</span> is a valid value in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">NewAssoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">New</span> is a valid value in a <tt>assoc_table</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="get_next_assoc/4" href="ciaopdindex.html#get_next_assoc/4">get_next_assoc/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>get_next_assoc(K,Assoc,NextK,NextV)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">NextK</span> and <span class="var">NextV</span> are the next <tt>key</tt> and associated <tt>value</tt> after <span class="var">K</span> in <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">K</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NextK</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NextV</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">NextK</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">NextV</span> is a valid value in a <tt>assoc_table</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="get_prev_assoc/4" href="ciaopdindex.html#get_prev_assoc/4">get_prev_assoc/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>get_prev_assoc(K,Assoc,PrevK,PrevV)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">PrevK</span> and <span class="var">PrevV</span> are the previous <tt>key</tt> and associated <tt>value</tt> after <span class="var">K</span> in <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">PrevK</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">PrevV</span> is a valid value in a <tt>assoc_table</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="list_to_assoc/2" href="ciaopdindex.html#list_to_assoc/2">list_to_assoc/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>list_to_assoc(L,Assoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Transforms <span class="var">L</span> into <span class="var">Assoc</span> where each pair of <span class="var">L</span> will be a association in <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">L</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Assoc</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:pairs/1)</span><span><span class="var">L</span> is a list of elements of the form <tt>key</tt>-<tt>value</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="ord_list_to_assoc/2" href="ciaopdindex.html#ord_list_to_assoc/2">ord_list_to_assoc/2</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>ord_list_to_assoc(L,Assoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Transforms <span class="var">L</span>, a list of pairs (using the functor <tt>-/2</tt>) sorted by its first element, into the table <span class="var">Assoc</span> where each pair of <span class="var">L</span> will become a association in <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">L</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Assoc</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:ord_pairs/1)</span><span><span class="var">L</span> is a ordered list of elements of the form <tt>key</tt>-<tt>value</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="map_assoc/2" href="ciaopdindex.html#map_assoc/2">map_assoc/2</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>map_assoc((pred 1),?)</tt>.<br/><p><strong>Usage:</strong> <tt>map_assoc(Pred,Assoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Assoc</span> is an association tree, and for each <span class="var">Key</span>, if <span class="var">Key</span> is associated with <span class="var">Value</span> in <span class="var">Assoc</span>, Pred(Value) is true.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Pred</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="map_assoc/3" href="ciaopdindex.html#map_assoc/3">map_assoc/3</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>map_assoc((pred 2),?,?)</tt>.<br/><p><strong>Usage:</strong> <tt>map_assoc(Pred,Assoc,NewAssoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Assoc</span> and <span class="var">NewAssoc</span> are association trees of the same shape, and for each <span class="var">Key</span>, if <span class="var">Key</span> is associated with <span class="var">Old</span> in <span class="var">Assoc</span> and with <span class="var">new</span> in <span class="var">NewAssoc</span>, Pred(Old,New) is true.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Pred</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NewAssoc</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="map/3" href="ciaopdindex.html#map/3">map/3</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>map(?,(pred 3),?)</tt>.<br/><p><strong>Usage:</strong> <tt>map(Assoc1,Pred,Assoc2)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Applies <span class="var">Pred</span> with arity 3 to each value of the assoc_table <span class="var">Assoc1</span> obtaining the new assoc_table <span class="var">Assoc2</span> in which only the values can have changed.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc1</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Pred</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Assoc2</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="foldl/4" href="ciaopdindex.html#foldl/4">foldl/4</a>:</div><div class="deftext"><br/>
+<em>Meta-predicate</em> with arguments: <tt>foldl(?,?,(pred 4),?)</tt>.<br/><p><strong>Usage:</strong> <tt>foldl(Assoc,DS,Pred,NDS)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Applies <span class="var">Pred</span> with arity 4 to each value of the assoc_table <span class="var">Assoc</span>. If <span class="var">Pred</span> is satisfied, it updates the data-structure DS. Otherwise it fails.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">DS</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Pred</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NDS</span> is a free variable.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="put_assoc/4" href="ciaopdindex.html#put_assoc/4">put_assoc/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>put_assoc(K,Assoc,V,NewAssoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The value <span class="var">V</span> is inserted in <span class="var">Assoc</span> associated to the key <span class="var">K</span> and the result is <span class="var">NewAssoc</span>. This can be used to insert and change associations.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">K</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">V</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NewAssoc</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">NewAssoc</span> is a associations beetwen keys and values.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="put_assoc/5" href="ciaopdindex.html#put_assoc/5">put_assoc/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>put_assoc(K,Assoc1,V,Assoc2,Member)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> The value <span class="var">V</span> is inserted in <span class="var">Assoc1</span> associated to the key <span class="var">K</span> and the result is <span class="var">Assoc2</span>. If the key <span class="var">K</span> doesn&apos;t belong to the <span class="var">Assoc1</span> then <span class="var">Member</span> is unified with no. Otherwise, <span class="var">Assoc2</span> is the result of substituting the association <span class="var">K</span>-<span class="var">OldValue</span> by <span class="var">K</span>-<span class="var">V</span> and <span class="var">Member</span> is unified with yes(OldValue).<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">K</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc1</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">V</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Assoc2</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Member</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc1</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc2</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:is_member/1)</span><span><span class="var">Member</span> is no or yes(value).
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="add_assoc/4" href="ciaopdindex.html#add_assoc/4">add_assoc/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>add_assoc(K,Assoc1,V,Assoc2)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This is similar to <a class="idx_anchor" id="25" href="ciaoglindex.html#put_value/5"><tt>put_value/5</tt></a> but <span class="var">Key</span> must not appear in <span class="var">Assoc1</span> (<span class="var">Member</span> in put_value/5 is known to be no). An error is thrown otherwise.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">K</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc1</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">V</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Assoc2</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc1</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc2</span> is a associations beetwen keys and values.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="update_assoc/5" href="ciaopdindex.html#update_assoc/5">update_assoc/5</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>update_assoc(K,Assoc1,V,Assoc2,OldVar)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> This is similar to <a class="idx_anchor" id="26" href="ciaoglindex.html#put_assoc/5"><tt>put_assoc/5</tt></a> but <span class="var">Key</span> must not appear in <span class="var">Assoc1</span> (<span class="var">Member</span> in put_value/5 is known to be no). An error is thrown otherwise.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">K</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc1</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">V</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Assoc2</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">OldVar</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc1</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc2</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">OldVar</span> is a valid value in a <tt>assoc_table</tt>.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="del_assoc/4" href="ciaopdindex.html#del_assoc/4">del_assoc/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>del_assoc(K,Assoc1,V,Assoc2)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> Delete in <span class="var">Assoc1</span> the key <span class="var">K</span> to give <span class="var">Assoc2</span>. If the key <span class="var">K</span> does not belong to the <span class="var">Assoc1</span> then <span class="var">Member</span> is unified with no and <span class="var">Assoc1</span> and <span class="var">Assoc2</span> are unified. Otherwise <span class="var">Assoc2</span> is the result of deleting the key <span class="var">K</span> and its associated <span class="var">Value</span>, and <span class="var">Member</span> is unified with yes(Value).<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">K</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc1</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">V</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">Assoc2</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc1</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc2</span> is a associations beetwen keys and values.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="del_min_assoc/4" href="ciaopdindex.html#del_min_assoc/4">del_min_assoc/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>del_min_assoc(Assoc,K,V,NewAssoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Assoc</span> and <span class="var">NewAssoc</span> define the same finite function except that <span class="var">Assoc</span> associates <span class="var">K</span> with <span class="var">V</span> and <span class="var">NewAssoc</span> doesn&apos;t associate <span class="var">K</span> with any value and <span class="var">K</span> precedes all other keys in <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">K</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">V</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NewAssoc</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">NewAssoc</span> is a associations beetwen keys and values.
+</span>
+</ul></div></div><p>
+<div><span class="on_right">PREDICATE</span><div class="defname"><a class="idx_anchor" id="del_max_assoc/4" href="ciaopdindex.html#del_max_assoc/4">del_max_assoc/4</a>:</div><div class="deftext"><p><strong>Usage:</strong> <tt>del_max_assoc(Assoc,K,V,NewAssoc)</tt>
+<ul class="itemize_minus"><LI><em>Description:</em> <span class="var">Assoc</span> and <span class="var">NewAssoc</span> define the same finite function except that <span class="var">Assoc</span> associates <span class="var">K</span> with <span class="var">V</span> and <span class="var">NewAssoc</span> doesn&apos;t associate <span class="var">K</span> with any value and <span class="var">K</span> is preceded by all other keys in <span class="var">Assoc</span>.<LI><em>The following properties should hold at call time:</em><br/><span class="on_right"> (term_typing:nonvar/1)</span><span><span class="var">Assoc</span> is currently a term which is not a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">K</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">V</span> is a free variable.
+</span><br/><span class="on_right"> (term_typing:var/1)</span><span><span class="var">NewAssoc</span> is a free variable.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">Assoc</span> is a associations beetwen keys and values.
+</span><br/><span class="on_right"> (assoc:key/1)</span><span><span class="var">K</span> is a valid key in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:value/1)</span><span><span class="var">V</span> is a valid value in a <tt>assoc_table</tt>.
+</span><br/><span class="on_right"> (assoc:assoc_table/1)</span><span><span class="var">NewAssoc</span> is a associations beetwen keys and values.
+</span>
+</ul></div></div><p>
+</div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Module Sections</h2><ul><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Documentation on exports">Documentation on exports</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="arrays.html">&#x25C4;</a><a class="navbutton" href="counters.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>

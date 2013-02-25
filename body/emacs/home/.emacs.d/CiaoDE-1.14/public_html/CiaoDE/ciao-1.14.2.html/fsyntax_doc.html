@@ -1,0 +1,336 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/><link rel="stylesheet" href="lpdoc.css" type="text/css"/><title>Functional notation &mdash; The Ciao System v1.14#2</title></head><body><div class="nav"><span class="on_right"><a class="navbutton" href="argnames_doc.html">&#x25C4;</a><a class="navbutton" href="global.html">&#x25BA;</a></span><span><a href="ciao.html">The Ciao System</a> &raquo; <a href="ExtendProlog.html">PART VII - Ciao extensions</a> &raquo; </span></div><div class="documentwrapper"><div class="document"><div class="mainwrapper"><div class="main"><div id=""><h1>Functional notation</h1><a class="idx_anchor" href="ciaoliindex.html#fsyntax"></a>
+<strong>Author(s):</strong> <a class="idx_anchor" id="Daniel Cabeza" href="ciaoauindex.html#Daniel Cabeza">Daniel Cabeza</a>, <a class="idx_anchor" id="Amadeo Casas" href="ciaoauindex.html#Amadeo Casas">Amadeo Casas</a>, <a class="idx_anchor" id="Manuel Hermenegildo" href="ciaoauindex.html#Manuel Hermenegildo">Manuel Hermenegildo</a>, <a class="idx_anchor" id="Jose F. Morales" href="ciaoauindex.html#Jose F. Morales">Jose F. Morales</a>.<p>
+This library package allows the use of functional notation in a Ciao module/program. It supports function application, predefined evaluable functors, functional definitions, quoting, and (combined with the <a class="idx_anchor" id="0" href="ciaoglindex.html#lazy"><tt>lazy</tt></a> library) lazy evaluation. The extensions implemented by this library are also composable with higher-order features and can be combined with other Ciao packages such as constraints, assertions, etc.<p>The package provides <em>syntactic sugar</em> for defining and using predicates as if they were functions. However, they can still retain the power of predicates. Any function definition written using this package is in fact defining a predicate, and any predicate can be used as a function.<p>The predicate associated with a function has the same name and one more argument, meant as the place holder for the &ldquo;result&rdquo; of the function. In fact, this argument is just the one that will be syntactically connected to the surrounding goal or function, but it does not necessarily imply any directionality, i.e., it does not necessarily mean that this argument is an output or an input. This argument is by default added to the right, i.e., it is the last argument, but can be changed by using a declaration, as explained below.<p><div id="Function applications"><h2>Function applications</h2> <a class="idx_anchor" id="1" href="ciaocoindex.html#Function applications"></a> <p>Any term preceded by the <a class="idx_anchor" id="2" href="ciaoglindex.html#~ /1"><tt>~ /1</tt></a> operator is a function application, as can be seen in the goal <tt>write(~arg(1,T))</tt>, which is strictly equivalent to the sequence <tt>arg(1,T,A), write(A)</tt>. The declaration <a class="idx_anchor" id="3" href="ciaoglindex.html#fun_return/1"><tt>fun_return/1</tt></a> allows using a predicate argument other than the last as the return argument. For example with <tt>:- fun_return functor(~,_,_)</tt> the expression <tt>~functor(f,2)</tt> will be evaluated to the term <tt>f(_,_)</tt>. This definition of the return argument can also be done on the fly in each invocation in the following way: <tt>~functor(~,f,2)</tt>.<p>Functors can be declared as evaluable by using the declaration <a class="idx_anchor" id="4" href="ciaoglindex.html#fun_eval/1"><tt>fun_eval/1</tt></a>. This allows avoiding the need to use the <tt>~</tt> operator. Thus, <tt>:- fun_eval arg/2</tt> allows writing <tt>write(arg(1,T))</tt> instead of <tt>write(~arg(1,T))</tt> as above. This declaration can be combined with the previous one: <tt>:- fun_eval functor(~,_,_)</tt>.<p></div><div id="Predefined evaluable functors"><h2>Predefined evaluable functors</h2> <a class="idx_anchor" id="5" href="ciaocoindex.html#Predefined evaluable functors"></a> <p>By using the declaration <tt>:- fun_eval arith(true)</tt>, all the functors understood by <a class="idx_anchor" id="6" href="ciaoglindex.html#is/2"><tt>is/2</tt></a> will be also evaluated. This is active from the declaration downwards until a <tt>:- fun_eval arith(false)</tt> declaration or the end of the module is reached. Beware that arithmetic functors are used in some cases for other purposes than arithmetic: e.g. <tt>abolish(p/2)</tt>. But this is not so disturbing as it may appear because this package is not active in declarations, except for the goal-including declarations <a class="idx_anchor" id="7" href="ciaoglindex.html#initialization/1"><tt>initialization/1</tt></a> and <a class="idx_anchor" id="8" href="ciaoglindex.html#on_abort/1"><tt>on_abort/1</tt></a>. Note that all the declarations introduced by this package, as is customary in Ciao, are local to the module where they are included.<p>In addition to functors declared with the declaration <a class="idx_anchor" id="9" href="ciaoglindex.html#fun_eval/1"><tt>fun_eval/1</tt></a>, the package defines as evaluable the functors used for disjunctive and conditional expressions: <a class="idx_anchor" id="10" href="ciaoglindex.html#| /2"><tt>| /2</tt></a> and <a class="idx_anchor" id="11" href="ciaoglindex.html#? /2"><tt>? /2</tt></a> (defined as operators). A disjunctive expression has the form <tt>(V1|V2)</tt>, and its value when first evaluated is <tt>V1</tt>, and on backtracking <tt>V2</tt>. A conditional expression has the form <tt>(Cond ? V1)</tt>, or more commonly <tt>(Cond ? V1 | V2)</tt>, and its value, if the execution of <tt>Cond</tt> as a goal succeeds, is <tt>V1</tt>, otherwise in the first form it causes backtracking, and on the second form its value is <tt>V2</tt>. Note that due to the operator precedences, these expressions normally need to be surrounded by parenthesis. Also, a nested expression: <tt>(Cond1 ? V1 | Cond2 ? V2 | V3)</tt> is evaluated as <tt>(Cond1 ? V1 | (Cond2 ? V2 | V3))</tt>.<p> </div><div id="Functional definitions"><h2>Functional definitions</h2> <a class="idx_anchor" id="12" href="ciaocoindex.html#Functional definitions"></a> <p>A functional definition is composed of one or more functional clauses. A functional clause is written using the binary operator <a class="idx_anchor" id="13" href="ciaoglindex.html#:= /2"><tt>:= /2</tt></a>, as in: <pre>opposite(red) := green.
+</pre>  which is equivalent to <tt>opposite(red,green).</tt> or <pre>addlast(X,L) := ~append(L,[X]).
+</pre>  which is equivalent to <tt>addlast(X,L,R) :- append(L,[X],R).</tt> <p>Functional clauses can also have a body, which is executed before the result value is computed. It can serve as a guard for the clause or to provide the equivalent of where-clauses in functional languages: <pre>fact(0) := 1.
+fact(N) := N * ~fact(--N) :- N &gt; 0.
+</pre> Note that guards can often be defined more compactly using conditional expressions: <pre>fact(N) := N = 0 ? 1
+         | N &gt; 0 ? N * ~fact(--N).
+</pre> The declaration <tt>:- fun_eval defined(true)</tt> allows to locally define as evaluable functions being defined, so that the <tt>~</tt> operator does not need to be used within a functional definition for the functor being defined. For example, for the <tt>fact</tt> invocations in the previous definitions, which can now be written as, e.g. (we provide the full module definition): <pre>:- module(_,_,[fsyntax]).
+
+:- fun_eval arith(true).
+:- fun_eval defined(true).
+
+fact(0) := 1.  
+fact(N) := N * fact(--N) :- N &gt; 0.
+
+%% Or,alternatively:
+%
+% fact(N) := N=0 ? 1
+%          | N&gt;0 ? N * fact(--N).
+
+
+
+</pre> <p>  This behaviour is reverted using <tt>:- fun_eval defined(false)</tt>.<p>The translation of functional clauses has the following properties: <ul> <LI>The translation produces <em>steadfast</em> predicates, that is, output arguments are unified after possible cuts. <LI>Defining recursive predicates in functional style maintains the tail recursion of the original predicate, thus allowing the usual compiler optimizations. </ul> <p>Some implementation details and a discussion of the recent combination of this library (which dates from Ciao version 0.2) with the lazy evaluation library can be found in [<a href="ciaorefs.html#functional-lazy-notation-flops2006">CCH06</a>].<p></div><div id="Quoting functors"><h2>Quoting functors</h2> <a class="idx_anchor" id="14" href="ciaocoindex.html#Quoting functors"></a> <p>Functors (either in functional or predicate clauses) can be prevented from being evaluated by using the <a class="idx_anchor" id="15" href="ciaoglindex.html#^ /1"><tt>^ /1</tt></a> prefix operator (read as &ldquo;quote&rdquo;), as in <pre>:- fun_eval arith(true).
+pair(A,B) := ^(A-B).
+</pre> Note that this just prevents the evaluation of the principal functor of the enclosed term, not the possible occurrences of other evaluable functors inside.<p></div><div id="Some scoping issues"><h2>Some scoping issues</h2> <a class="idx_anchor" id="16" href="ciaocoindex.html#Some scoping issues"></a> <p>When using function applications inside the goal arguments of meta-predicates, there is an ambiguity as they could be evaluated either in the scope of the outer execution or the in the scope of the inner execution. The chosen behavior is by default to evaluate function applications in the scope of the outer execution. If they should be evaluated in the inner scope, the goal containing the function application needs to be escaped with the <a class="idx_anchor" id="17" href="ciaoglindex.html#^^ /1"><tt>^^ /1</tt></a> prefix operator, as in <tt>findall(X, (d(Y), ^^(X = ~f(Y)+1)), L)</tt> (which could also be written as <tt>findall(X, ^^ (d(Y), X = ~f(Y)+1), L)</tt>) and which expands into <tt>findall(X, (d(Y),f(Y,Z),T is Z+1,X=T), L)</tt>. With no escaping the function application is evaluated in the scope of the outer execution, i.e., it expands to <tt>f(Y,Z), T is Z+1, findall(X, (d(Y),X=T), L)</tt>.<p></div><div id="Other functionality"><h2>Other functionality</h2> <a class="idx_anchor" id="18" href="ciaocoindex.html#Other functionality"></a> <p>In addition to the basic package <a class="idx_anchor" id="19" href="ciaoglindex.html#fsyntax"><tt>fsyntax</tt></a>, a package <a class="idx_anchor" id="20" href="ciaoglindex.html#functional"><tt>functional</tt></a> is also provided, to allow programming with a more functional-flavored style. That package activates the declarations <tt>:- fun_eval arith(true)</tt> and <tt>:- fun_eval defined(true)</tt>, and defines the <a class="idx_anchor" id="21" href="ciaoglindex.html#. /2"><tt>. /2</tt></a> operator for use in lists (but be careful: this period cannot be followed by a whitespace!) and the operator <a class="idx_anchor" id="22" href="ciaoglindex.html#++ /2"><tt>++ /2</tt></a> as a function for appending lists. The factorial example above can be written as follows using the <a class="idx_anchor" id="23" href="ciaoglindex.html#functional"><tt>functional</tt></a> package: <pre>:- module(_,_,[fsyntax]).
+
+:- fun_eval arith(true).
+:- fun_eval defined(true).
+
+fact(0) := 1.  
+fact(N) := N * fact(--N) :- N &gt; 0.
+
+%% Or,alternatively:
+%
+% fact(N) := N=0 ? 1
+%          | N&gt;0 ? N * fact(--N).
+
+
+
+</pre> <p> See the end of this chapter for additional examples.<p></div><div id="Combining with higher order"><h2>Combining with higher order</h2> <p>Ciao provides in its standard library the <tt>hiord</tt> package, which supports a form of higher-order untyped logic programming with predicate abstractions [<a href="ciaorefs.html#ciao-hiord-tr">CH99a</a>,<a href="ciaorefs.html#daniel-phd">Cab04</a>,<a href="ciaorefs.html#ciao-hiord">CHL04</a>]. Predicate abstractions are Ciao&apos;s translation to logic programming of the lambda expressions of functional programming: they define unnamed predicates which will be ultimately executed by a higher-order call, unifying its arguments appropriately. A function abstraction is provided as functional syntactic sugar for predicate abstractions:<p>Predicate abstraction: <tt>&rdquo;(X,Y) :- p(X,Z), q(Z,Y)</tt>.<p>Function abstraction: <tt>&rdquo;(X) := ~q(~p(X))</tt>.<p> and function application is syntactic sugar over predicate application:<p>Predicate application: <tt>..., P(X,Y), ...</tt> Function application: <tt>..., Y = ~P(X), ...</tt> <p>The combination of this <tt>hiord</tt> package with the <tt>fsyntax</tt> and <tt>lazy</tt> packages (and, optionally, the type inference and checking provided by the Ciao preprocessor [<a href="ciaorefs.html#ciaopp-sas03-journal-scp">HPBLG05</a>]) basically provide the functionality present in modern functional languages (currying is not <em>syntactically</em> implemented, but its results can be obtained by deriving higher-order data from any other higher-order data (see [<a href="ciaorefs.html#daniel-phd">Cab04</a>]), as well as some of the functionality of full higher-order logic programming.<p>At this moment, it is necessary to specify the <tt>:- fun_eval hiord(true)</tt> option to enable correct handling of function abstractions. </div><br/><div id="Usage and interface"><h2>Usage and interface</h2><div class="cartouche"><ul><LI><strong>Library usage:</strong><br/><tt>:- use_package(fsyntax).</tt>
+
+or
+
+<tt>:- module(...,...,[fsyntax]).</tt></ul></div></div><div id="Other information"><h2>Other information</h2>
+<p><div id="Some examples using functional syntax"><h2>Some examples using functional syntax</h2> <p>We now illustrate some of the uses of the package through examples. The following example defines a simple unary function <tt>der(X)</tt> which returns the derivative of a polynomial arithmetic expression:<p><pre>der(x)      := 1.
+der(C)      := 0                 :- number(C).
+der(A + B)  := der(A) + der(B).
+der(C * A)  := C * der(A)        :- number(C).
+der(x ** N) := N * x ** ~(N - 1) :- integer(N), N &gt; 0.
+</pre> <p> Note that if we include the directive mentioned before which makes arithmetic functors evaluable then we would have to write the program in the following (clearly, less pleasant and more obfuscated) way:<p><pre>:- fun_eval(arith(true)).
+der(x)         := 1.
+der(C)         := 0                      :- number(C).
+der(^(A + B))  := ^(der(A) + der(B)).
+der(^(C * A))  := ^(C * der(A))          :- number(C).
+der(^(x ** N)) := ^(N * ^(x ** (N - 1))) :- integer(N), N &gt; 0.
+</pre> <p>Both of the previous code fragments translate to the following code:<p><pre>der(x, 1).
+der(C, 0) :-
+          number(C).
+der(A + B, X + Y) :-
+          der(A, X),
+          der(B, Y).
+der(C * A, C * X) :-
+          number(C),
+          der(A, X).
+der(x ** N, N * x ** N1) :-
+          integer(N),
+          N &gt; 0,
+          N1 is N - 1.
+</pre> <p>Functional notation interacts well with other Ciao language features. For example, it provides compact and familiar notation for regular types and other properties:<p><pre>:- module(_,_,[hiord,functional,assertions,regtypes,&apos;bf/bfall&apos;]).
+
+:- regtype color/1. color := red | blue | green.
+
+:- regtype slist/1. slist := [] | [ _ | slist].
+
+:- regtype list_of/1. list_of(T) := [] | [~T | list_of(T)].
+
+</pre> <p>where the functional clauses expand to (note the use of higher-order in the third example):<p><pre>color(red). color(blue). color(green).
+list([]).
+list([_|T]) :- list(T).
+list_of(_, []).
+list_of(T, [X|Xs]) :- T(X), list_of(T, Xs).
+</pre> <p>Such types and properties are then admissible in the usual way in assertions, e.g.:<p><pre>:- pred append/3 :: list * list * list.
+:- pred color_value/2 :: list(color) * int.
+</pre> <p>The combination of functional syntax and user-defined operators brings significant flexibility, as can be seen in the following definition of a list concatenation (<tt>append</tt>) operator (note that these are the definitions mentioned before which are active by default in the <a class="idx_anchor" id="24" href="ciaoglindex.html#functional"><tt>functional</tt></a> package):<p><pre>:- op(600, xfy, (.)).
+:- op(650, xfy, (++)).
+:- fun_eval (++)/2.
+[]   ++ L := L.
+X.Xs ++ L := X.(Xs ++ L).
+</pre> <p>This definition will be compiled exactly to the standard definition of <tt>append</tt> (and, thus, will be reversible). The functional syntax and user-defined operators allow writing for example <tt>Space = &apos; &apos;, write(&quot;Hello&quot; ++ Space ++ &quot;world!&quot;)</tt> instead of the equivalent forms <tt>Space = &apos; &apos;, write( append(&quot;Hello&quot;, append(Space, &quot;world!&quot;)))</tt> (if <tt>append/2</tt> is defined as evaluable) or <tt>Space = &apos; &apos;, append(Space, &quot;world!&quot;, T1),</tt> <tt>append(&quot;Hello&quot;, T1, T2),</tt> <tt>write(T2)</tt>.<p>As another example, we can define an array indexing operator for fixed-size, multi-dimensional arrays. Assume that arrays are built using nested structures whose main functor is <tt>a</tt> and whose arities are determined by the specified dimensions, i.e., a two-dimensional array <em>A</em> of dimensions <em>[N,M]</em> will be represented by the nested structure <tt>a(a(<em>A11</em>,...,<em>A1M</em>), a(<em>A21</em>,..,<em>A2M</em>), ..., a(<em>AN1</em>,...,</tt> <tt><em>ANM</em>))</tt>, where <tt><em>A11</em>,... <em>ANM</em></tt> may be arbitrary terms (we ignore for simplicity arity limitations, solved in any case typically by further nesting with logarithmic access time). The following recursive definition defines the property <tt>fixed_array/2</tt> and also the array access operator <tt>@</tt>:<p><pre>fixed_array([N|Ms],A):-
+	functor(A,a,N),
+	rows(N,Ms,A).
+fixed_array([N],A):-
+	functor(A,a,N).
+
+rows(0,_,_).
+rows(N,Ms,A) :-
+        N &gt; 0,
+        arg(N,A,Arg),
+        array(Ms,Arg),
+        rows(N-1,Ms,A).
+
+:- pred @(Array,Index,Elem) :: array * list(int) * int
+   # &quot;@var{Elem} is the @var{Index}-th element of @var{Array}.&quot;.
+
+:- op(55, xfx, &apos;@&apos;).
+:- fun_eval (@)/2.
+V@[I]    := ~arg(I,V).       %% Or: V@[] := V. 
+V@[I|Js] := ~arg(I,V)@Js.
+</pre> <p>This allows writing, e.g., <tt>M = fixed_array([2,2]), M@[2,1] = 3</tt> (which could also be expressed as <tt>fixed_array([2,2])@[2,1] = 3</tt>), where the call to the <tt>fixed_array</tt> property generates an empty <em>2 x 2</em> array <em>M</em> and <tt>M@[2,1] = 3</tt> puts <em>3</em> in <em>M[2,1]</em>. This can be done in the top level: <pre>?- M = ~fixed_array([2,2]), M@[2,1] = 3.
+</pre> provided the <tt>op</tt> and <tt>function</tt> declarations are loaded into the top level also. Another example of use is: <tt>A3@[N+1,M] = A1@[N-1,M] + A2@[N,M+2]</tt>.<p>Such functionality can be grouped into a <em>package</em> as follows. The package main file (<tt>arrays.pl</tt>) might be: <pre>:- package(arrays).
+:- include(arrays_ops).
+
+:- use_module(arrays_rt).
+ 
+</pre> where file <tt>arrays_ops.pl</tt> may contain: <pre>:- use_package(functional).
+
+:- op(150,xfx,[@]).
+:- fun_eval &apos;@&apos;/2.
+
+:- op(500,yfx,&lt;+&gt;).
+:- fun_eval &apos;&lt;+&gt;&apos;/2.
+
+:- op(400,yfx,&lt;*&gt;).
+:- fun_eval &apos;&lt;*&gt;&apos;/2.
+
+ 
+</pre> The main file is <tt>arrays_rt.pl</tt> which would contain for example (note that it also uses <tt>arrays_ops.pl</tt>, and that is why the contents of <tt>arrays_ops.pl</tt> were not put directly in <tt>arrays.pl</tt>): <pre>:- module(arrays_rt,_,[functional,hiord,assertions,regtypes,isomodes]).
+
+:- include(arrays_ops).
+
+:- doc(title,&quot;Some simple array operations with syntactic support&quot;).
+:- doc(author,&quot;Pro Grammer&quot;).
+
+:- doc(module,&quot;This library implements a very simple set of
+   operations on arrays. The idea is to illustrate the use of
+   functional syntax (operators) by providing syntactic support for
+   invoking array operations such as element access, array (vector)
+   addition, etc.&quot;).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Regtypes
+
+%% :- doc(doinclude,array/1).
+%% :- doc(doinclude,vector/1).
+%% :- doc(doinclude,dim/1).
+
+:- regtype array(A) #&quot;@var{A} is a multi-dimensional array.&quot;.
+% Should obviously be defined in more detail...
+array(A) :- struct(A).
+
+:- regtype dim(D) # &quot;@var{D} represents the dimensions of an array.&quot;.
+dim(D) :- list(D,int).
+
+:- regtype vector(V) # &quot;@var{V} is a one-dimensional fixed-size array.&quot;.
+vector(V) :- fixed_array([N],V), int(N).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+:- pred fixed_array(Dim,Array) :: dim * array
+# &quot;@var{Array} is an array of fixed dimensions @var{Dim}.&quot;.
+
+fixed_array([N|Ms],A):-
+	functor(A,a,N),
+	rows(N,Ms,A).
+fixed_array([N],A):-
+	functor(A,a,N).
+
+rows(0,_Ms,_A).
+rows(N,Ms,A):-
+	N &gt; 0,
+	arg(N,A,Arg),
+	fixed_array(Ms,Arg),
+	rows(N-1,Ms,A).
+
+:- pred @(Array,Index,Elem):: array * dim * int
+# &quot;@var{Elem} is the @var{Index}-th element of @var{Array}.&quot;.
+
+V@[I]    := ~arg(I,V).
+V@[I|Js] := ~arg(I,V)@Js.
+
+:- pred &lt;+&gt;(V1,V2,V3) :: vector * vector * vector
+# &quot;@var{V3} is @var{V1} + @var{V2}.&quot;.
+
+V1 &lt;+&gt; V2 := V3 :-
+	V1 = ~fixed_array([N]),
+	V2 = ~fixed_array([N]),
+	V3 = ~fixed_array([N]),
+	V3 = ~vecplus_(N,V1,V2).
+
+vecplus_(0,_,_,_).
+vecplus_(N,V1,V2,V3) :- 
+	N &gt; 0,
+	V3@[N] = V1@[N] + V2@[N],
+	vecplus_(N-1,V1,V2,V3).
+
+:- pred &lt;*&gt;(V1,V2,V3) :: vector * vector * vector
+# &quot;@var{V3} is @var{V1} * @var{V2} (inner product).&quot;.
+
+V1 &lt;*&gt; V2 := ~vecmul_(N,V1,V2,0) :- 
+    V1 = ~fixed_array([N]),
+    V2 = ~fixed_array([N]).
+    
+vecmul_(0,  _,  _, Acc, Acc).
+vecmul_(N, V1, V2, Acc, IP) :-
+    N &gt; 0,
+    vecmul_( N-1, V1, V2, Acc + ( V1@[N] * V2@[N] ), IP).
+ 
+</pre> A file using this package would be: <pre>:- module(_,_).
+
+:- use_package(library(fsyntax(examples(arrays)))).
+
+main(M) :-
+	V1 = a(1,3,4,5),
+	V2 = a(5,4,3,1),
+	I = 1,
+	display(V2@[I+1]),
+	M = V1 &lt;*&gt; ( V2 &lt;+&gt; V1 ).
+ 
+</pre> <p><p></div><div id="Examples of combining with higher order"><h2>Examples of combining with higher order</h2> <p>The following <tt>map</tt> and <tt>foldl</tt> definitions (from the <a class="idx_anchor" id="25" href="ciaoglindex.html#hiordlib"><tt>hiordlib</tt></a> library) illustrate the combination of functional syntax and higher-order logic programming: <pre>:- fun_eval map/2.
+:- meta_predicate map(_,pred(2),_).
+map([], _)     := [].
+map([X|Xs], P) := [P(X) | map(Xs, P)].
+
+:- fun_eval foldl/3.
+:- meta_predicate foldl(_,_,pred(3),_).
+foldl([], Seed, _Op) := Seed.
+foldl([X|Xs], Seed, Op) := ~Op(X,~foldl(Xs,Seed,Op)).
+</pre> <p>With this definition: <pre>?- L = ~map([1,2,3], ( _(X,Y):- Y = f(X) ) ).
+
+L = [f(1),f(2),f(3)] ? 
+
+?- [f(1),f(2),f(3)] = ~map(L, ( _(X,f(X)) :- true ) ).  
+
+L = [1,2,3] ?
+</pre> <p>Also, after running: <pre>?- [&quot;helloworld&quot;, &quot;byeworld&quot;] = map([&quot;hello&quot;, &quot;bye&quot;], ++(X)).
+</pre> <p>(where <tt>(++)/2</tt> corresponds to the above definition of <tt>append</tt>) <tt>X</tt> will be bound to <tt>&quot;world&quot;</tt>, which is the only solution to the equation.<p>And when calling: <pre>map(L, ++(X), [&quot;hello.&quot;, &quot;bye.&quot;]).
+</pre> <p>several values for <tt>L</tt> and <tt>X</tt> are returned through backtracking:<p><pre>L = [&quot;hello&quot;,&quot;bye&quot;],   X = &quot;.&quot; ? ;
+L = [&quot;hello.&quot;,&quot;bye.&quot;], X = [] ?
+</pre> <p>(remember to set the flag <tt>write_strings</tt> to on in these examples so that the top level prints strings as strings of characters instead of lists of ASCII codes).<p></div><div id="Some additional examples using functional syntax"><h2>Some additional examples using functional syntax</h2> <p>A definition of the Fibonacci function, written in functional notation:<p><pre>:- module(_,_,[functional]).
+
+fib(0) := 0.
+fib(1) := 1.
+fib(N) := fib(N-1) + fib(N-2) :- integer(N), N &gt; 1.
+
+write_fib(N):-
+        message([&apos;The &apos;,N,&apos;. Fibonacci number is: &apos;,~fib(N),&apos;.&apos;]).
+
+</pre> <p>This is the factorial example, written in functional notation and including some assertions:<p><pre>:- module(_,_,[assertions,nativeprops,functional]).
+
+:- pred fact(+int,-int) + is_det.
+:- pred fact(-int,+int) + non_det.
+
+fact(N) := N=0 ? 1
+         | N&gt;0 ? N * fact(--N).
+
+</pre> <p>And, the same example written using <a class="idx_anchor" id="26" href="ciaoglindex.html#clpq"><tt>clpq</tt></a> constraints: <pre>:- module(_,_,[assertions,nativeprops,fsyntax,clpqf]).
+
+:- fun_eval .=. /1.
+:- op(700,fx,[.=.]).
+:- fun_eval fact/1.
+
+:- pred fact(+int,-int) + is_det.
+:- pred fact(-int,-int) + non_det.
+
+fact( .=. 0) := .=. 1.
+fact(N) := .=. N*fact( .=. N-1 ) :- N .&gt;. 0. 
+
+</pre> which allows for example calling it &ldquo;backwards:&rdquo; <pre>?- 24 = ~fact(X).
+
+X = 4 ? 
+</pre> <p> A very simple example using lazy evaluation:<p><pre>:- module(_,_,[functional,lazy]).
+:- use_module(library(lazy(lazy_lib)), [take/3]).
+
+nums(N) := ~take(N,nums_from(0)).
+
+:- lazy fun_eval nums_from/1.
+
+nums_from(X) := [X | nums_from(X+1)].
+
+</pre> <p>A naive reverse example, using functional notation:<p><pre>:- module(_, [nrev/2], [functional]).
+
+nrev( [] )    := [].
+nrev( [H|T] ) := ~conc( nrev(T),[H] ).
+
+conc( [],    L ) := L.
+conc( [H|T], K ) := [ H | conc(T,K) ]. 
+
+</pre> <p>And the same example using some assertions:<p><pre>:- module(_, [nrev/2], [assertions,fsyntax,nativeprops]).
+
+:- entry nrev/2 : {list, ground} * var.
+
+:- pred nrev(A,B) : list(A) =&gt; list(B) 
+   + ( not_fails, is_det, steps_o( exp(length(A),2) ) ).
+
+nrev( [] )    := [].
+nrev( [H|L] ) := ~conc( ~nrev(L),[H] ).
+
+
+:- pred conc(A,_,_) + ( terminates, is_det, steps_o(length(A)) ).
+
+conc( [],    L ) := L.
+conc( [H|L], K ) := [ H | ~conc(L,K) ]. 
+
+</pre> <p>Finally, a simple stream creation example where assertions are used to define a safety policy (that no file outside <tt>/tmp</tt> should be opened):<p><pre>:- module(_,[create_streams/2],[fsyntax,assertions,regtypes]).
+
+:- entry create_streams(A,B) : list(A,num).
+
+create_streams([])     := [].
+create_streams([N|NL]) := [ ~open_file(Fname,write) | ~create_streams(NL) ] 
+	:-
+ 	app(&quot;/tmp/../&quot;,~number_codes(N),Fname).
+%	app(&quot;/tmp/&quot;,~number_codes(N),Fname).
+
+app([],L) := L.
+app([X|Xs],L) := [X|~app(Xs,L)].
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% open_file library:
+
+open_file(Fname,Mode) := ~open(File,Mode) :- atom_codes(File,Fname).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Safety policy:
+
+:- check calls open_file(Fname,_,_) : safe_name(Fname).
+
+:- regtype  safe_name/1.    safe_name(&quot;/tmp/&quot; || L) :- list(L,alphnum_code).
+  
+:- regtype  alphnum_code/1. alphnum_code := ~alph_code | ~num_code.
+
+:- regtype  alph_code/1.    alph_code := 0&apos;a | 0&apos;b | 0&apos;c | 0&apos;d | 0&apos;e | 0&apos;f .
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+</pre> <p></div><br/></div><div id="Known bugs and planned improvements"><h2>Known bugs and planned improvements</h2><ul><LI>Assumes that <a class="idx_anchor" id="27" href="ciaoglindex.html#is/2"><tt>is/2</tt></a> is imported.<LI>Lazy functions declarations require translation priorities to move it to the lazy package.<LI>Detect automatically when hiord is being used, deprecate <tt>eval_hiord</tt>.<LI>I am not sure if shared variables are working for predicate abstractions.<LI>Find out if predicate abstractions are being fully translated at compile time (see output for hiordfun example).</ul></div></div></div></div></div><div class="sidebarwrapper"><div class="sidebar"><IMG SRC="autofigciao-shadow-64h.png"><h2>Package Sections</h2><ul><LI><a href="#Function applications">Function applications</a><LI><a href="#Predefined evaluable functors">Predefined evaluable functors</a><LI><a href="#Functional definitions">Functional definitions</a><LI><a href="#Quoting functors">Quoting functors</a><LI><a href="#Some scoping issues">Some scoping issues</a><LI><a href="#Other functionality">Other functionality</a><LI><a href="#Combining with higher order">Combining with higher order</a><LI><a href="#Usage and interface">Usage and interface</a><LI><a href="#Other information">Other information</a><LI><a href="#Some examples using functional syntax">Some examples using functional syntax</a><LI><a href="#Examples of combining with higher order">Examples of combining with higher order</a><LI><a href="#Some additional examples using functional syntax">Some additional examples using functional syntax</a><LI><a href="#Known bugs and planned improvements">Known bugs and planned improvements</a></ul><h2>Global Links</h2><ul><LI><a href="ciaofulltoc.html">Table of Contents</a><LI><a href="ciaochanges.html">Version/Change Log</a><LI><a href="ciaorefs.html">References</a><LI><a href="ciaocopyright.html">Copyright</a></ul><h2>Indices</h2><ul><LI><a href="ciaoliindex.html">Library/Module Index</a><LI><a href="ciaopdindex.html">Predicate/Method Index</a><LI><a href="ciaoprindex.html">Property Index</a><LI><a href="ciaoteindex.html">Regular Type Index</a><LI><a href="ciaodeindex.html">Declaration Index</a><LI><a href="ciaocoindex.html">Concept Index</a><LI><a href="ciaoauindex.html">Author Index</a><LI><a href="ciaoglindex.html">Global Index</a></ul></div></div><div class="clearer"></div></div><div class="nav"><span class="on_right"><a class="navbutton" href="argnames_doc.html">&#x25C4;</a><a class="navbutton" href="global.html">&#x25BA;</a></span><span>&nbsp;</span></div><div class="footer">Generated with LPdoc using Ciao</div></body></html>
