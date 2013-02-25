@@ -3,6 +3,9 @@
 
 (require 'cl)
 
+;; Title Bar
+(setq frame-title-format "My Emacs For Common Lisp - %b")
+
 ;; load packages ( by default, the packages are loaded after ~/.emacs.d/init.el after this file )
 (require 'package)
 (package-initialize)
@@ -12,8 +15,9 @@
 ;; initialize cygwin integration
 ;(load "cygwin-init.el")
 
-;; set the default temp directory
-(setq temporary-file-directory (expand-file-name "/tmp"))
+;; set default temp directory to ~/../tmp.
+;; if use the default value `$HOME/Local Settings/Temp', it may cause an error when using clisp in Windows XP
+(setq temporary-file-directory (expand-file-name "~/../tmp"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                              Starting Modes
@@ -31,7 +35,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Ubuntu Mono" :foundry "outline" :slant normal :weight normal :height 110 :width normal))))
+ '(default ((t (:family "Lucida Console" :foundry "outline" :slant normal :weight normal :height 110 :width normal))))
  '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil))))
  '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil)))))
 
@@ -47,8 +51,25 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; slime
-(setq inferior-lisp-program "~/ccl/lx86cl64")
-;; (setq inferior-lisp-program "/usr/bin/clisp")
+;; set common lisp path according to $CURRENT_COMMON_LISP_TYPE
+(setq *current-common-lisp-type* (getenv "CURRENT_COMMON_LISP_TYPE"))
+(cond 
+ ((string= *current-common-lisp-type* "CCL32")
+  (setq inferior-lisp-program "~/../../ccl/run-ccl32.bat"))
+ ((string= *current-common-lisp-type* "CCL64")
+  (setq inferior-lisp-program "~/../../ccl/run-ccl64.bat"))
+ ((string= *current-common-lisp-type* "CLISP")
+  (setq inferior-lisp-program "~/../../clisp/run-clisp.bat"))
+ ((string= *current-common-lisp-type* "ECL32-MINGW")
+  (setq inferior-lisp-program "~/../../ecl-mingw/run-ecl32-mingw.bat"))
+ ((string= *current-common-lisp-type* "ABCL")
+  (setq inferior-lisp-program "~/../../abcl/abcl.bat"))
+ ((string= *current-common-lisp-type* "SBCL32")
+  (setq inferior-lisp-program "~/../../sbcl/run-sbcl32.bat"))
+ ((string= *current-common-lisp-type* "SBCL64")
+  (setq inferior-lisp-program "~/../../sbcl/run-sbcl64.bat"))
+ ;; TODO add more implementations here
+ (t nil))
 (setq common-lisp-hyperspec-root (expand-file-name "~/.emacs.d/clhs7/HyperSpec/"))
 (slime-setup '(slime-fancy)) ; almost everything
 
