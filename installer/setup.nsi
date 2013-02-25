@@ -106,8 +106,16 @@ System::Store L
 Section -Emacs SEC_EMACS
     SetOutPath $INSTDIR\emacs
     SetOverwrite on
-    File /r /x .svn ..\body\emacs\*
+    File /r /x .gitignore /x .git ..\body\emacs\*
+    File packages\emacs-24.2.7z
+    File 7za.exe
     WriteRegStr HKLM "${REGKEY}\Components" Emacs 1
+
+    
+    !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR" "$OUTDIR\emacs-24.2.7z"' "" ${SW_HIDE} ""
+
+    Delete "$OUTDIR\7za.exe" 
+    Delete "$OUTDIR\emacs-24.2.7z"
 
     # x86 libraries - Tcl/Tk (requires by the starter)        
     SetOutPath $INSTDIR
