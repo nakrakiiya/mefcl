@@ -1,0 +1,2 @@
+My Emacs For Common Lisp
+Version: 0.2.0
