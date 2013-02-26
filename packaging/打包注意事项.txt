@@ -4,7 +4,8 @@ MinGW:
 3. remove /var/cache/mingw-get/packages/* (files)
 
 ECL:
-替换掉ecl-config
+替换掉ecl-config。
+编译目录请单独打包。
 
 ABCL:
 不要将abcl.bat放在压缩包。

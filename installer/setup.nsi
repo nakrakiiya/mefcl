@@ -159,14 +159,17 @@ SectionGroup /e Implementations SECGRP0000
         SetOutPath $INSTDIR\ecl-mingw
         SetOverwrite on
         File packages\ecl-12.12.1-mingw.7z
+        File packages\ecl-12.12.1-mingw-builddir.7z
         File ..\body\ecl-mingw\run-ecl32-mingw.bat
         File 7za.exe
         
         # Example: ..\7za.exe x -oclisp clisp-2.49.7z
         # ExecWait '"$OUTDIR\7za.exe" x "-o$OUTDIR" "$OUTDIR\ecl-12.12.1-mingw.7z"'
         !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR" "$OUTDIR\ecl-12.12.1-mingw.7z"' "" ${SW_HIDE} ""
+        !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR\build" "$OUTDIR\ecl-12.12.1-mingw-builddir.7z"' "" ${SW_HIDE} ""
         Delete "$OUTDIR\7za.exe" 
         Delete "$OUTDIR\ecl-12.12.1-mingw.7z"
+        Delete "$OUTDIR\ecl-12.12.1-mingw-builddir.7z"
         
         # Write starter tag
         SetOutPath $INSTDIR
