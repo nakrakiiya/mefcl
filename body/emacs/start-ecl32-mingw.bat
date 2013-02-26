@@ -7,4 +7,4 @@ cd /d %~dp0
 set HOME=%~dp0\home
 
 SET CURRENT_COMMON_LISP_TYPE=ECL32-MINGW
-start bin\runemacs.exe --debug-init
+start bin\runemacs.exe -mm --debug-init
