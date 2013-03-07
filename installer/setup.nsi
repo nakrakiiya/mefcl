@@ -241,19 +241,19 @@ SectionGroup /e Implementations SECGRP0000
 
     SectionEnd
 
-    Section /o "Clozure CL 1.8" SEC_CCL
+    Section /o "Clozure CL 1.9" SEC_CCL
         SetOutPath $INSTDIR\ccl
         SetOverwrite on
-        File packages\ccl-1.8.7z
+        File packages\ccl-1.9.7z
         File ..\body\ccl\logo.ico
         File ..\body\ccl\run-ccl32.bat
         File ..\body\ccl\run-ccl64.bat
         File 7za.exe
         
         # Example: ..\7za.exe x -oclisp clisp-2.49.7z
-        !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR" "$OUTDIR\ccl-1.8.7z"' "" ${SW_HIDE} ""
+        !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR" "$OUTDIR\ccl-1.9.7z"' "" ${SW_HIDE} ""
         Delete "$OUTDIR\7za.exe" 
-        Delete "$OUTDIR\ccl-1.8.7z"
+        Delete "$OUTDIR\ccl-1.9.7z"
 
         # svn 1.6.5 to update ccl        
         SetOutPath $INSTDIR
@@ -272,13 +272,13 @@ SectionGroup /e Implementations SECGRP0000
         File ..\body\CCL64.starter-mark
         File ..\body\CCLUpdater.starter-mark
         
-        WriteRegStr HKLM "${REGKEY}\Components" "Clozure CL 1.8" 1
+        WriteRegStr HKLM "${REGKEY}\Components" "Clozure CL 1.9" 1
 
         # Create Start Menu Items
         !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
         SetOutPath $SMPROGRAMS\$StartMenuGroup
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with Clozure CL 1.8 (x86).lnk" "$INSTDIR\emacs\start-ccl32.bat" "" $INSTDIR\ccl\logo.ico
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with Clozure CL 1.8 (x86_64).lnk" "$INSTDIR\emacs\start-ccl64.bat" "" $INSTDIR\ccl\logo.ico
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with Clozure CL 1.9 (x86).lnk" "$INSTDIR\emacs\start-ccl32.bat" "" $INSTDIR\ccl\logo.ico
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Emacs with Clozure CL 1.9 (x86_64).lnk" "$INSTDIR\emacs\start-ccl64.bat" "" $INSTDIR\ccl\logo.ico
         !insertmacro MUI_STARTMENU_WRITE_END
 
     SectionEnd
@@ -467,7 +467,7 @@ Section /o "-un.ABCL 1.1.1" UNSEC_ABCL
     DeleteRegValue HKLM "${REGKEY}\Components" "ABCL 1.1.1"
 SectionEnd
 
-Section /o "-un.Clozure CL 1.8" UNSEC_CCL
+Section /o "-un.Clozure CL 1.9" UNSEC_CCL
     SetShellVarContext all 
     Delete /REBOOTOK $INSTDIR\CCL32.starter-mark
     Delete /REBOOTOK $INSTDIR\CCL64.starter-mark
@@ -475,7 +475,7 @@ Section /o "-un.Clozure CL 1.8" UNSEC_CCL
     Delete /REBOOTOK $INSTDIR\update-ccl.bat
     RmDir /r /REBOOTOK $INSTDIR\ccl
     RmDir /r /REBOOTOK $INSTDIR\svn-1.6.5
-    DeleteRegValue HKLM "${REGKEY}\Components" "Clozure CL 1.8"
+    DeleteRegValue HKLM "${REGKEY}\Components" "Clozure CL 1.9"
 SectionEnd
 
 Section /o "-un.SBCL 1.1.4" UNSEC_SBCL
@@ -646,7 +646,7 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION "ECL 12.12.1" ${UNSEC_ECL}
     !insertmacro SELECT_UNSECTION "CLISP 2.49" ${UNSEC_CLISP}
     !insertmacro SELECT_UNSECTION "ABCL 1.1.1" ${UNSEC_ABCL}
-    !insertmacro SELECT_UNSECTION "Clozure CL 1.8" ${UNSEC_CCL}
+    !insertmacro SELECT_UNSECTION "Clozure CL 1.9" ${UNSEC_CCL}
     !insertmacro SELECT_UNSECTION "SBCL 1.1.4" ${UNSEC_SBCL}
     !insertmacro SELECT_UNSECTION MinGW ${UNSEC_MINGW}
     !insertmacro SELECT_UNSECTION "JDK 7.0" ${UNSEC_JAVA}
@@ -674,7 +674,7 @@ LangString SEC_EMACS_DESC ${LANG_ENGLISH} "Emacs 23.1"
 LangString SEC_ECL_DESC ${LANG_ENGLISH} "Embeddable Common Lisp 12.12.1 compiled with gcc 4.7.2, requires MinGW"
 LangString SEC_CLISP_DESC ${LANG_ENGLISH} "CLISP 2.49 (MinGW)"
 LangString SEC_ABCL_DESC ${LANG_ENGLISH} "Armed Bear Common Lisp 1.1.1 with full source, requires JRE 7"
-LangString SEC_CCL_DESC ${LANG_ENGLISH} "Clozure CL 1.8 (both x86, x86_64 are included)"
+LangString SEC_CCL_DESC ${LANG_ENGLISH} "Clozure CL 1.9 (both x86, x86_64 are included)"
 LangString SEC_SBCL_DESC ${LANG_ENGLISH} "Steel Bank Common Lisp 1.1.4 with threads support (full source, and both x86, x86_64 are included)"
 LangString SEC_MINGW_DESC ${LANG_ENGLISH} "MinGW with MSYS 1.0 included"
 LangString SEC_JAVA_DESC ${LANG_ENGLISH} "Java Development Kit 7.0"
