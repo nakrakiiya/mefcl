@@ -1,6 +1,5 @@
 ;; requires cl-w32api from http://sourceforge.net/projects/cl-w32api/
 ;; put cl-w32api into the local-projects directory of quicklisp first
-(ql:quickload "cl-w32api")
 (ql:quickload "ltk")
 
 (in-package :cl-user)

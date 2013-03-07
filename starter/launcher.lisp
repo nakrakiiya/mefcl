@@ -3,8 +3,8 @@
 (in-package :ltk-user)
 
 (defvar *application-executable* nil)
-(defvar *starter-config-directory* "d:\\mefcl-0.1.1\\")
-(defvar *starter-config-file* "d:\\mefcl-0.1.1\\starter.exe.conf")
+(defvar *starter-config-directory* "d:\\mefcl-0.2\\")
+(defvar *starter-config-file* "d:\\mefcl-0.2\\starter.exe.conf")
 
 (defun w32native-translated-namestring (path)
   (map 'string #'(lambda (x)
@@ -23,16 +23,17 @@
   (setq *wish-pathname*
         (w32native-translated-namestring (merge-pathnames "tcl/bin/wish.exe" *application-executable*))))
 
-(defun make-callback (path &optional (show-cmd win-header:sw_hide))
+(defun make-callback (path &optional (show-cmd #$SW_HIDE))
   (lambda ()
-    (cffi:with-foreign-string (sopen "open" :encoding :utf-16)
-      (cffi:with-foreign-string (spath (ccl:native-translated-namestring path) :encoding :utf-16)
-        (win-header:shellexecutew (cffi:null-pointer)
-                                  sopen
-                                  spath
-                                  (cffi:null-pointer)
-                                  (cffi:null-pointer)
-                                  show-cmd)))))
+    (ccl:with-filename-cstrs ((spath (ccl:native-translated-namestring path)))
+      (ccl:with-encoded-cstrs :utf-16le ((sopen "open"))
+        (#_ShellExecuteW (ccl:%null-ptr)
+                         sopen
+                         spath
+                         (ccl:%null-ptr)
+                         (ccl:%null-ptr)
+                         show-cmd)))))
+                         
 
 (defun load-config-file (frame path)
   (let ((buttons nil))
@@ -57,8 +58,8 @@
                                      (read-line f)))
            (setq s (read-line f))
            (if (string= s "SW_SHOWNORMAL")
-               (setq show-cmd win-header:sw_shownormal)
-               (setq show-cmd win-header:sw_hide))
+               (setq show-cmd #$SW_SHOWNORMAL)
+               (setq show-cmd #$SW_HIDE))
            (unless (string= s "")
              (read-line f))
            (when (probe-file marker)
