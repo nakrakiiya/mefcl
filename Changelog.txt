@@ -1,0 +1,21 @@
+0.2
+
+* Update
+Emacs: 24.3
+Active Tcl: 8.6
+ABCL: 1.1.1
+CCL: 1.9
+SBCL: 1.1.4
+ECL: 12.12.1
+MinGW
+
+* The default theme has been changed to Zenburn.
+* Nearly all emacs plugins are fetched and can be maintained by EPLA.
+
+* Improved stability.
+* Improved usability.
+
+
+
+0.1.1 Initial import to github.
+0.1 Initial release.
