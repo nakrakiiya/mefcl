@@ -1,3 +1,18 @@
+0.2
+
+* Update
+Emacs: 24.3
+Active Tcl: 8.6
+ABCL: 1.1.1
+CCL: 1.9
+SBCL: 1.1.4
+ECL: 12.12.1
+MinGW
+
+* The default theme has been changed to Zenburn.
+* Nearly all emacs plugins are fetched and can be maintained by EPLA.
+* For all implementations, M-. can jump to the source of the implementation.
+
 0.1
 Fix: `ecl-config' used a wrong absolute path. Now it returns the path that depends where `ecl-config' lies.
 Add directories `lib32' and `lib64'. `lib32' includes some x86 dlls needed by some common lisp libraries.
