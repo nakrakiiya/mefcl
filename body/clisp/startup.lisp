@@ -79,8 +79,9 @@
                       new-pathname)
                 (setf processed t)
                 (return)))))
-      (unless processed
-        (format t "unprocessed: ~A, path = ~A~%" symbol (second (first (getf (getf (symbol-plist symbol) 'system::doc) 'system::file))))))))
+      ;; (unless processed
+      ;;   (format t "unprocessed: ~A, path = ~A~%" symbol (second (first (getf (getf (symbol-plist symbol) 'system::doc) 'system::file)))))
+      )))
 
 (defun replace-all-symbols ()
   (let ((processed-symbols (make-hash-table :test 'eq)))
