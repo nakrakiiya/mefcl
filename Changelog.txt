@@ -11,11 +11,10 @@ MinGW
 
 * The default theme has been changed to Zenburn.
 * Nearly all emacs plugins are fetched and can be maintained by EPLA.
+* For all implementations, M-. can jump to the source of the implementation.
 
 * Improved stability.
 * Improved usability.
-
-
 
 0.1.1 Initial import to github.
 0.1 Initial release.
