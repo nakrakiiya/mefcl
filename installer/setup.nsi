@@ -120,13 +120,13 @@ Section -Emacs SEC_EMACS
     # x86 libraries - Tcl/Tk (requires by the starter)        
     SetOutPath $INSTDIR
     SetOverwrite on
-    File packages\active.tcltk85.7z
+    File packages\active.tcltk86.7z
     File 7za.exe
     
-    !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR" "$OUTDIR\active.tcltk85.7z"' "" ${SW_HIDE} ""
+    !insertmacro ShellExecWait "" '"$OUTDIR\7za.exe"' 'x -y "-o$OUTDIR" "$OUTDIR\active.tcltk86.7z"' "" ${SW_HIDE} ""
 
     Delete "$OUTDIR\7za.exe" 
-    Delete "$OUTDIR\active.tcltk85.7z"
+    Delete "$OUTDIR\active.tcltk86.7z"
     
     # Starter
     SetOutPath $INSTDIR
