@@ -299,6 +299,7 @@
  '(ecb-windows-width 0.2)
  '(ede-project-directories (quote nil))
  '(global-auto-highlight-symbol-mode t)
+ '(global-hl-line-mode t)
  '(global-linum-mode t)
  '(global-semantic-decoration-mode t nil (semantic-decorate-mode))
  '(global-semantic-highlight-edits-mode t nil (semantic-util-modes))
