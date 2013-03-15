@@ -26,10 +26,19 @@ width: 35em
     <p><b>My Emacs For Common Lisp</b>是一个基于Emacs的Common Lisp集成开发环境，为使第一次接触Common Lisp/Emacs并苦于配置的新手而设计。</p>
     <p><b>My Emacs For Common Lisp</b>设计为无需任何配置，安装完成后直接打开即可使用。使用它，您不需要记忆任何Emacs的快捷键，以及各种Emacs的怪异操作。您所要做的，只是靠着自己的直觉和习惯，做出各种鼠标点击，即可顺利完成日常编程的各种常见任务。您甚至可以把<b>My Emacs For Common Lisp</b>安装在U盘或移动硬盘等设备，到一台新电脑之后直接插上即可使用。</p>
     <p><i>如果您想要学习Common Lisp却又不知道第一步该怎么做，那么可以下载本软件，它已经包含了使用Common Lisp开发应用程序所需要的一切，并且所有东西都是立即可用的。</i></p>
-    <!-- download -->
+    <!-- videos -->
     <p>
-    <h3>获取本软件</h3>
-        <b>My Emacs For Common Lisp</b>当前版本为0.1.1，可以到<a href="http://sourceforge.net/projects/mefcl/files/0.1.1/mefcl-0.1.1-2012-06-12.exe/download">这里</a>下载。
+    <h3>使用教学视频（针对0.1.1版本录制）</h3>
+    <ol>
+        <li><a href="01-First.Time.To.Start/01-First.Time.To.Start.htm">第一次使用</a></li>
+        <li><a href="02-The.Common.Lisp.REPL/02-The.Common.Lisp.REPL.htm">Common Lisp REPL</a></li>
+        <li><a href="03-Basic.Editing/Basic.Editing.htm">基本的编辑方法</a></li>
+        <li><a href="04-Add.Remove.The.Source.Path/Add.Remove.The.Source.Path.htm">添加/删除 Source Path</a></li>
+        <li><a href="05-Debugging,Jump.To.Definitions,Inspecting,Folding/05-Debugging,Jump.To.Definitions,Inspecting,Folding.htm">调试、跳转到定义、Inspect、代码折叠</a></li>
+        <li><a href="06-Find.Replace,Display.File.Encoding/Find.Replace,Display.File.Encoding.htm">查找、替换，查看文件编码</a></li>
+        <li><a href="07-Do.Commentting/Do.Commentting.htm">使用Alt+;更快的处理注释</a></li>
+        <li><a href="08-Install.Quicklisp.In.An.Easy.Way/08-Install.Quicklisp.In.An.Easy.Way.htm">仅使用鼠标点击和回车键来安装Quicklisp的方法</a></li>
+    </ol>
     </p>
     <!-- features -->
     <p>
@@ -52,6 +61,9 @@ width: 35em
         <li>ABCL可以使用DISASSEMBLE对编译好的代码进行反汇编。</li>
         <li>ECL可以选择使用bytecode compiler，也可以选择使用lisp to c compiler。并且可以生成EXE。</li>
         <li>不需要知道任何Emacs的知识即可使用。</li>
+		<li>各个实现内置的符号都可以定位到对应的源代码。</li>
+		<li>如果安装在U盘上，那么到别的电脑上也可以使用（双击安装目录Launcher.exe直接打开，无需安装）。</li>
+		<li>Clozure CL可以随时从官方服务器更新。</li>
     </ul>    
     </p>
     <!-- implementations -->
@@ -59,29 +71,26 @@ width: 35em
     <h3>Common Lisp 实现</h3>
     <b>My Emacs For Common Lisp</b>包含以下开源的Common Lisp实现（全为官方原版）。
     <ul>
-        <li>ABCL 1.0.1</li>
-        <li>Clozure CL 1.8 (x86, x86_64)</li>
+        <li>ABCL 1.1.1</li>
+        <li>Clozure CL 1.9 (x86, x86_64)</li>
         <li>CLISP 2.49</li>
-        <li>ECL 11.1.1</li>
-        <li>SBCL 1.0.55.1 (x86, x86_64)</li>
+        <li>ECL 12.12.1</li>
+        <li>SBCL 1.1.4 (x86, x86_64)</li>
     </ul>
     </p>
-    <!-- videos -->
+    <!-- download -->
     <p>
-    <h3>使用教学视频</h3>
-    <ol>
-        <li><a href="01-First.Time.To.Start/01-First.Time.To.Start.htm">第一次使用</a></li>
-        <li><a href="02-The.Common.Lisp.REPL/02-The.Common.Lisp.REPL.htm">Common Lisp REPL</a></li>
-        <li><a href="03-Basic.Editing/Basic.Editing.htm">基本的编辑方法</a></li>
-        <li><a href="04-Add.Remove.The.Source.Path/Add.Remove.The.Source.Path.htm">添加/删除 Source Path</a></li>
-        <li><a href="05-Debugging,Jump.To.Definitions,Inspecting,Folding/05-Debugging,Jump.To.Definitions,Inspecting,Folding.htm">调试、跳转到定义、Inspect、代码折叠</a></li>
-        <li><a href="06-Find.Replace,Display.File.Encoding/Find.Replace,Display.File.Encoding.htm">查找、替换，查看文件编码</a></li>
-        <li><a href="07-Do.Commentting/Do.Commentting.htm">使用Alt+;更快的处理注释</a></li>
-        <li><a href="08-Install.Quicklisp.In.An.Easy.Way/08-Install.Quicklisp.In.An.Easy.Way.htm">仅使用鼠标点击和回车键来安装Quicklisp的方法</a></li>
-    </ol>
+    <h3>获取本软件</h3>
+        <p><b>My Emacs For Common Lisp</b>当前版本为0.2 rc1，可以到<a href="https://github.com/nakrakiiya/mefcl-releases/archive/0.2rc1.zip">这里</a>下载。<a href="https://github.com/nakrakiiya/mefcl-releases/tags">这里</a>列出了当前所有可下载版本。</p>
+		<p><i>注：版本之间互不兼容，不能直接覆盖升级。</i></p>
+    </p>
+	<!-- report bugs -->
+    <p>
+    <h3>汇报Bug</h3>
+	若在使用过程中有任何问题或疑问，请在<a href="https://github.com/nakrakiiya/mefcl/issues">这里</a>留言。
     </p>
     <!-- last updated -->
-    <p align="right">最后更新：2012-06-22</p>
+    <p align="right">最后更新：2013-03-15</p>
    </div>
 </body>
 </html>
