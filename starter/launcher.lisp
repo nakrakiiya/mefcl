@@ -14,8 +14,7 @@
        (ccl:native-translated-namestring path)))
 
 (defun init-starter ()
-  (setq *application-executable*
-        (merge-pathnames (first ccl:*command-line-argument-list*) (ccl:current-directory)))
+  (setq *application-executable* (ccl::kernel-path))
   (setq *starter-config-directory*
         (make-pathname :name nil :type nil :defaults *application-executable*))
   (setq *starter-config-file*
