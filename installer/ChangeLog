@@ -1,3 +1,8 @@
+0.2 rc2
+FIX: M-. sometimes cannot jump to the correct source place when using CCL.
+auto-highlight-mode, global-hl-line-mode enabled by default.
+misc changes
+
 0.2 rc1
 
 * Update
