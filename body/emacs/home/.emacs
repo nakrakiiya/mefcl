@@ -386,12 +386,5 @@
 
 (ecb-activate)
 
-
-; Load CiaoDE 1.14.2 (disabled due to incomplete)
-;(if (file-exists-p "~/.emacs.d/CiaoDE-1.14/lib/ciao/ciao-mode-init.el")
-;    (load-file "~/.emacs.d/CiaoDE-1.14/lib/ciao/ciao-mode-init.el"))
-
-
-
 ;; Start SLIME automatically
 (slime)
