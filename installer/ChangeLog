@@ -1,6 +1,7 @@
 0.2 rc2
 FIX: M-. sometimes cannot jump to the correct source place when using CCL.
 auto-highlight-mode, global-hl-line-mode enabled by default.
+FIX: Now `grep directory', `grep directory recursively' works.
 misc changes
 
 0.2 rc1
