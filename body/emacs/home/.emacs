@@ -225,13 +225,13 @@
        ;; TODO create the system-level tags
       
        ;; For jumping to Mercury standard headers:
-       '(".*\\.m" "~/.emacs.d/tags/MERCURY-TAGS")
+       ;; '(".*\\.m" "~/.emacs.d/tags/MERCURY-TAGS")
        ;; For jumping to XSB system's libraries:
-       '(".*\\.P$" "~/.emacs.d/tags/XSB-TAGS")
+       ;; '(".*\\.P$" "~/.emacs.d/tags/XSB-TAGS")
        ;; For jumping to Ciao system's libraries:
-       '(".*\\.pl$" "~/.emacs.d/tags/CIAO-TAGS")
+       ;; '(".*\\.pl$" "~/.emacs.d/tags/CIAO-TAGS")
        ;; For jumping to ECLiPSe system's libraries
-       '(".*\\.ecl$" "~/.emacs.d/tags/ECLIPSE-TAGS")
+       ;; '(".*\\.ecl$" "~/.emacs.d/tags/ECLIPSE-TAGS")
        ;; '(".*\\.pl$" "~/sys-tags/eclipse/TAGS")
        ;; For jumping to C system's libraries
        ;; '(".*\\.[ch]$" "~/sys-tags/c/TAGS")  <-- always crashes
