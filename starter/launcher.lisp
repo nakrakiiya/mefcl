@@ -76,7 +76,7 @@
     (reverse buttons)))
 
 (defun mainform ()
-  (let ((*wish-args* '("-name" "\"My Emacs For Common Lisp\"")))
+  (let ((*wish-args* '("-name" "My Emacs For Common Lisp")))
     (with-ltk ()
       (let* ((f (make-instance 'frame))
              (buttons (load-config-file f *starter-config-file*)))
