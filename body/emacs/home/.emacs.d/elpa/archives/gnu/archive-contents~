@@ -1,28 +1,25 @@
 (1
  (ack .
-      [(0 8)
+      [(0 9)
        nil "Interface to ack, a source code search tool" tar])
  (adaptive-wrap .
-		[(0 1)
+		[(0 2)
 		 nil "Smart line-wrapping with wrap-prefix" single])
  (all .
       [(1 0)
        nil "Edit all lines matching a given regexp" single])
- (ampc .
-       [(0 2)
-	nil "Asynchronous Music Player Controller" single])
  (auctex .
 	 [(11 86)
 	  nil "Integrated environment for *TeX*" tar])
  (cl-lib .
-	 [(0 1)
+	 [(0 2)
 	  nil "Properly prefixed CL functions and macros" single])
  (coffee-mode .
 	      [(0 4 1)
 	       nil "Major mode for CoffeeScript files" tar])
  (company .
-	  [(0 5)
-	   nil "Flexible inline text and code completion" tar])
+	  [(0 6 6)
+	   nil "Modular in-buffer completion framework" tar])
  (csv-mode .
 	   [(1 1)
 	    nil "Major mode for editing comma/char separated values" single])
@@ -41,6 +38,9 @@
  (djvu .
        [(0 5)
 	nil "Edit and view Djvu files via djvused" single])
+ (docbook .
+	  [(0 1)
+	   nil "Info-like viewer for DocBook" single])
  (ediprolog .
 	    [(1 0)
 	     nil "Emacs Does Interactive Prolog" single])
@@ -53,6 +53,9 @@
  (f90-interface-browser .
 			[(1 1)
 			 nil "Parse and browse f90 interfaces" single])
+ (ggtags .
+	 [(0 6 3)
+	  nil "GNU Global source code tagging system" single])
  (heap .
        [(0 3)
 	nil "Heap (a.k.a. priority queue) data structure" single])
@@ -60,13 +63,18 @@
 	 [(2 4)
 	  nil "Incremental occur" single])
  (jgraph-mode .
-	      [(0 0)
+	      [(1 0)
 	       nil "Major mode for Jgraph files" single])
  (js2-mode .
-	   [(20090814)
-	    nil "Improved JavaScript editing mode" single])
- (lmc .
+	   [(20130307)
+	    ((emacs
+	      (24 1)))
+	    "Improved JavaScript editing mode" single])
+ (lex .
       [(1 0)
+       nil "Lexical analyser construction" single])
+ (lmc .
+      [(1 1)
        nil "Little Man Computer in Elisp" single])
  (load-dir .
 	   [(0 0 3)
@@ -75,7 +83,7 @@
 	    [(0 2 0)
 	     nil "Mark chars fitting certain characteristics" single])
  (memory-usage .
-	       [(0 1)
+	       [(0 2)
 		nil "Analyze the memory usage of Emacs in various ways" single])
  (minimap .
 	  [(1 0)
@@ -90,8 +98,8 @@
 	 [(1 1)
 	  nil "Show line numbers in the margin" single])
  (notes-mode .
-	     [(0 0)
-	      nil "Indexing system for on-line note-taking" single])
+	     [(1 30)
+	      nil "Organizing on-line note-taking" tar])
  (num3-mode .
 	    [(1 1)
 	     nil "highlight groups of digits in long numbers" single])
@@ -99,7 +107,7 @@
 	 [(0 8)
 	  nil "OAuth 2.0 Authorization Protocol" single])
  (org .
-      [(20121112)
+      [(20130401)
        nil "Outline-based notes management and organizer" tar])
  (quarter-plane .
 		[(0 1)
@@ -108,7 +116,7 @@
 	[(0 1)
 	 nil "Queue data structure" single])
  (rainbow-mode .
-	       [(0 5)
+	       [(0 7)
 		nil "Colorize color names in buffers" single])
  (register-list .
 		[(0 1)
@@ -123,8 +131,11 @@
 		 [(4 0)
 		  nil "Insert operators with surrounding spaces smartly" single])
  (sml-mode .
-	   [(6 1)
+	   [(6 4)
 	    nil "Major mode for editing (Standard) ML" single])
+ (sokoban .
+	  [(1 0 4)
+	   nil "Sokoban game for emacs" tar])
  (svg-clock .
 	    [(0 4)
 	     nil "Analog clock using Scalable Vector Graphics" single])
@@ -141,7 +152,7 @@
 	  (0 3)))
 	"Trie data structure" single])
  (undo-tree .
-	    [(0 5 5)
+	    [(0 6 3)
 	     nil "Treat undo history as a tree" single])
  (uni-confusables .
 		  [(0 1)
