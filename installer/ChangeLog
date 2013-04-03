@@ -1,6 +1,7 @@
 0.2
 update elpa packages
 update CCL to r15791
+fix the title bar of the launcher
 
 0.2 rc2
 FIX: M-. sometimes cannot jump to the correct source place when using CCL.
