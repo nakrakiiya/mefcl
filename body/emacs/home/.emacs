@@ -119,9 +119,9 @@
 (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
 (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
 (autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs." t)
-(setq prolog-system 'xsb)  ; optional, the system you are using;
+(setq prolog-system 'swi)  ; optional, the system you are using;
                            ; see `prolog-system' below for possible values
-(setq auto-mode-alist (append '(("\\.pl$" . xsb-mode) ; default to xsb
+(setq auto-mode-alist (append '(("\\.pl$" . prolog-mode) ; default to prolog mode
                                 ("\\.m$" . mercury-mode)
                                 ("\\.P$" . xsb-mode) ;; <-- for XSB only
                                 ;; ("\\.ecl$" . prolog-mode) ;; <-- for ECLiPSe only
